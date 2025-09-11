@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using UnityEngine;
+
 public class CameraMovment : MonoBehaviour
 {
     [Header("Objects")]
@@ -18,11 +20,6 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] Vector2 xLimits = new Vector2(-50f, 50f);
     [SerializeField] Vector2 zLimits = new Vector2(-50f, 50f);
 
-    [Header("Zoom Settings")]
-    [SerializeField] float zoomSpeed = 50f;
-    [SerializeField] float minZoom = 10f;
-    [SerializeField] float maxZoom = 100f;
-
     Camera cam;
 
     void Start()
@@ -38,10 +35,6 @@ public class CameraMovment : MonoBehaviour
         SmoothMoveCamera();
     }
 
-    void FixedUpdate()
-    {
-    }
-
     void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -53,11 +46,11 @@ public class CameraMovment : MonoBehaviour
             CheckCountryClick();
         }
 
+        // Free movement with middle mouse
         if (Input.GetMouseButton(2))
         {
             FreeMove();
         }
-
     }
 
     void CheckCountryClick()
@@ -89,27 +82,27 @@ public class CameraMovment : MonoBehaviour
 
     void FreeMove()
     {
-        isFocusing = false;
+        isFocusing = false; 
 
         float moveX = Input.GetAxis("Mouse X") * dragSpeed * 100 * Time.deltaTime;
         float moveZ = Input.GetAxis("Mouse Y") * dragSpeed * 100 * Time.deltaTime;
 
         Vector3 right = transform.right;
         Vector3 forward = transform.forward;
-        right.y = 0; 
-        forward.y = 0; 
+        right.y = 0;
+        forward.y = 0;
         right.Normalize();
         forward.Normalize();
 
         Vector3 moveDir = right * -moveX + forward * -moveZ;
         Vector3 newPos = transform.position + moveDir;
 
+
         newPos.x = Mathf.Clamp(newPos.x, xLimits.x, xLimits.y);
         newPos.z = Mathf.Clamp(newPos.z, zLimits.x, zLimits.y);
 
         targetPosition = newPos;
     }
-
 
     void SmoothMoveCamera()
     {

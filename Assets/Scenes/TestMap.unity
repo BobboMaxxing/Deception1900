@@ -828,12 +828,9 @@ MonoBehaviour:
   targetPosition: {x: -10, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   isFocusing: 0
-  dragSpeed: 50
+  dragSpeed: 80
   xLimits: {x: -10, y: 120}
   zLimits: {x: -50, y: 50}
-  zoomSpeed: 100000
-  minZoom: 20
-  maxZoom: 100
 --- !u!1 &1151664564
 GameObject:
   m_ObjectHideFlags: 0
