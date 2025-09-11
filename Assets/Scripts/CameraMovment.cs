@@ -13,8 +13,21 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] Quaternion targetRotation;
     [SerializeField] bool isFocusing = false;
 
+    [Header("Free Move Settings")]
+    [SerializeField] float dragSpeed = 20f;
+    [SerializeField] Vector2 xLimits = new Vector2(-50f, 50f);
+    [SerializeField] Vector2 zLimits = new Vector2(-50f, 50f);
+
+    [Header("Zoom Settings")]
+    [SerializeField] float zoomSpeed = 50f;
+    [SerializeField] float minZoom = 10f;
+    [SerializeField] float maxZoom = 100f;
+
+    Camera cam;
+
     void Start()
     {
+        cam = Camera.main;
         targetPosition = defaultPosition.position;
         targetRotation = defaultPosition.rotation;
     }
@@ -25,16 +38,26 @@ public class CameraMovment : MonoBehaviour
         SmoothMoveCamera();
     }
 
+    void FixedUpdate()
+    {
+    }
+
     void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResetCamera();
         }
-        else if (Input.GetMouseButtonDown(0)) 
+        else if (Input.GetMouseButtonDown(0))
         {
             CheckCountryClick();
         }
+
+        if (Input.GetMouseButton(2))
+        {
+            FreeMove();
+        }
+
     }
 
     void CheckCountryClick()
@@ -54,7 +77,7 @@ public class CameraMovment : MonoBehaviour
     void FocusOnCountry(Transform country)
     {
         isFocusing = true;
-        targetPosition = country.position + new Vector3(4, 20, 10);
+        targetPosition = country.position + new Vector3(20, 20, 0);
     }
 
     void ResetCamera()
@@ -63,6 +86,30 @@ public class CameraMovment : MonoBehaviour
         targetPosition = defaultPosition.position;
         targetRotation = defaultPosition.rotation;
     }
+
+    void FreeMove()
+    {
+        isFocusing = false;
+
+        float moveX = Input.GetAxis("Mouse X") * dragSpeed * 100 * Time.deltaTime;
+        float moveZ = Input.GetAxis("Mouse Y") * dragSpeed * 100 * Time.deltaTime;
+
+        Vector3 right = transform.right;
+        Vector3 forward = transform.forward;
+        right.y = 0; 
+        forward.y = 0; 
+        right.Normalize();
+        forward.Normalize();
+
+        Vector3 moveDir = right * -moveX + forward * -moveZ;
+        Vector3 newPos = transform.position + moveDir;
+
+        newPos.x = Mathf.Clamp(newPos.x, xLimits.x, xLimits.y);
+        newPos.z = Mathf.Clamp(newPos.z, zLimits.x, zLimits.y);
+
+        targetPosition = newPos;
+    }
+
 
     void SmoothMoveCamera()
     {
