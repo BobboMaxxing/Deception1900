@@ -8,6 +8,7 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float rotateSpeed = 2f;
     [SerializeField] LayerMask countryLayer;
+    [SerializeField] GameObject playercontroller;
 
     [Header("Camera Settings")]
     [SerializeField] Vector3 targetPosition;
@@ -26,6 +27,7 @@ public class CameraMovment : MonoBehaviour
         cam = Camera.main;
         targetPosition = defaultPosition.position;
         targetRotation = defaultPosition.rotation;
+        //if (playercontroller == null) playercontroller = FindObjectOfType<PlayerController>();
     }
 
     void Update()
