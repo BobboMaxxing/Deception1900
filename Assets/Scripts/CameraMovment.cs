@@ -1,6 +1,5 @@
 using UnityEngine;
 
-using UnityEngine;
 
 public class CameraMovment : MonoBehaviour
 {
@@ -46,7 +45,6 @@ public class CameraMovment : MonoBehaviour
             CheckCountryClick();
         }
 
-        // Free movement with middle mouse
         if (Input.GetMouseButton(2))
         {
             FreeMove();
@@ -73,7 +71,7 @@ public class CameraMovment : MonoBehaviour
         targetPosition = country.position + new Vector3(20, 20, 0);
     }
 
-    void ResetCamera()
+    public void ResetCamera()
     {
         isFocusing = false;
         targetPosition = defaultPosition.position;

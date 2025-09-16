@@ -67,7 +67,7 @@ public class MainMenuCameraController : MonoBehaviour
         Country countryScript = country.GetComponent<Country>();
         if (countryScript != null && selectedCountryText != null)
         {
-            selectedCountryText.text = "Selected Country: " + countryScript.countryName;
+            selectedCountryText.text = "Select Country: " + countryScript.countryName;
         }
 
         targetPosition = country.position + new Vector3(4, 20, 10);
