@@ -755,7 +755,7 @@ MonoBehaviour:
   cameraMovment: {fileID: 1061403099}
   cameraManager: {fileID: 1279101496}
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightIntensity: 0.3
+  highlightIntensity: 1
   hasChosenCountry: 0
 --- !u!4 &880188480
 Transform:
@@ -928,6 +928,7 @@ MonoBehaviour:
   countryLayer:
     serializedVersion: 2
     m_Bits: 64
+  playercontroller: {fileID: 0}
   targetPosition: {x: -10, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   isFocusing: 0
@@ -1130,7 +1131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultPosition: {fileID: 1151664565}
-  moveSpeed: 5
+  moveSpeed: 500
   rotateSpeed: 2
   countryLayer:
     serializedVersion: 2

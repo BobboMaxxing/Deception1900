@@ -84,8 +84,8 @@ public class CameraMovment : MonoBehaviour
     {
         isFocusing = false; 
 
-        float moveX = Input.GetAxis("Mouse X") * dragSpeed * 100 * Time.deltaTime;
-        float moveZ = Input.GetAxis("Mouse Y") * dragSpeed * 100 * Time.deltaTime;
+        float moveX = Input.GetAxis("Mouse X") * dragSpeed * 1000 * Time.deltaTime;
+        float moveZ = Input.GetAxis("Mouse Y") * dragSpeed * 1000 * Time.deltaTime;
 
         Vector3 right = transform.right;
         Vector3 forward = transform.forward;
