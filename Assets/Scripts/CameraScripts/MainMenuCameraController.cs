@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class MainMenuCameraController : MonoBehaviour
 {
@@ -18,6 +17,9 @@ public class MainMenuCameraController : MonoBehaviour
     [Header("UI Settings")]
     [SerializeField] TMP_Text selectedCountryText;
     [SerializeField] GameObject bigPowerButton;
+
+    [Header("References")]
+    [SerializeField] PlayerController playerController;
 
     private Transform selectedCountry = null;
 
@@ -61,7 +63,6 @@ public class MainMenuCameraController : MonoBehaviour
 
     void SelectCountry(Transform country)
     {
-
         selectedCountry = country;
 
         Country countryScript = country.GetComponent<Country>();
@@ -82,6 +83,9 @@ public class MainMenuCameraController : MonoBehaviour
 
         if (selectedCountryText != null)
             selectedCountryText.text = "Select a country";
+
+        if (playerController != null)
+            playerController.CancelCountryChoice();
     }
 
     void SmoothMoveCamera()

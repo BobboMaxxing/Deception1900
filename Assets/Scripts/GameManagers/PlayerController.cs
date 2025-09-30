@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private CameraMovment cameraMovment;
     [SerializeField] private GameObject cameraManager;
+    [SerializeField] UnitManager unitManager;
 
     [SerializeField] private Color highlightColor = Color.yellow;
     [SerializeField] private float highlightIntensity = 1.2f;
@@ -66,13 +67,21 @@ public class PlayerController : MonoBehaviour
     public void ConfirmCountryChoice()
     {
         if (string.IsNullOrEmpty(pendingCountry)) return;
+
         chosenCountry = pendingCountry;
         hasChosenCountry = true;
+
         if (confirmButton != null) confirmButton.gameObject.SetActive(false);
         if (cancelButton != null) cancelButton.gameObject.SetActive(false);
         if (selectedCountryText != null) selectedCountryText.text = "Chosen: " + chosenCountry;
         if (cameraManager != null) cameraManager.SetActive(false);
+
         HighlightChosenCountryObjects();
+
+        if (unitManager != null)
+        {
+            unitManager.SpawnUnitsForCountry(chosenCountry, playerID);
+        }
     }
 
     public void CancelCountryChoice()
