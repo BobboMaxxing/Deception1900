@@ -1,13 +1,45 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
 
 public class PlayerInputController : MonoBehaviour
 {
     public Camera playerCamera;
     public UnitManager unitManager;
+
+    [Header("UI")]
+    public Button confirmMoveButton;
+    public Button cancelMoveButton;
+    public TMP_Text moveStatusText;
+
     private Unit selectedUnit;
+    private bool hasConfirmed = false;
+
+    void Start()
+    {
+        if (confirmMoveButton != null)
+        {
+            confirmMoveButton.onClick.AddListener(ConfirmMoves);
+            confirmMoveButton.gameObject.SetActive(false);
+        }
+
+        if (cancelMoveButton != null)
+        {
+            cancelMoveButton.onClick.AddListener(CancelMoves);
+            cancelMoveButton.gameObject.SetActive(false);
+        }
+
+        if (moveStatusText != null)
+        {
+            moveStatusText.text = "Plan your moves";
+        }
+    }
 
     void Update()
     {
+        if (hasConfirmed) return;
+
         HandleUnitSelection();
         HandleOrderPreview();
     }
@@ -23,20 +55,18 @@ public class PlayerInputController : MonoBehaviour
 
                 if (clickedUnit != null)
                 {
-                    // Select or re-select unit
                     selectedUnit = clickedUnit;
                     Debug.Log("Selected unit: " + selectedUnit.name);
+                    ShowMoveButtons(true);
                 }
                 else if (selectedUnit != null)
                 {
-                    // Clicked on a country
                     string countryName = hit.collider.name;
 
-                    // Issue new move order, overwriting previous
+                    // Issue move order
                     UnitOrder order = new UnitOrder(OrderType.Move, countryName);
                     unitManager.IssueOrder(selectedUnit, order);
 
-                    // Deselect after issuing
                     selectedUnit = null;
                 }
             }
@@ -53,7 +83,7 @@ public class PlayerInputController : MonoBehaviour
             {
                 Vector3 mousePos = ray.GetPoint(enter);
 
-                // Show preview line in black
+                // Draw black line as preview
                 UnitOrder previewOrder = new UnitOrder(OrderType.Move, "Preview");
                 selectedUnit.SetOrder(previewOrder, mousePos);
                 SetLineColor(selectedUnit, Color.black);
@@ -69,5 +99,33 @@ public class PlayerInputController : MonoBehaviour
             lr.startColor = color;
             lr.endColor = color;
         }
+    }
+
+    void ConfirmMoves()
+    {
+        hasConfirmed = true;
+        ShowMoveButtons(false);
+
+        if (moveStatusText != null)
+            moveStatusText.text = "Moves confirmed — Executing...";
+
+        unitManager.ExecuteTurn();
+    }
+
+    void CancelMoves()
+    {
+        hasConfirmed = false;
+        ShowMoveButtons(false);
+
+        if (moveStatusText != null)
+            moveStatusText.text = "Moves canceled — Plan again.";
+
+        unitManager.ClearAllOrders();
+    }
+
+    void ShowMoveButtons(bool state)
+    {
+        if (confirmMoveButton != null) confirmMoveButton.gameObject.SetActive(state);
+        if (cancelMoveButton != null) cancelMoveButton.gameObject.SetActive(state);
     }
 }
