@@ -42,7 +42,7 @@ public class UnitManager : MonoBehaviour
         }
 
         int unitCounter = 0;
-        for (int i = 0; i < totalUnits;)
+        for (int i = 0; i < totalUnits; i++)
         {
             Transform spawn = validSpawns[unitCounter % validSpawns.Count];
             float offsetX = (unitCounter - (totalUnits - 1) / 2f) * spacing;

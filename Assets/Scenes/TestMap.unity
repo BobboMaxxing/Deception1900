@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &64403109
 RectTransform:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 450, y: 243}
+  m_AnchoredPosition: {x: 287, y: 277}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &64403110
@@ -700,6 +700,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 1061403096}
   unitManager: {fileID: 862485665}
+  confirmMoveButton: {fileID: 602644009}
+  cancelMoveButton: {fileID: 64403110}
+  moveStatusText: {fileID: 0}
 --- !u!1 &602644007
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,7 +721,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &602644008
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1050,10 +1053,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53701ab58e6206c4cbe1aea26dbf0d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  starterUnits:
-  - {fileID: 3163710852626616448, guid: abb6fa04711f9c944a13f50f83064cd7, type: 3}
-  - {fileID: 3163710852626616448, guid: abb6fa04711f9c944a13f50f83064cd7, type: 3}
-  - {fileID: 3163710852626616448, guid: abb6fa04711f9c944a13f50f83064cd7, type: 3}
+  starterUnits: []
+  controlledUnits: []
+  spawnOffsetRadius: 1
+  moveOffsetRadius: 1
+  totalUnits: 1
+  spacing: 2
+  starterUnitPrefab: {fileID: 3163710852626616448, guid: abb6fa04711f9c944a13f50f83064cd7, type: 3}
 --- !u!1 &880188478
 GameObject:
   m_ObjectHideFlags: 0
