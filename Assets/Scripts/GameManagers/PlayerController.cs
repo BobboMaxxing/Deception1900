@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CameraMovment cameraMovment;
     [SerializeField] private GameObject cameraManager;
     [SerializeField] UnitManager unitManager;
+    [SerializeField] private int totalUnitsToSpawn = 3;
 
     [SerializeField] private Color highlightColor = Color.yellow;
     [SerializeField] private float highlightIntensity = 1.2f;
@@ -80,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
         if (unitManager != null)
         {
-            unitManager.SpawnUnitsForCountry(chosenCountry, playerID);
+            unitManager.SpawnUnitsForCountry(chosenCountry, playerID, totalUnitsToSpawn);
         }
     }
 

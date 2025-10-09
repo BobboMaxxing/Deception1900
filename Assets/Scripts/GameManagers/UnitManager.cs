@@ -1,30 +1,35 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance;
 
     [Header("Units")]
-    public GameObject[] starterUnits;
+    public GameObject starterUnitPrefab;
     public List<Unit> controlledUnits = new List<Unit>();
 
-    [Header("Offset Settings")]
-    [SerializeField] private float spawnOffsetRadius = 2f;
+    [Header("Spawn Settings")]
+    [SerializeField] private float spawnOffsetSpacing = 2f;
     [SerializeField] private float moveOffsetRadius = 2.5f;
 
-    [SerializeField] private int totalUnits = 3;
-    [SerializeField] private float spacing = 2f;
-    [SerializeField] private GameObject starterUnitPrefab;
+    private bool hasSpawned = false;
 
     private void Awake()
     {
         Instance = this;
     }
 
-
-    public void SpawnUnitsForCountry(string countryName, int playerID)
+    public void SpawnUnitsForCountry(string countryName, int playerID, int totalUnits)
     {
+        if (hasSpawned)
+        {
+            Debug.LogWarning("Units already spawned for this player.");
+            return;
+        }
+        hasSpawned = true;
+
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         List<Transform> validSpawns = new List<Transform>();
 
@@ -37,7 +42,7 @@ public class UnitManager : MonoBehaviour
 
         if (validSpawns.Count == 0)
         {
-            Debug.LogWarning("No spawn points found for country: " + countryName);
+            Debug.LogWarning("No spawn points for country: " + countryName);
             return;
         }
 
@@ -45,11 +50,10 @@ public class UnitManager : MonoBehaviour
         for (int i = 0; i < totalUnits; i++)
         {
             Transform spawn = validSpawns[unitCounter % validSpawns.Count];
-            float offsetX = (unitCounter - (totalUnits - 1) / 2f) * spacing;
+            float offsetX = (unitCounter - (totalUnits - 1) / 2f) * spawnOffsetSpacing;
             Vector3 spawnPos = spawn.position + new Vector3(offsetX, 0, 0);
 
             GameObject unitObj = Instantiate(starterUnitPrefab, spawnPos, spawn.rotation);
-
             Unit unit = unitObj.GetComponent<Unit>();
             if (unit != null)
             {
@@ -63,11 +67,28 @@ public class UnitManager : MonoBehaviour
         Debug.Log($"Spawned {controlledUnits.Count} units for {countryName}");
     }
 
+    public void IssueOrder(Unit unit, UnitOrder order)
+    {
+        if (unit == null || order == null || !unit.canReceiveOrders) return;
+
+        GameObject targetObj = GameObject.Find(order.targetCountry);
+        if (targetObj == null) return;
+
+        Vector3 targetPos = targetObj.transform.position;
+        targetPos.y = unit.transform.position.y;
+
+        unit.SetOrder(order, targetPos);
+        Debug.Log($"Issued {order.orderType} order for {unit.name} to {order.targetCountry}");
+    }
+
     public void ExecuteTurn()
     {
-        Debug.Log("Executing turn — moving all units.");
-        Dictionary<string, List<Unit>> unitsByTarget = new Dictionary<string, List<Unit>>();
+        StartCoroutine(ExecuteTurnCoroutine());
+    }
 
+    private IEnumerator ExecuteTurnCoroutine()
+    {
+        Dictionary<string, List<Unit>> unitsByTarget = new Dictionary<string, List<Unit>>();
         foreach (Unit unit in controlledUnits)
         {
             UnitOrder order = unit.GetOrder();
@@ -80,6 +101,7 @@ public class UnitManager : MonoBehaviour
             unitsByTarget[order.targetCountry].Add(unit);
         }
 
+        List<Coroutine> moves = new List<Coroutine>();
         foreach (var kvp in unitsByTarget)
         {
             string countryName = kvp.Key;
@@ -94,50 +116,32 @@ public class UnitManager : MonoBehaviour
                 Vector3 offset = GetMoveOffset(basePos, i);
                 Vector3 targetPos = basePos + offset;
                 targetPos.y = units[i].transform.position.y;
-                units[i].ExecuteMove(targetPos);
+
+                moves.Add(units[i].MoveToPositionCoroutine(targetPos));
             }
         }
+
+        foreach (var move in moves)
+            yield return move;
+
+        if (TurnManager.Instance != null)
+            TurnManager.Instance.AdvanceTurn();
+
+        ClearAllOrders();
+    }
+
+    private Vector3 GetMoveOffset(Vector3 center, int index)
+    {
+        float angle = index * Mathf.PI * 2f / Mathf.Max(1, 4);
+        return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * moveOffsetRadius;
     }
 
     public void ClearAllOrders()
     {
-        Debug.Log("Clearing all unit orders.");
         foreach (Unit unit in controlledUnits)
         {
             if (unit != null)
                 unit.ClearOrder();
         }
-    }
-
-    public void IssueOrder(Unit unit, UnitOrder order)
-    {
-        if (unit == null || order == null) return;
-
-        GameObject targetObj = GameObject.Find(order.targetCountry);
-        if (targetObj == null)
-        {
-            Debug.LogWarning("No target object found for country: " + order.targetCountry);
-            return;
-        }
-
-        Vector3 targetPos = targetObj.transform.position;
-        targetPos.y = unit.transform.position.y;
-
-        unit.SetOrder(order, targetPos);
-
-        LineRenderer lr = unit.GetComponent<LineRenderer>();
-        if (lr != null)
-        {
-            lr.startColor = Color.green;
-            lr.endColor = Color.green;
-        }
-
-        Debug.Log($"Issued {order.orderType} order for {unit.name} to {order.targetCountry}");
-    }
-
-    private Vector3 GetMoveOffset(Vector3 center, int index)
-    {
-        float angle = index * Mathf.PI * 2f / Mathf.Max(1, 4); // 4 units per ring approx
-        return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * moveOffsetRadius;
     }
 }

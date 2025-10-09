@@ -15,6 +15,8 @@ public class Unit : MonoBehaviour
     [Header("Move Settings")]
     [SerializeField] private float moveSpeed = 5f;
 
+    public bool canReceiveOrders { get; private set; } = true;
+
     void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -34,6 +36,8 @@ public class Unit : MonoBehaviour
 
     public void SetOrder(UnitOrder order, Vector3 targetPos)
     {
+        if (!canReceiveOrders) return;
+
         currentOrder = order;
         targetPosition = targetPos;
         DrawOrderLine(targetPos);
@@ -44,17 +48,10 @@ public class Unit : MonoBehaviour
         return currentOrder;
     }
 
-    public void ExecuteMove(Vector3 moveTarget)
-    {
-        if (moveCoroutine != null)
-            StopCoroutine(moveCoroutine);
-
-        moveCoroutine = StartCoroutine(MoveToPosition(moveTarget));
-    }
-
     public void ExecuteOrder()
     {
         if (currentOrder == null) return;
+        canReceiveOrders = false;
 
         if (currentOrder.orderType == OrderType.Move && !string.IsNullOrEmpty(currentOrder.targetCountry))
         {
@@ -66,6 +63,14 @@ public class Unit : MonoBehaviour
                 ExecuteMove(moveTarget);
             }
         }
+    }
+
+    public void ExecuteMove(Vector3 moveTarget)
+    {
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+
+        moveCoroutine = StartCoroutine(MoveToPosition(moveTarget));
     }
 
     private IEnumerator MoveToPosition(Vector3 targetPos)
@@ -85,6 +90,9 @@ public class Unit : MonoBehaviour
         ClearLine();
         currentOrder = null;
         moveCoroutine = null;
+
+        // Allow this unit to receive orders for next turn
+        canReceiveOrders = true;
     }
 
     private void DrawOrderLine(Vector3 targetPos)
@@ -95,7 +103,14 @@ public class Unit : MonoBehaviour
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, targetPos);
     }
+    public Coroutine MoveToPositionCoroutine(Vector3 moveTarget)
+    {
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
 
+        moveCoroutine = StartCoroutine(MoveToPosition(moveTarget));
+        return moveCoroutine;
+    }
     public void ClearLine()
     {
         if (lineRenderer == null) return;
@@ -112,5 +127,6 @@ public class Unit : MonoBehaviour
             moveCoroutine = null;
         }
         ClearLine();
+        canReceiveOrders = true;
     }
 }
