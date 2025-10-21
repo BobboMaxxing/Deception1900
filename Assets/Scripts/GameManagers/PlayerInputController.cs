@@ -7,6 +7,7 @@ public class PlayerInputController : MonoBehaviour
 {
     public Camera playerCamera;
     public UnitManager unitManager;
+    [SerializeField] public bool canIssueOrders = true;
 
     [Header("UI")]
     public Button confirmMoveButton;
@@ -22,6 +23,7 @@ public class PlayerInputController : MonoBehaviour
         {
             confirmMoveButton.onClick.AddListener(ConfirmMoves);
             confirmMoveButton.gameObject.SetActive(false);
+            canIssueOrders = false;
         }
 
         if (cancelMoveButton != null)
@@ -29,7 +31,7 @@ public class PlayerInputController : MonoBehaviour
             cancelMoveButton.onClick.AddListener(CancelMoves);
             cancelMoveButton.gameObject.SetActive(false);
         }
-
+        EnableInput();
         if (moveStatusText != null)
         {
             moveStatusText.text = "Plan your moves";
@@ -38,16 +40,36 @@ public class PlayerInputController : MonoBehaviour
 
     void Update()
     {
-        if (hasConfirmed) return;
+        if (!canIssueOrders) return;
+
 
         HandleUnitSelection();
         HandleOrderPreview();
     }
 
+    void OnEnable()
+    {
+        GameManager.OnNewTurnStarted += EnableInput;
+    }
+
+    void OnDisable()
+    {
+        GameManager.OnNewTurnStarted -= EnableInput;
+    }
+
+    public void EnableInput()
+    {
+        canIssueOrders = true;
+    }
+
     void HandleUnitSelection()
     {
+        if (!canIssueOrders)
+           return;
+
         if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log("Mouse click detected");
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
@@ -66,8 +88,9 @@ public class PlayerInputController : MonoBehaviour
                     // Issue move order
                     UnitOrder order = new UnitOrder(OrderType.Move, countryName);
                     unitManager.IssueOrder(selectedUnit, order);
-
                     selectedUnit = null;
+
+
                 }
             }
         }

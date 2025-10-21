@@ -127,13 +127,22 @@ public class UnitManager : MonoBehaviour
         if (TurnManager.Instance != null)
             TurnManager.Instance.AdvanceTurn();
 
-        ClearAllOrders();
+         
     }
 
     private Vector3 GetMoveOffset(Vector3 center, int index)
     {
         float angle = index * Mathf.PI * 2f / Mathf.Max(1, 4);
         return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * moveOffsetRadius;
+    }
+
+    public void ResetUnitsForNextTurn()
+    {
+        foreach (var unit in controlledUnits)
+        {
+            if (unit != null)
+                unit.ClearOrder(); // ready for new moves
+        }
     }
 
     public void ClearAllOrders()
