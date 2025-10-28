@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
@@ -16,6 +16,10 @@ public class PlayerInputController : MonoBehaviour
 
     private Unit selectedUnit;
     private bool hasConfirmed = false;
+
+    // ✅ Player color that other scripts can access
+    private Color playerColor = Color.white;
+    public Color PlayerColor => playerColor; // read-only property
 
     void Start()
     {
@@ -42,7 +46,6 @@ public class PlayerInputController : MonoBehaviour
     {
         if (!canIssueOrders) return;
 
-
         HandleUnitSelection();
         HandleOrderPreview();
     }
@@ -65,11 +68,10 @@ public class PlayerInputController : MonoBehaviour
     void HandleUnitSelection()
     {
         if (!canIssueOrders)
-           return;
+            return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Mouse click detected");
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
@@ -78,7 +80,6 @@ public class PlayerInputController : MonoBehaviour
                 if (clickedUnit != null)
                 {
                     selectedUnit = clickedUnit;
-                    Debug.Log("Selected unit: " + selectedUnit.name);
                     ShowMoveButtons(true);
                 }
                 else if (selectedUnit != null)
@@ -89,8 +90,6 @@ public class PlayerInputController : MonoBehaviour
                     UnitOrder order = new UnitOrder(OrderType.Move, countryName);
                     unitManager.IssueOrder(selectedUnit, order);
                     selectedUnit = null;
-
-
                 }
             }
         }
@@ -106,7 +105,6 @@ public class PlayerInputController : MonoBehaviour
             {
                 Vector3 mousePos = ray.GetPoint(enter);
 
-                // Draw black line as preview
                 UnitOrder previewOrder = new UnitOrder(OrderType.Move, "Preview");
                 selectedUnit.SetOrder(previewOrder, mousePos);
                 SetLineColor(selectedUnit, Color.black);
@@ -130,7 +128,7 @@ public class PlayerInputController : MonoBehaviour
         ShowMoveButtons(false);
 
         if (moveStatusText != null)
-            moveStatusText.text = "Moves confirmed � Executing...";
+            moveStatusText.text = "Moves confirmed — Executing...";
 
         unitManager.ExecuteTurn();
     }
@@ -141,7 +139,7 @@ public class PlayerInputController : MonoBehaviour
         ShowMoveButtons(false);
 
         if (moveStatusText != null)
-            moveStatusText.text = "Moves canceled � Plan again.";
+            moveStatusText.text = "Moves canceled — Plan again.";
 
         unitManager.ClearAllOrders();
     }
@@ -150,5 +148,11 @@ public class PlayerInputController : MonoBehaviour
     {
         if (confirmMoveButton != null) confirmMoveButton.gameObject.SetActive(state);
         if (cancelMoveButton != null) cancelMoveButton.gameObject.SetActive(state);
+    }
+
+    // ✅ Call this whenever a country is chosen to set the player color
+    public void SetPlayerColor(Color color)
+    {
+        playerColor = color;
     }
 }

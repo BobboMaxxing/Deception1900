@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance;
+    public PlayerInputController playerInputController;
 
     [Header("Units")]
     public GameObject starterUnitPrefab;
@@ -19,6 +20,7 @@ public class UnitManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        Color PlayerColor = playerInputController.PlayerColor;
     }
 
     public void SpawnUnitsForCountry(string countryName, int playerID, int totalUnits)
