@@ -585,6 +585,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: "r\xF6d"
+  ownerID: -1
+  countryRenderer: {fileID: 0}
 --- !u!65 &424179401
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1211,8 +1213,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   starterUnitPrefab: {fileID: 3163710852626616448, guid: abb6fa04711f9c944a13f50f83064cd7, type: 3}
   controlledUnits: []
-  spawnOffsetSpacing: 2
+  hasSpawn: 0
+  spawnOffsetRadius: 2
   moveOffsetRadius: 1
+  spacing: 2
 --- !u!1 &880188478
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,7 +1262,7 @@ MonoBehaviour:
   unitManager: {fileID: 862485665}
   totalUnitsToSpawn: 3
   highlightColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightIntensity: 1
+  highlightIntensity: 0.33
   hasChosenCountry: 0
 --- !u!4 &880188480
 Transform:
@@ -1535,6 +1539,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: "bl\xE5"
+  ownerID: -1
+  countryRenderer: {fileID: 0}
 --- !u!65 &1172396118
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2428,6 +2434,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: "gr\xF6n"
+  ownerID: -1
+  countryRenderer: {fileID: 0}
 --- !u!65 &1963752701
 BoxCollider:
   m_ObjectHideFlags: 0
