@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
@@ -9,12 +9,12 @@ public class UnitManager : MonoBehaviour
     [Header("Units")]
     public GameObject starterUnitPrefab;
     public List<Unit> controlledUnits = new List<Unit>();
+    [SerializeField] bool hasSpawn = false;
 
-    [Header("Spawn Settings")]
-    [SerializeField] private float spawnOffsetSpacing = 2f;
+    [Header("Offset Settings")]
+    [SerializeField] private float spawnOffsetRadius = 2f;
     [SerializeField] private float moveOffsetRadius = 2.5f;
-
-    private bool hasSpawned = false;
+    [SerializeField] private float spacing = 2f;
 
     private void Awake()
     {
@@ -23,13 +23,7 @@ public class UnitManager : MonoBehaviour
 
     public void SpawnUnitsForCountry(string countryName, int playerID, int totalUnits)
     {
-        if (hasSpawned)
-        {
-            Debug.LogWarning("Units already spawned for this player.");
-            return;
-        }
-        hasSpawned = true;
-
+        if (hasSpawn) {return; }
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         List<Transform> validSpawns = new List<Transform>();
 
@@ -42,15 +36,15 @@ public class UnitManager : MonoBehaviour
 
         if (validSpawns.Count == 0)
         {
-            Debug.LogWarning("No spawn points for country: " + countryName);
+            Debug.LogWarning("No spawn points found for country: " + countryName);
             return;
         }
 
-        int unitCounter = 0;
         for (int i = 0; i < totalUnits; i++)
         {
-            Transform spawn = validSpawns[unitCounter % validSpawns.Count];
-            float offsetX = (unitCounter - (totalUnits - 1) / 2f) * spawnOffsetSpacing;
+            Transform spawn = validSpawns[i % validSpawns.Count];
+
+            float offsetX = (i - (totalUnits - 1) / 2f) * spacing;
             Vector3 spawnPos = spawn.position + new Vector3(offsetX, 0, 0);
 
             GameObject unitObj = Instantiate(starterUnitPrefab, spawnPos, spawn.rotation);
@@ -60,24 +54,39 @@ public class UnitManager : MonoBehaviour
                 unit.Initialize(playerID);
                 controlledUnits.Add(unit);
             }
-
-            unitCounter++;
         }
-
-        Debug.Log($"Spawned {controlledUnits.Count} units for {countryName}");
+        hasSpawn = true;
     }
 
     public void IssueOrder(Unit unit, UnitOrder order)
     {
-        if (unit == null || order == null || !unit.canReceiveOrders) return;
+        if (unit == null || order == null) return;
 
-        GameObject targetObj = GameObject.Find(order.targetCountry);
-        if (targetObj == null) return;
+        Vector3 targetPos = unit.transform.position;
 
-        Vector3 targetPos = targetObj.transform.position;
-        targetPos.y = unit.transform.position.y;
+        if (order.orderType == OrderType.Move)
+        {
+            GameObject targetObj = GameObject.Find(order.targetCountry);
+            if (targetObj != null)
+            {
+                targetPos = targetObj.transform.position;
+                targetPos.y = unit.transform.position.y;
+            }
+        }
+        else if (order.orderType == OrderType.Support && order.supportedUnit != null)
+        {
+            targetPos = order.supportedUnit.transform.position;
+        }
 
         unit.SetOrder(order, targetPos);
+
+        LineRenderer lr = unit.GetComponent<LineRenderer>();
+        if (lr != null)
+        {
+            lr.startColor = (order.orderType == OrderType.Support) ? Color.yellow : Color.green;
+            lr.endColor = lr.startColor;
+        }
+
         Debug.Log($"Issued {order.orderType} order for {unit.name} to {order.targetCountry}");
     }
 
@@ -89,11 +98,12 @@ public class UnitManager : MonoBehaviour
     private IEnumerator ExecuteTurnCoroutine()
     {
         Dictionary<string, List<Unit>> unitsByTarget = new Dictionary<string, List<Unit>>();
+
+        // Group units by target country
         foreach (Unit unit in controlledUnits)
         {
             UnitOrder order = unit.GetOrder();
-            if (order == null || order.orderType != OrderType.Move || string.IsNullOrEmpty(order.targetCountry))
-                continue;
+            if (order == null) continue;
 
             if (!unitsByTarget.ContainsKey(order.targetCountry))
                 unitsByTarget[order.targetCountry] = new List<Unit>();
@@ -101,7 +111,7 @@ public class UnitManager : MonoBehaviour
             unitsByTarget[order.targetCountry].Add(unit);
         }
 
-        List<Coroutine> moves = new List<Coroutine>();
+        // Resolve orders
         foreach (var kvp in unitsByTarget)
         {
             string countryName = kvp.Key;
@@ -109,25 +119,61 @@ public class UnitManager : MonoBehaviour
             GameObject targetObj = GameObject.Find(countryName);
             if (targetObj == null) continue;
 
-            Vector3 basePos = targetObj.transform.position;
+            Dictionary<int, int> playerStrength = new Dictionary<int, int>();
 
+            foreach (Unit u in units)
+            {
+                if (!playerStrength.ContainsKey(u.ownerID)) playerStrength[u.ownerID] = 0;
+
+                if (u.GetOrder().orderType == OrderType.Move)
+                    playerStrength[u.ownerID] += 1;
+                else if (u.GetOrder().orderType == OrderType.Support && u.GetOrder().supportedUnit != null)
+                    playerStrength[u.ownerID] += 1;
+            }
+
+            // Determine winner
+            int maxStrength = 0;
+            int winningPlayer = -1;
+            bool tie = false;
+
+            foreach (var kv in playerStrength)
+            {
+                if (kv.Value > maxStrength)
+                {
+                    maxStrength = kv.Value;
+                    winningPlayer = kv.Key;
+                    tie = false;
+                }
+                else if (kv.Value == maxStrength)
+                {
+                    tie = true;
+                }
+            }
+
+            // Apply capture
+            if (!tie)
+            {
+                CaptureCountry(targetObj, winningPlayer);
+            }
+
+            // Move units with actual Move orders
             for (int i = 0; i < units.Count; i++)
             {
-                Vector3 offset = GetMoveOffset(basePos, i);
-                Vector3 targetPos = basePos + offset;
-                targetPos.y = units[i].transform.position.y;
+                if (units[i].GetOrder().orderType == OrderType.Move)
+                {
+                    Vector3 basePos = targetObj.transform.position;
+                    Vector3 offset = GetMoveOffset(basePos, i);
+                    Vector3 targetPos = basePos + offset;
+                    targetPos.y = units[i].transform.position.y;
+                    units[i].ExecuteMove(targetPos);
+                }
 
-                moves.Add(units[i].MoveToPositionCoroutine(targetPos));
+                // Clear the order after execution
+                //units[i].ClearOrder();
             }
         }
 
-        foreach (var move in moves)
-            yield return move;
-
-        if (TurnManager.Instance != null)
-            TurnManager.Instance.AdvanceTurn();
-
-         
+        yield return null;
     }
 
     private Vector3 GetMoveOffset(Vector3 center, int index)
@@ -136,21 +182,32 @@ public class UnitManager : MonoBehaviour
         return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * moveOffsetRadius;
     }
 
-    public void ResetUnitsForNextTurn()
-    {
-        foreach (var unit in controlledUnits)
-        {
-            if (unit != null)
-                unit.ClearOrder(); // ready for new moves
-        }
-    }
-
     public void ClearAllOrders()
     {
         foreach (Unit unit in controlledUnits)
         {
             if (unit != null)
                 unit.ClearOrder();
+        }
+    }
+
+    private void CaptureCountry(GameObject countryObj, int playerID)
+    {
+        Renderer rend = countryObj.GetComponent<Renderer>();
+        if (rend != null)
+        {
+            rend.material.color = (playerID == 1) ? Color.red : Color.blue;
+        }
+    }
+
+    public void ResetUnitsForNextTurn()
+    {
+        foreach (Unit unit in controlledUnits)
+        {
+            if (unit != null)
+            {
+                unit.ClearOrder(); 
+            }
         }
     }
 }
