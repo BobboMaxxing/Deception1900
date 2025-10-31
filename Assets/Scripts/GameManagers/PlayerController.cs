@@ -96,6 +96,22 @@ public class PlayerController : MonoBehaviour
             cameraMovment.ResetCamera();
         }
     }
+    public Color GetChosenCountryColor()
+    {
+        if (string.IsNullOrEmpty(chosenCountry)) return Color.white;
+
+        GameObject countryObj = GameObject.Find(chosenCountry); 
+        if (countryObj != null)
+        {
+            Renderer rend = countryObj.GetComponent<Renderer>();
+            if (rend != null)
+            {
+                return rend.material.color;
+            }
+        }
+
+        return Color.white; // fallback
+    }
 
     void HighlightChosenCountryObjects()
     {
