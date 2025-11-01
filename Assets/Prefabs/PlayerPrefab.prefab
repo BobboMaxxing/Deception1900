@@ -56,12 +56,6 @@ MonoBehaviour:
   countryLayer:
     serializedVersion: 2
     m_Bits: 64
-  confirmButton: {fileID: 0}
-  cancelButton: {fileID: 0}
-  selectedCountryText: {fileID: 0}
-  moveStatusText: {fileID: 0}
-  confirmMoveButton: {fileID: 0}
-  cancelMoveButton: {fileID: 0}
   unitManager: {fileID: 0}
   cameraMovment: {fileID: 0}
   highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}

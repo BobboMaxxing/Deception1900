@@ -12,7 +12,6 @@ public class MainUnit : NetworkBehaviour
 
     private LineRenderer lineRenderer;
     private Coroutine moveCoroutine;
-
     [SerializeField] private float moveSpeed = 5f;
 
     void Awake()
@@ -49,7 +48,6 @@ public class MainUnit : NetworkBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
-
         transform.position = targetPos;
         moveCoroutine = null;
     }

@@ -8,7 +8,7 @@ public class MainPlayerController : NetworkBehaviour
 {
     [Header("Player Info")]
     public string playerName = "Player";
-    public int playerID;
+    [SyncVar] public int playerID;
     public Color playerColor = Color.white;
     public string chosenCountry;
 
@@ -17,20 +17,20 @@ public class MainPlayerController : NetworkBehaviour
     [SerializeField] private LayerMask countryLayer;
 
     [Header("UI")]
-    public Button confirmButton;
-    public Button cancelButton;
-    public TMP_Text selectedCountryText;
-    public TMP_Text moveStatusText;
-    public Button confirmMoveButton;
-    public Button cancelMoveButton;
+    private Button confirmButton;
+    private Button cancelButton;
+    private TMP_Text selectedCountryText;
+    private TMP_Text moveStatusText;
+    private Button confirmMoveButton;
+    private Button cancelMoveButton;
 
     [Header("Game References")]
     public MainUnitManager unitManager;
     public CameraMovment cameraMovment;
 
     [Header("Highlight")]
-    public Color highlightColor = Color.yellow;
-    public float highlightIntensity = 1.2f;
+    public Color highlightColor = Color.white;
+    public float highlightIntensity = 0.33f;
 
     private string pendingCountry;
     public bool hasChosenCountry = false;
@@ -43,55 +43,65 @@ public class MainPlayerController : NetworkBehaviour
     #region Unity Callbacks
     void Awake()
     {
-        if (!allPlayers.Contains(this)) allPlayers.Add(this);
+        if (!allPlayers.Contains(this))
+            allPlayers.Add(this);
+    }
 
-        if (unitManager == null) unitManager = MainUnitManager.Instance;
-        if (cameraMovment == null) cameraMovment = FindObjectOfType<CameraMovment>();
+    void OnDestroy()
+    {
+        if (allPlayers.Contains(this))
+            allPlayers.Remove(this);
     }
 
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
 
+        // Assign unique player ID
+        playerID = allPlayers.IndexOf(this);
+
+        // Find camera dynamically
         if (playerCamera == null)
             playerCamera = Camera.main;
 
-        if (confirmButton != null)
-        {
-            confirmButton.gameObject.SetActive(false);
-            confirmButton.onClick.AddListener(ConfirmCountryChoice);
-        }
+        if (playerCamera != null)
+            playerCamera.enabled = true;
 
-        if (cancelButton != null)
-        {
-            cancelButton.gameObject.SetActive(false);
-            cancelButton.onClick.AddListener(CancelCountryChoice);
-        }
+        // Find UnitManager dynamically
+        if (unitManager == null)
+            unitManager = MainUnitManager.Instance;
 
-        if (confirmMoveButton != null)
-        {
-            confirmMoveButton.gameObject.SetActive(false);
-            confirmMoveButton.onClick.AddListener(ConfirmMoves);
-        }
-
-        if (cancelMoveButton != null)
-        {
-            cancelMoveButton.gameObject.SetActive(false);
-            cancelMoveButton.onClick.AddListener(CancelMoves);
-        }
-    }
-
-    void OnDestroy()
-    {
-        if (allPlayers.Contains(this)) allPlayers.Remove(this);
+        // Setup UI dynamically
+        LocalPlayerSetup setup = FindObjectOfType<LocalPlayerSetup>();
+        if (setup != null)
+            setup.Setup(this);
     }
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!hasChosenCountry && isLocalPlayer)
+            HandleCountrySelection();
 
-        if (!hasChosenCountry) HandleCountrySelection();
-        if (canIssueOrders) HandleUnitSelection();
+        if (canIssueOrders && isLocalPlayer)
+            HandleUnitSelection();
+    }
+    #endregion
+
+    #region UI Setup
+    public void SetupUIReferences(
+        TMP_Text selectedCountryTextRef,
+        TMP_Text moveStatusTextRef,
+        Button confirmButtonRef,
+        Button cancelButtonRef,
+        Button confirmMoveButtonRef,
+        Button cancelMoveButtonRef)
+    {
+        selectedCountryText = selectedCountryTextRef;
+        moveStatusText = moveStatusTextRef;
+        confirmButton = confirmButtonRef;
+        cancelButton = cancelButtonRef;
+        confirmMoveButton = confirmMoveButtonRef;
+        cancelMoveButton = cancelMoveButtonRef;
     }
     #endregion
 
@@ -104,16 +114,20 @@ public class MainPlayerController : NetworkBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
             {
                 pendingCountry = hit.transform.name;
-                if (selectedCountryText != null) selectedCountryText.text = "Selected: " + pendingCountry;
-                if (confirmButton != null) confirmButton.gameObject.SetActive(true);
-                if (cancelButton != null) cancelButton.gameObject.SetActive(true);
+                if (selectedCountryText != null)
+                    selectedCountryText.text = "Selected: " + pendingCountry;
+                if (confirmButton != null)
+                    confirmButton.gameObject.SetActive(true);
+                if (cancelButton != null)
+                    cancelButton.gameObject.SetActive(true);
             }
         }
     }
 
     public void ConfirmCountryChoice()
     {
-        if (string.IsNullOrEmpty(pendingCountry)) return;
+        if (string.IsNullOrEmpty(pendingCountry))
+            return;
 
         chosenCountry = pendingCountry;
         hasChosenCountry = true;
@@ -204,7 +218,7 @@ public class MainPlayerController : NetworkBehaviour
         NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity);
         if (identity == null) return;
 
-        MainUnit unit = identity.gameObject.GetComponent<MainUnit>();
+        MainUnit unit = identity.GetComponent<MainUnit>();
         if (unit != null && unit.ownerID == playerID)
         {
             Vector3 targetPos = GameObject.Find(targetCountry).transform.position;
@@ -225,13 +239,13 @@ public class MainPlayerController : NetworkBehaviour
         return allPlayers.Find(p => p.playerID == id);
     }
 
-    void ConfirmMoves()
+    public void ConfirmMoves()
     {
         ShowMoveButtons(false);
         if (moveStatusText != null) moveStatusText.text = "Moves confirmed — Executing...";
     }
 
-    void CancelMoves()
+    public void CancelMoves()
     {
         ShowMoveButtons(false);
         if (moveStatusText != null) moveStatusText.text = "Moves canceled — Plan again.";

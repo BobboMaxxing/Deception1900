@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1429824792938068454}
   - component: {fileID: 5760421578899203612}
   - component: {fileID: 4837620839977119374}
-  - component: {fileID: 3092879937199875693}
   - component: {fileID: 5997641149942651566}
+  - component: {fileID: 7129015330852846234}
   m_Layer: 0
   m_Name: NetworkUnitPrefab
   m_TagString: Untagged
@@ -218,20 +218,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &3092879937199875693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2660488871473679611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 286d75cfc85f05c408606b92c459c5b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentCountry: 
-  moveSpeed: 5
 --- !u!114 &5997641149942651566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,3 +235,21 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!114 &7129015330852846234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2660488871473679611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8f92caff1f985489dd55572019d754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  ownerID: 0
+  currentCountry: 
+  moveSpeed: 5

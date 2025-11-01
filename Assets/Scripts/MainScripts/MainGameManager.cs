@@ -17,7 +17,6 @@ public class MainGameManager : NetworkBehaviour
     public TMP_Text yearText;
 
     void Awake() => Instance = this;
-
     void Start() => UpdateSeasonUI();
 
     [Server]
@@ -29,7 +28,6 @@ public class MainGameManager : NetworkBehaviour
             currentSeasonIndex = 0;
             currentYear++;
         }
-
         currentSeason = seasons[currentSeasonIndex];
         RpcUpdateSeasonUI(currentSeason, currentYear);
     }

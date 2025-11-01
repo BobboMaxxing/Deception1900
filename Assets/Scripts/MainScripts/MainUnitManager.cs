@@ -6,12 +6,11 @@ public class MainUnitManager : NetworkBehaviour
 {
     public static MainUnitManager Instance;
 
-    public GameObject unitPrefab; // Must have NetworkIdentity + NetworkTransform
+    public GameObject unitPrefab; // Prefab must have NetworkIdentity + NetworkTransform
     private List<MainUnit> allUnits = new List<MainUnit>();
 
     void Awake() => Instance = this;
 
-    #region Spawn Units
     [Server]
     public void SpawnUnitsForCountryServer(string countryName, int playerID, Color playerColor, int count)
     {
@@ -39,9 +38,8 @@ public class MainUnitManager : NetworkBehaviour
             }
         }
     }
-    #endregion
 
-    #region Execute Turn
+    // Execute moves & resolve battles
     [Server]
     public void ExecuteTurnServer()
     {
@@ -98,6 +96,7 @@ public class MainUnitManager : NetworkBehaviour
             if (!tie)
                 RpcCaptureCountry(countryObj, winningPlayer);
 
+            // Move units
             for (int i = 0; i < units.Count; i++)
             {
                 MainUnit unit = units[i];
@@ -131,5 +130,4 @@ public class MainUnitManager : NetworkBehaviour
                 rend.material.color = player != null ? player.playerColor : Color.white;
         }
     }
-    #endregion
 }
