@@ -1,16 +1,16 @@
+using Mirror;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class MainPlayerController : MonoBehaviour
+public class MainPlayerController : NetworkBehaviour
 {
     [Header("Player Info")]
     public string playerName = "Player";
     public int playerID;
     public Color playerColor = Color.white;
     public string chosenCountry;
-    public static List<MainPlayerController> allPlayers = new List<MainPlayerController>();
 
     [Header("Camera & Layers")]
     public Camera playerCamera;
@@ -27,7 +27,6 @@ public class MainPlayerController : MonoBehaviour
     [Header("Game References")]
     public MainUnitManager unitManager;
     public CameraMovment cameraMovment;
-    public GameObject cameraManager;
 
     [Header("Highlight")]
     public Color highlightColor = Color.yellow;
@@ -37,18 +36,32 @@ public class MainPlayerController : MonoBehaviour
     public bool hasChosenCountry = false;
     private List<GameObject> highlightedObjects = new List<GameObject>();
     private MainUnit selectedUnit;
-    private bool hasConfirmedMoves = false;
     public bool canIssueOrders = true;
 
-    void Start()
+    public static List<MainPlayerController> allPlayers = new List<MainPlayerController>();
+
+    #region Unity Callbacks
+    void Awake()
     {
-        if (playerCamera == null) playerCamera = Camera.main;
+        if (!allPlayers.Contains(this)) allPlayers.Add(this);
+
+        if (unitManager == null) unitManager = MainUnitManager.Instance;
+        if (cameraMovment == null) cameraMovment = FindObjectOfType<CameraMovment>();
+    }
+
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+
+        if (playerCamera == null)
+            playerCamera = Camera.main;
 
         if (confirmButton != null)
         {
             confirmButton.gameObject.SetActive(false);
             confirmButton.onClick.AddListener(ConfirmCountryChoice);
         }
+
         if (cancelButton != null)
         {
             cancelButton.gameObject.SetActive(false);
@@ -60,27 +73,27 @@ public class MainPlayerController : MonoBehaviour
             confirmMoveButton.gameObject.SetActive(false);
             confirmMoveButton.onClick.AddListener(ConfirmMoves);
         }
+
         if (cancelMoveButton != null)
         {
             cancelMoveButton.gameObject.SetActive(false);
             cancelMoveButton.onClick.AddListener(CancelMoves);
         }
     }
-    void Awake()
-    {
-        if (!allPlayers.Contains(this))
-            allPlayers.Add(this);
-    }
+
     void OnDestroy()
     {
-        if (allPlayers.Contains(this))
-            allPlayers.Remove(this);
+        if (allPlayers.Contains(this)) allPlayers.Remove(this);
     }
+
     void Update()
     {
+        if (!isLocalPlayer) return;
+
         if (!hasChosenCountry) HandleCountrySelection();
         if (canIssueOrders) HandleUnitSelection();
     }
+    #endregion
 
     #region Country Selection
     void HandleCountrySelection()
@@ -112,8 +125,8 @@ public class MainPlayerController : MonoBehaviour
         AssignPlayerColorFromCountry();
         HighlightChosenCountryObjects();
 
-        if (unitManager != null)
-            unitManager.SpawnUnitsForCountry(chosenCountry, playerID, playerColor, 3);
+        if (unitManager != null && isLocalPlayer)
+            CmdRequestSpawnUnits(chosenCountry, playerID, playerColor, 3);
     }
 
     public void CancelCountryChoice()
@@ -131,8 +144,7 @@ public class MainPlayerController : MonoBehaviour
         if (countryObj != null)
         {
             Renderer rend = countryObj.GetComponent<Renderer>();
-            if (rend != null)
-                playerColor = rend.material.color;
+            if (rend != null) playerColor = rend.material.color;
         }
     }
 
@@ -140,9 +152,8 @@ public class MainPlayerController : MonoBehaviour
     {
         ClearHighlights();
         GameObject[] objs = GameObject.FindGameObjectsWithTag(chosenCountry);
-        for (int i = 0; i < objs.Length; i++)
+        foreach (GameObject obj in objs)
         {
-            GameObject obj = objs[i];
             if (obj == null) continue;
             SimpleHighlighter high = obj.GetComponent<SimpleHighlighter>();
             if (high == null) high = obj.AddComponent<SimpleHighlighter>();
@@ -180,10 +191,32 @@ public class MainPlayerController : MonoBehaviour
                 else if (selectedUnit != null)
                 {
                     string countryName = hit.collider.name;
-                    unitManager.IssueOrder(selectedUnit, new UnitOrder(OrderType.Move, countryName));
+                    CmdMoveUnit(selectedUnit.netId, countryName);
                     selectedUnit = null;
                 }
             }
+        }
+    }
+
+    [Command]
+    private void CmdMoveUnit(uint unitNetId, string targetCountry)
+    {
+        NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity);
+        if (identity == null) return;
+
+        MainUnit unit = identity.gameObject.GetComponent<MainUnit>();
+        if (unit != null && unit.ownerID == playerID)
+        {
+            Vector3 targetPos = GameObject.Find(targetCountry).transform.position;
+
+            unit.currentOrder = new PlayerUnitOrder
+            {
+                orderType = UnitOrderType.Move,
+                targetCountry = targetCountry,
+                targetPosition = targetPos
+            };
+
+            unit.RpcMoveTo(targetPos);
         }
     }
 
@@ -191,26 +224,38 @@ public class MainPlayerController : MonoBehaviour
     {
         return allPlayers.Find(p => p.playerID == id);
     }
+
     void ConfirmMoves()
     {
-        hasConfirmedMoves = true;
         ShowMoveButtons(false);
         if (moveStatusText != null) moveStatusText.text = "Moves confirmed — Executing...";
-        unitManager.ExecuteTurn();
     }
 
     void CancelMoves()
     {
-        hasConfirmedMoves = false;
         ShowMoveButtons(false);
         if (moveStatusText != null) moveStatusText.text = "Moves canceled — Plan again.";
-        unitManager.ClearAllOrders();
+
+        if (isServer)
+        {
+            foreach (MainUnit unit in unitManager.GetComponentsInChildren<MainUnit>())
+                unit.ClearOrder();
+        }
     }
 
     void ShowMoveButtons(bool state)
     {
         if (confirmMoveButton != null) confirmMoveButton.gameObject.SetActive(state);
         if (cancelMoveButton != null) cancelMoveButton.gameObject.SetActive(state);
+    }
+    #endregion
+
+    #region Network Commands
+    [Command]
+    private void CmdRequestSpawnUnits(string countryName, int playerID, Color color, int count)
+    {
+        if (unitManager != null)
+            unitManager.SpawnUnitsForCountryServer(countryName, playerID, color, count);
     }
     #endregion
 }

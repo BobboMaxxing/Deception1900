@@ -1,12 +1,15 @@
+using Mirror;
 using TMPro;
 using UnityEngine;
 
-public class MainGameManager : MonoBehaviour
+public class MainGameManager : NetworkBehaviour
 {
     public static MainGameManager Instance;
 
-    public int currentYear = 1901;
-    public string[] seasons = { "Spring", "Autumn" };
+    [SyncVar] public int currentYear = 1901;
+    [SyncVar] public string currentSeason = "Spring";
+
+    private string[] seasons = { "Spring", "Autumn" };
     private int currentSeasonIndex = 0;
 
     [Header("UI")]
@@ -17,7 +20,8 @@ public class MainGameManager : MonoBehaviour
 
     void Start() => UpdateSeasonUI();
 
-    public void NextTurn()
+    [Server]
+    public void NextTurnServer()
     {
         currentSeasonIndex++;
         if (currentSeasonIndex >= seasons.Length)
@@ -26,15 +30,20 @@ public class MainGameManager : MonoBehaviour
             currentYear++;
         }
 
-        UpdateSeasonUI();
-        Debug.Log($"Turn: {seasons[currentSeasonIndex]} {currentYear}");
+        currentSeason = seasons[currentSeasonIndex];
+        RpcUpdateSeasonUI(currentSeason, currentYear);
     }
 
-    private void UpdateSeasonUI()
+    [ClientRpc]
+    private void RpcUpdateSeasonUI(string season, int year)
     {
-        if (seasonText != null) seasonText.text = $"Season: {seasons[currentSeasonIndex]}";
+        if (seasonText != null) seasonText.text = $"Season: {season}";
+        if (yearText != null) yearText.text = $"Year: {year}";
+    }
+
+    void UpdateSeasonUI()
+    {
+        if (seasonText != null) seasonText.text = $"Season: {currentSeason}";
         if (yearText != null) yearText.text = $"Year: {currentYear}";
     }
-
-    public string CurrentSeason => seasons[currentSeasonIndex];
 }

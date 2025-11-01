@@ -1,23 +1,19 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Mirror;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class MainUnitManager : MonoBehaviour
+public class MainUnitManager : NetworkBehaviour
 {
     public static MainUnitManager Instance;
-    public List<MainUnit> controlledUnits = new List<MainUnit>();
-    public GameObject starterUnitPrefab;
 
-    [Header("Move Settings")]
-    [SerializeField] private float moveOffsetRadius = 2.5f;
-    [SerializeField] private float spacing = 2f;
+    public GameObject unitPrefab; // Must have NetworkIdentity + NetworkTransform
+    private List<MainUnit> allUnits = new List<MainUnit>();
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
-    public void SpawnUnitsForCountry(string countryName, int playerID, Color playerColor, int totalUnits)
+    #region Spawn Units
+    [Server]
+    public void SpawnUnitsForCountryServer(string countryName, int playerID, Color playerColor, int count)
     {
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         List<Transform> validSpawns = new List<Transform>();
@@ -29,76 +25,40 @@ public class MainUnitManager : MonoBehaviour
                 validSpawns.Add(sp.transform);
         }
 
-        if (validSpawns.Count == 0)
-        {
-            Debug.LogWarning("No spawn points found for country: " + countryName);
-            return;
-        }
-
-        for (int i = 0; i < totalUnits; i++)
+        for (int i = 0; i < count; i++)
         {
             Transform spawn = validSpawns[i % validSpawns.Count];
-            float offsetX = (i - (totalUnits - 1) / 2f) * spacing;
-            Vector3 spawnPos = spawn.position + new Vector3(offsetX, 0, 0);
+            GameObject unitObj = Instantiate(unitPrefab, spawn.position, spawn.rotation);
+            NetworkServer.Spawn(unitObj);
 
-            GameObject unitObj = Instantiate(starterUnitPrefab, spawnPos, spawn.rotation);
             MainUnit unit = unitObj.GetComponent<MainUnit>();
             if (unit != null)
             {
-                unit.Initialize(playerID);
-                unit.SetColor(playerColor);
-                controlledUnits.Add(unit);
+                unit.RpcInitialize(playerID, playerColor);
+                allUnits.Add(unit);
             }
         }
     }
+    #endregion
 
-    public void IssueOrder(MainUnit unit, UnitOrder order)
+    #region Execute Turn
+    [Server]
+    public void ExecuteTurnServer()
     {
-        if (unit == null || order == null) return;
+        Dictionary<string, List<MainUnit>> unitsByCountry = new Dictionary<string, List<MainUnit>>();
 
-        Vector3 targetPos = unit.transform.position;
-
-        if (order.orderType == OrderType.Move)
+        foreach (var unit in allUnits)
         {
-            GameObject targetObj = GameObject.Find(order.targetCountry);
-            if (targetObj != null)
-                targetPos = targetObj.transform.position;
-        }
-        else if (order.orderType == OrderType.Support && order.supportedUnit != null)
-        {
-            targetPos = order.supportedUnit.transform.position;
-        }
+            if (unit.currentOrder == null) continue;
+            string targetCountry = unit.currentOrder.targetCountry;
 
-        unit.SetOrder(order, targetPos);
-    }
+            if (!unitsByCountry.ContainsKey(targetCountry))
+                unitsByCountry[targetCountry] = new List<MainUnit>();
 
-    public void ClearAllOrders()
-    {
-        foreach (MainUnit unit in controlledUnits)
-            unit?.ClearOrder();
-    }
-
-    public void ExecuteTurn()
-    {
-        StartCoroutine(ExecuteTurnCoroutine());
-    }
-
-    private IEnumerator ExecuteTurnCoroutine()
-    {
-        Dictionary<string, List<MainUnit>> unitsByTarget = new Dictionary<string, List<MainUnit>>();
-
-        foreach (MainUnit unit in controlledUnits)
-        {
-            UnitOrder order = unit.GetOrder();
-            if (order == null) continue;
-
-            if (!unitsByTarget.ContainsKey(order.targetCountry))
-                unitsByTarget[order.targetCountry] = new List<MainUnit>();
-
-            unitsByTarget[order.targetCountry].Add(unit);
+            unitsByCountry[targetCountry].Add(unit);
         }
 
-        foreach (var kvp in unitsByTarget)
+        foreach (var kvp in unitsByCountry)
         {
             string countryName = kvp.Key;
             List<MainUnit> units = kvp.Value;
@@ -106,20 +66,21 @@ public class MainUnitManager : MonoBehaviour
             if (countryObj == null) continue;
 
             Dictionary<int, int> playerStrength = new Dictionary<int, int>();
-            foreach (MainUnit u in units)
+            foreach (var u in units)
             {
                 if (!playerStrength.ContainsKey(u.ownerID))
                     playerStrength[u.ownerID] = 0;
 
-                UnitOrder order = u.GetOrder();
-                if (order.orderType == OrderType.Move) playerStrength[u.ownerID] += 1;
-                if (order.orderType == OrderType.Support && order.supportedUnit != null)
+                if (u.currentOrder.orderType == UnitOrderType.Move)
+                    playerStrength[u.ownerID] += 1;
+                else if (u.currentOrder.orderType == UnitOrderType.Support && u.currentOrder.supportedUnit != null)
                     playerStrength[u.ownerID] += 1;
             }
 
             int maxStrength = 0;
             int winningPlayer = -1;
             bool tie = false;
+
             foreach (var kv in playerStrength)
             {
                 if (kv.Value > maxStrength)
@@ -135,61 +96,40 @@ public class MainUnitManager : MonoBehaviour
             }
 
             if (!tie)
-                CaptureCountry(countryObj, winningPlayer);
+                RpcCaptureCountry(countryObj, winningPlayer);
 
             for (int i = 0; i < units.Count; i++)
             {
                 MainUnit unit = units[i];
-                UnitOrder order = unit.GetOrder();
-
-                Vector3 basePos = order.orderType == OrderType.Move ?
-                                  countryObj.transform.position :
-                                  order.supportedUnit != null ? order.supportedUnit.transform.position :
-                                  unit.transform.position;
-
-                Vector3 offset = GetMoveOffsetForTurn(i, units.Count);
+                Vector3 basePos = countryObj.transform.position;
+                Vector3 offset = GetMoveOffset(i, units.Count);
                 Vector3 targetPos = basePos + offset;
                 targetPos.y = unit.transform.position.y;
 
                 unit.currentCountry = countryName;
-                unit.ExecuteMove(targetPos);
+                unit.RpcMoveTo(targetPos);
             }
         }
-
-        yield return new WaitForSeconds(0.1f);
     }
 
-    private Vector3 GetMoveOffsetForTurn(int index, int totalUnits)
+    private Vector3 GetMoveOffset(int index, int total)
     {
-        if (totalUnits <= 1) return Vector3.zero;
-
-        float angleStep = 360f / totalUnits;
+        if (total <= 1) return Vector3.zero;
+        float angleStep = 360f / total;
         float angle = index * angleStep * Mathf.Deg2Rad;
-        return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * moveOffsetRadius;
+        return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 2f;
     }
 
-    private void CaptureCountry(GameObject countryObj, int playerID)
+    [ClientRpc]
+    private void RpcCaptureCountry(GameObject countryObj, int playerID)
     {
-        Renderer rend = countryObj.GetComponent<Renderer>();
-        if (rend != null)
+        MainPlayerController player = MainPlayerController.GetPlayerByID(playerID);
+        if (countryObj != null)
         {
-            MainPlayerController player = MainPlayerController.GetPlayerByID(playerID);
-            Color color = player != null ? player.playerColor : Color.white;
-            rend.material.color = color;
+            Renderer rend = countryObj.GetComponent<Renderer>();
+            if (rend != null)
+                rend.material.color = player != null ? player.playerColor : Color.white;
         }
     }
-
-    private List<MainUnit> GetUnitsInCountry(string countryName)
-    {
-        List<MainUnit> unitsInCountry = new List<MainUnit>();
-        foreach (MainUnit u in controlledUnits)
-            if (u.currentCountry == countryName) unitsInCountry.Add(u);
-        return unitsInCountry;
-    }
-
-    public void ResetUnitsForNextTurn()
-    {
-        foreach (MainUnit unit in controlledUnits)
-            unit?.ClearOrder();
-    }
+    #endregion
 }
