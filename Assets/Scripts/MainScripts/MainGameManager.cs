@@ -17,6 +17,7 @@ public class MainGameManager : NetworkBehaviour
     public TMP_Text yearText;
 
     void Awake() => Instance = this;
+
     void Start() => UpdateSeasonUI();
 
     [Server]
@@ -35,11 +36,12 @@ public class MainGameManager : NetworkBehaviour
     [ClientRpc]
     private void RpcUpdateSeasonUI(string season, int year)
     {
-        if (seasonText != null) seasonText.text = $"Season: {season}";
-        if (yearText != null) yearText.text = $"Year: {year}";
+        currentSeason = season;
+        currentYear = year;
+        UpdateSeasonUI();
     }
 
-    void UpdateSeasonUI()
+    private void UpdateSeasonUI()
     {
         if (seasonText != null) seasonText.text = $"Season: {currentSeason}";
         if (yearText != null) yearText.text = $"Year: {currentYear}";

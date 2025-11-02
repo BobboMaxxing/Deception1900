@@ -3,7 +3,7 @@ using UnityEngine;
 public class Country : MonoBehaviour
 {
     public string countryName;
-    public int ownerID = -1; // -1 = neutral / unclaimed
+    public int ownerID = -1;
 
     [Header("Visual Settings")]
     [SerializeField] private Renderer countryRenderer;

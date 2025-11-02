@@ -57,7 +57,6 @@ public class LocalPlayerSetup : MonoBehaviour
             cancelMoveButton
         );
 
-        // Assign the camera
         localPlayer.playerCamera = playerCamera;
     }
 }

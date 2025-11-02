@@ -58,8 +58,8 @@ MonoBehaviour:
     m_Bits: 64
   unitManager: {fileID: 0}
   cameraMovment: {fileID: 0}
-  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  highlightIntensity: 1.2
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightIntensity: 0.33
   hasChosenCountry: 0
   canIssueOrders: 1
 --- !u!114 &2653294878827916077
