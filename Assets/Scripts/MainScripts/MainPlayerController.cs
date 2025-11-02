@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,24 +40,32 @@ public class MainPlayerController : NetworkBehaviour
     public bool canIssueOrders = true;
 
     [SyncVar] private bool isReady = false;
-
     public static Dictionary<int, bool> playersReady = new Dictionary<int, bool>();
     public static List<MainPlayerController> allPlayers = new List<MainPlayerController>();
 
     void Awake()
     {
-        if (!allPlayers.Contains(this)) allPlayers.Add(this);
+        if (!allPlayers.Contains(this))
+            allPlayers.Add(this);
     }
 
     void OnDestroy()
     {
-        if (allPlayers.Contains(this)) allPlayers.Remove(this);
+        if (allPlayers.Contains(this))
+            allPlayers.Remove(this);
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        // Assign playerID on the server
+        playerID = allPlayers.Count;
+        playersReady[playerID] = false;
     }
 
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        playerID = allPlayers.IndexOf(this);
 
         if (playerCamera == null) playerCamera = Camera.main;
         if (playerCamera != null) playerCamera.enabled = true;
@@ -81,16 +90,16 @@ public class MainPlayerController : NetworkBehaviour
     #region Country Selection
     void HandleCountrySelection()
     {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+        if (Input.GetMouseButtonDown(0))
         {
-            pendingCountry = hit.transform.name;
-            if (selectedCountryText != null)
-                selectedCountryText.text = "Selected: " + pendingCountry;
-            if (confirmButton != null) confirmButton.gameObject.SetActive(true);
-            if (cancelButton != null) cancelButton.gameObject.SetActive(true);
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+            {
+                pendingCountry = hit.transform.name;
+                selectedCountryText?.SetText("Selected: " + pendingCountry);
+                confirmButton?.gameObject.SetActive(true);
+                cancelButton?.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -101,12 +110,14 @@ public class MainPlayerController : NetworkBehaviour
         chosenCountry = pendingCountry;
         hasChosenCountry = true;
 
-        if (confirmButton != null) confirmButton.gameObject.SetActive(false);
-        if (cancelButton != null) cancelButton.gameObject.SetActive(false);
-        if (selectedCountryText != null) selectedCountryText.text = "Chosen: " + chosenCountry;
+        confirmButton?.gameObject.SetActive(false);
+        cancelButton?.gameObject.SetActive(false);
+        selectedCountryText?.SetText("Chosen: " + chosenCountry);
 
         AssignPlayerColorFromCountry();
         HighlightChosenCountryObjects();
+
+        Debug.Log($"[Player {playerID}] Confirmed country {chosenCountry}");
 
         if (isServer)
         {
@@ -115,6 +126,15 @@ public class MainPlayerController : NetworkBehaviour
         else
         {
             unitManager.SpawnUnitsForCountryLocal(chosenCountry, playerID, playerColor, 3);
+            StartCoroutine(SendSpawnCommandDelayed());
+        }
+    }
+
+    private IEnumerator SendSpawnCommandDelayed()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (isLocalPlayer)
+        {
             CmdRequestSpawnUnits(chosenCountry, playerID, playerColor, 3);
         }
     }
@@ -122,9 +142,9 @@ public class MainPlayerController : NetworkBehaviour
     public void CancelCountryChoice()
     {
         pendingCountry = "";
-        if (selectedCountryText != null) selectedCountryText.text = "Selection cleared";
-        if (confirmButton != null) confirmButton.gameObject.SetActive(false);
-        if (cancelButton != null) cancelButton.gameObject.SetActive(false);
+        selectedCountryText?.SetText("Selection cleared");
+        confirmButton?.gameObject.SetActive(false);
+        cancelButton?.gameObject.SetActive(false);
         cameraMovment?.ResetCamera();
     }
 
@@ -154,10 +174,8 @@ public class MainPlayerController : NetworkBehaviour
     public void ClearHighlights()
     {
         foreach (var obj in highlightedObjects)
-        {
-            if (obj == null) continue;
-            obj.GetComponent<SimpleHighlighter>()?.Unhighlight();
-        }
+            obj?.GetComponent<SimpleHighlighter>()?.Unhighlight();
+
         highlightedObjects.Clear();
     }
     #endregion
@@ -178,23 +196,7 @@ public class MainPlayerController : NetworkBehaviour
             }
             else if (selectedUnit != null)
             {
-                Vector3 targetPos = GameObject.Find(hit.collider.name).transform.position;
-
-                if (selectedUnit.isServer)
-                {
-                    CmdMoveUnit(selectedUnit.netId, hit.collider.name);
-                }
-                else
-                {
-                    selectedUnit.currentOrder = new PlayerUnitOrder
-                    {
-                        orderType = UnitOrderType.Move,
-                        targetCountry = hit.collider.name,
-                        targetPosition = targetPos
-                    };
-                    selectedUnit.ShowLocalMoveLine(targetPos);
-                }
-
+                CmdMoveUnit(selectedUnit.netId, hit.collider.name);
                 selectedUnit = null;
             }
         }
@@ -204,9 +206,10 @@ public class MainPlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
-        CmdSetReady(true);
         ShowMoveButtons(false);
-        if (moveStatusText != null) moveStatusText.text = "Waiting for other players...";
+        moveStatusText?.SetText("Waiting for other players...");
+
+        CmdSetReady(true); // Client-only or host, always call the command
     }
 
     public void CancelMoves()
@@ -214,27 +217,19 @@ public class MainPlayerController : NetworkBehaviour
         if (!isLocalPlayer) return;
 
         ShowMoveButtons(false);
-        if (moveStatusText != null) moveStatusText.text = "Moves canceled — Plan again.";
+        moveStatusText?.SetText("Moves canceled — Plan again.");
 
-        if (isServer)
-        {
-            foreach (var unit in unitManager.GetAllUnits())
-                unit.ClearOrder();
-            CmdSetReady(false);
-        }
+        CmdSetReady(false);
     }
 
     [Command]
     private void CmdMoveUnit(uint unitNetId, string targetCountry)
     {
-        NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity);
-        if (identity == null) return;
-
+        if (!NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity)) return;
         MainUnit unit = identity.GetComponent<MainUnit>();
         if (unit != null && unit.ownerID == playerID)
         {
             Vector3 targetPos = GameObject.Find(targetCountry).transform.position;
-
             unit.currentOrder = new PlayerUnitOrder
             {
                 orderType = UnitOrderType.Move,
@@ -242,17 +237,7 @@ public class MainPlayerController : NetworkBehaviour
                 targetPosition = targetPos
             };
 
-            TargetShowMoveLine(connectionToClient, unit.netId, targetPos);
-        }
-    }
-
-    [TargetRpc]
-    private void TargetShowMoveLine(NetworkConnection target, uint unitNetId, Vector3 targetPos)
-    {
-        if (NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity))
-        {
-            MainUnit unit = identity.GetComponent<MainUnit>();
-            if (unit != null && unit.ownerID == playerID)
+            if (unit.isOwned)
                 unit.ShowLocalMoveLine(targetPos);
         }
     }
@@ -275,15 +260,18 @@ public class MainPlayerController : NetworkBehaviour
     [Command]
     private void CmdSetReady(bool readyState)
     {
-        isReady = readyState;
+        SetReadyServer(readyState);
+    }
 
-        if (!playersReady.ContainsKey(playerID))
-            playersReady.Add(playerID, readyState);
-        else
-            playersReady[playerID] = readyState;
+    [Server]
+    private void SetReadyServer(bool readyState)
+    {
+        isReady = readyState;
+        playersReady[playerID] = readyState;
 
         RpcUpdateReadyUI();
 
+        // Check if all players are ready
         bool allReady = true;
         foreach (var player in allPlayers)
         {
@@ -305,7 +293,10 @@ public class MainPlayerController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcUpdateReadyUI() => UpdateReadyUI();
+    public void RpcUpdateReadyUI()
+    {
+        UpdateReadyUI();
+    }
 
     private void UpdateReadyUI()
     {
@@ -322,7 +313,9 @@ public class MainPlayerController : NetworkBehaviour
     public void RpcResetReady()
     {
         isReady = false;
-        if (playersReady.ContainsKey(playerID)) playersReady[playerID] = false;
+        if (playersReady.ContainsKey(playerID))
+            playersReady[playerID] = false;
+
         UpdateReadyUI();
     }
 
@@ -343,10 +336,7 @@ public class MainPlayerController : NetworkBehaviour
         cancelMoveButton = cancelMoveButtonRef;
     }
 
-    public static MainPlayerController GetPlayerByID(int id)
-    {
-        return allPlayers.Find(p => p.playerID == id);
-    }
+    public static MainPlayerController GetPlayerByID(int id) => allPlayers.Find(p => p.playerID == id);
+
     #endregion
 }
-

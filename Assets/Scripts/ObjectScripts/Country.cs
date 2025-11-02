@@ -27,16 +27,16 @@ public class Country : MonoBehaviour
         switch (ownerID)
         {
             case 0:
-                countryRenderer.material.color = Color.blue; 
+                countryRenderer.material.color = Color.blue;
                 break;
             case 1:
-                countryRenderer.material.color = Color.red; 
+                countryRenderer.material.color = Color.red;
                 break;
             case 2:
-                countryRenderer.material.color = Color.green; 
+                countryRenderer.material.color = Color.green;
                 break;
             default:
-                countryRenderer.material.color = Color.gray; 
+                countryRenderer.material.color = Color.gray;
                 break;
         }
     }

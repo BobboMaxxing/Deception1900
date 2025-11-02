@@ -6,13 +6,21 @@ public class MainUnitManager : NetworkBehaviour
 {
     public static MainUnitManager Instance;
 
+    [Tooltip("Prefab must be in the NetworkManager spawnable prefabs list")]
     public GameObject unitPrefab;
     private List<MainUnit> allUnits = new List<MainUnit>();
 
     void Awake() => Instance = this;
 
+    void Start()
+    {
+        if (unitPrefab == null)
+            Debug.LogError("[MainUnitManager] unitPrefab is null!");
+    }
+
     public List<MainUnit> GetAllUnits() => allUnits;
 
+    // Server-only spawn
     [Server]
     public void SpawnUnitsForCountryServer(string countryName, int playerID, Color playerColor, int count)
     {
@@ -25,6 +33,12 @@ public class MainUnitManager : NetworkBehaviour
                 validSpawns.Add(sp.transform);
         }
 
+        if (validSpawns.Count == 0)
+        {
+            Debug.LogWarning($"[MainUnitManager] No spawn points found for country '{countryName}'");
+            return;
+        }
+
         for (int i = 0; i < count; i++)
         {
             Transform spawn = validSpawns[i % validSpawns.Count];
@@ -32,26 +46,33 @@ public class MainUnitManager : NetworkBehaviour
             Vector3 spawnPos = spawn.position + offset;
 
             GameObject unitObj = Instantiate(unitPrefab, spawnPos, spawn.rotation);
-            NetworkServer.Spawn(unitObj);
 
             MainUnit unit = unitObj.GetComponent<MainUnit>();
-            if (unit != null)
+            if (unit == null)
             {
-                unit.currentCountry = countryName;
-                allUnits.Add(unit);
-                unit.RpcInitialize(playerID, playerColor);
-                if (isServer && connectionToClient == null)
-                    unit.SetupLocalVisuals();
+                Debug.LogError("[MainUnitManager] unitPrefab missing MainUnit component.");
+                Destroy(unitObj);
+                continue;
             }
+
+            // Set server-side sync values BEFORE spawn so clients receive them instantly
+            unit.ownerID = playerID;
+            unit.playerColor = playerColor;
+            unit.currentCountry = countryName;
+
+            NetworkServer.Spawn(unitObj);
+
+            allUnits.Add(unit);
+
+            unit.RpcInitialize(playerID, playerColor);
         }
 
         RpcUpdateCountryOwnership(countryName, playerColor);
     }
 
+    // CLIENT-ONLY spawn for immediate local feedback
     public void SpawnUnitsForCountryLocal(string countryName, int playerID, Color playerColor, int count)
     {
-        if (isServer) return;
-
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         List<Transform> validSpawns = new List<Transform>();
         foreach (var sp in spawnPoints)
@@ -61,6 +82,12 @@ public class MainUnitManager : NetworkBehaviour
                 validSpawns.Add(sp.transform);
         }
 
+        if (validSpawns.Count == 0)
+        {
+            Debug.LogWarning($"[MainUnitManager] No spawn points found for country '{countryName}' (client)");
+            return;
+        }
+
         for (int i = 0; i < count; i++)
         {
             Transform spawn = validSpawns[i % validSpawns.Count];
@@ -69,11 +96,20 @@ public class MainUnitManager : NetworkBehaviour
 
             GameObject unitObj = Instantiate(unitPrefab, spawnPos, spawn.rotation);
             MainUnit unit = unitObj.GetComponent<MainUnit>();
+            if (unit == null)
+            {
+                Debug.LogError("[MainUnitManager] unitPrefab missing MainUnit component (client).");
+                Destroy(unitObj);
+                continue;
+            }
+
             unit.ownerID = playerID;
-            unit.currentCountry = countryName;
             unit.playerColor = playerColor;
+            unit.currentCountry = countryName;
+
             allUnits.Add(unit);
-            unit.SetupLocalVisuals();
+
+            unit.SetupLocalVisuals(); // immediately shows on client
         }
     }
 

@@ -27,6 +27,7 @@ public class MainUnit : NetworkBehaviour
         lineRenderer.enabled = false;
     }
 
+    // Called by server to set initial values BEFORE spawning (we keep for backwards-compat)
     [ClientRpc]
     public void RpcInitialize(int playerID, Color color)
     {
@@ -35,13 +36,17 @@ public class MainUnit : NetworkBehaviour
         SetColor(color);
     }
 
+    // Server tells clients to move this unit to target
     [ClientRpc]
     public void RpcMoveTo(Vector3 target)
     {
         if (moveCoroutine != null)
             StopCoroutine(moveCoroutine);
 
-        lineRenderer.enabled = false;
+        // hide any local-only line visually while moving
+        if (lineRenderer != null)
+            lineRenderer.enabled = false;
+
         moveCoroutine = StartCoroutine(MoveToPosition(target));
     }
 
@@ -54,6 +59,7 @@ public class MainUnit : NetworkBehaviour
                                 new Vector3(targetPos.x, 0, targetPos.z)) > 0.05f)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            // keep line start anchored if it's visible (rare here, since we disable when moving)
             yield return null;
         }
 
@@ -62,7 +68,8 @@ public class MainUnit : NetworkBehaviour
     }
 
     /// <summary>
-    /// Draws a move line only for local client
+    /// Draws a local move line only for this client (not networked).
+    /// Call this on the local player instance before sending the Cmd to server.
     /// </summary>
     public void ShowLocalMoveLine(Vector3 targetPos)
     {
@@ -73,9 +80,12 @@ public class MainUnit : NetworkBehaviour
         lineRenderer.SetPosition(1, new Vector3(targetPos.x, transform.position.y, targetPos.z));
     }
 
+    /// <summary>
+    /// Called on the owning client to configure visuals for local control (color/line off)
+    /// </summary>
     public void SetupLocalVisuals()
     {
-        lineRenderer.enabled = false;
+        if (lineRenderer != null) lineRenderer.enabled = false;
         SetColor(playerColor);
     }
 
@@ -87,7 +97,7 @@ public class MainUnit : NetworkBehaviour
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
         }
-        lineRenderer.enabled = false;
+        if (lineRenderer != null) lineRenderer.enabled = false;
     }
 
     private void SetColor(Color c)

@@ -17,7 +17,6 @@ public class MainGameManager : NetworkBehaviour
     public TMP_Text yearText;
 
     void Awake() => Instance = this;
-
     void Start() => UpdateSeasonUI();
 
     [Server]
