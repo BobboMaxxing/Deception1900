@@ -58,9 +58,13 @@ public class MainPlayerController : NetworkBehaviour
     public override void OnStartServer()
     {
         base.OnStartServer();
-        // Assign playerID on the server
-        playerID = allPlayers.Count;
-        playersReady[playerID] = false;
+
+        // Ensure unique ID and registration in ready list
+        playerID = allPlayers.IndexOf(this);
+        if (!playersReady.ContainsKey(playerID))
+            playersReady[playerID] = false;
+
+        Debug.Log($"[SERVER] Registered player {playerID} in playersReady.");
     }
 
     public override void OnStartLocalPlayer()
@@ -110,6 +114,8 @@ public class MainPlayerController : NetworkBehaviour
         chosenCountry = pendingCountry;
         hasChosenCountry = true;
 
+        CmdSetChosenCountry(chosenCountry);
+
         confirmButton?.gameObject.SetActive(false);
         cancelButton?.gameObject.SetActive(false);
         selectedCountryText?.SetText("Chosen: " + chosenCountry);
@@ -128,6 +134,14 @@ public class MainPlayerController : NetworkBehaviour
             unitManager.SpawnUnitsForCountryLocal(chosenCountry, playerID, playerColor, 3);
             StartCoroutine(SendSpawnCommandDelayed());
         }
+    }
+
+    [Command]
+    private void CmdSetChosenCountry(string country)
+    {
+        chosenCountry = country;
+        hasChosenCountry = true;
+        Debug.Log($"[Server] Player {playerID} has chosen {country}");
     }
 
     private IEnumerator SendSpawnCommandDelayed()
@@ -208,8 +222,9 @@ public class MainPlayerController : NetworkBehaviour
 
         ShowMoveButtons(false);
         moveStatusText?.SetText("Waiting for other players...");
+        Debug.Log("ConFirmMove");
 
-        CmdSetReady(true); // Client-only or host, always call the command
+        CmdSetReady(true);
     }
 
     public void CancelMoves()
@@ -260,23 +275,39 @@ public class MainPlayerController : NetworkBehaviour
     [Command]
     private void CmdSetReady(bool readyState)
     {
+        Debug.Log("IsReadySIgnalToServer");
         SetReadyServer(readyState);
     }
 
     [Server]
     private void SetReadyServer(bool readyState)
     {
-        isReady = readyState;
-        playersReady[playerID] = readyState;
+        if (!playersReady.ContainsKey(playerID))
+            playersReady[playerID] = readyState;
+        else
+            playersReady[playerID] = readyState;
 
+        isReady = readyState;
         RpcUpdateReadyUI();
 
-        // Check if all players are ready
         bool allReady = true;
+        Debug.Log("serverKnow1IsReady");
+
         foreach (var player in allPlayers)
         {
-            if (!player.hasChosenCountry || !playersReady.ContainsKey(player.playerID) || !playersReady[player.playerID])
+            if (player == null) continue;
+            Debug.Log("ServerKnowAllIsReady");
+
+            if (!player.hasChosenCountry)
             {
+                Debug.Log("ifBreake (no country)");
+                allReady = false;
+                break;
+            }
+
+            if (!playersReady.TryGetValue(player.playerID, out bool ready) || !ready)
+            {
+                Debug.Log($"ifBreake (not ready): Player {player.playerID}");
                 allReady = false;
                 break;
             }
@@ -284,6 +315,7 @@ public class MainPlayerController : NetworkBehaviour
 
         if (allReady)
         {
+            Debug.Log("✅ All players are ready — executing turn!");
             unitManager.ExecuteTurnServer();
             MainGameManager.Instance?.NextTurnServer();
 

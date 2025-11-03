@@ -55,7 +55,6 @@ public class MainUnitManager : NetworkBehaviour
                 continue;
             }
 
-            // Set server-side sync values BEFORE spawn so clients receive them instantly
             unit.ownerID = playerID;
             unit.playerColor = playerColor;
             unit.currentCountry = countryName;
@@ -70,7 +69,6 @@ public class MainUnitManager : NetworkBehaviour
         RpcUpdateCountryOwnership(countryName, playerColor);
     }
 
-    // CLIENT-ONLY spawn for immediate local feedback
     public void SpawnUnitsForCountryLocal(string countryName, int playerID, Color playerColor, int count)
     {
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -109,7 +107,7 @@ public class MainUnitManager : NetworkBehaviour
 
             allUnits.Add(unit);
 
-            unit.SetupLocalVisuals(); // immediately shows on client
+            unit.SetupLocalVisuals();
         }
     }
 
