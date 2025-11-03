@@ -20,7 +20,7 @@ public class MainUnitManager : NetworkBehaviour
 
     public List<MainUnit> GetAllUnits() => allUnits;
 
-    // Server-only spawn
+    #region Unit Spawning (Server Only)
     [Server]
     public void SpawnUnitsForCountryServer(string countryName, int playerID, Color playerColor, int count)
     {
@@ -46,7 +46,6 @@ public class MainUnitManager : NetworkBehaviour
             Vector3 spawnPos = spawn.position + offset;
 
             GameObject unitObj = Instantiate(unitPrefab, spawnPos, spawn.rotation);
-
             MainUnit unit = unitObj.GetComponent<MainUnit>();
             if (unit == null)
             {
@@ -63,62 +62,16 @@ public class MainUnitManager : NetworkBehaviour
 
             allUnits.Add(unit);
 
+            // Initialize client visuals
             unit.RpcInitialize(playerID, playerColor);
         }
 
+        // Update country ownership on all clients
         RpcUpdateCountryOwnership(countryName, playerColor);
     }
+    #endregion
 
-    public void SpawnUnitsForCountryLocal(string countryName, int playerID, Color playerColor, int count)
-    {
-        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        List<Transform> validSpawns = new List<Transform>();
-        foreach (var sp in spawnPoints)
-        {
-            SpawnPoint spScript = sp.GetComponent<SpawnPoint>();
-            if (spScript != null && spScript.countryName == countryName)
-                validSpawns.Add(sp.transform);
-        }
-
-        if (validSpawns.Count == 0)
-        {
-            Debug.LogWarning($"[MainUnitManager] No spawn points found for country '{countryName}' (client)");
-            return;
-        }
-
-        for (int i = 0; i < count; i++)
-        {
-            Transform spawn = validSpawns[i % validSpawns.Count];
-            Vector3 offset = GetSpawnOffset(i, count);
-            Vector3 spawnPos = spawn.position + offset;
-
-            GameObject unitObj = Instantiate(unitPrefab, spawnPos, spawn.rotation);
-            MainUnit unit = unitObj.GetComponent<MainUnit>();
-            if (unit == null)
-            {
-                Debug.LogError("[MainUnitManager] unitPrefab missing MainUnit component (client).");
-                Destroy(unitObj);
-                continue;
-            }
-
-            unit.ownerID = playerID;
-            unit.playerColor = playerColor;
-            unit.currentCountry = countryName;
-
-            allUnits.Add(unit);
-
-            unit.SetupLocalVisuals();
-        }
-    }
-
-    private Vector3 GetSpawnOffset(int index, int total)
-    {
-        if (total <= 1) return Vector3.zero;
-        float angleStep = 360f / total;
-        float angle = index * angleStep * Mathf.Deg2Rad;
-        return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 2f;
-    }
-
+    #region Turn Execution (Server Only)
     [Server]
     public void ExecuteTurnServer()
     {
@@ -183,7 +136,9 @@ public class MainUnitManager : NetworkBehaviour
 
         return bestOwner;
     }
+    #endregion
 
+    #region Client RPCs
     [ClientRpc]
     public void RpcUpdateCountryOwnership(string countryName, Color playerColor)
     {
@@ -195,4 +150,15 @@ public class MainUnitManager : NetworkBehaviour
                 rend.material.color = playerColor;
         }
     }
+    #endregion
+
+    #region Utility
+    private Vector3 GetSpawnOffset(int index, int total)
+    {
+        if (total <= 1) return Vector3.zero;
+        float angleStep = 360f / total;
+        float angle = index * angleStep * Mathf.Deg2Rad;
+        return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 2f;
+    }
+    #endregion
 }

@@ -1,15 +1,15 @@
-using Mirror;
+﻿using Mirror;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(Renderer), typeof(LineRenderer))]
 public class MainUnit : NetworkBehaviour
 {
     [SyncVar] public int ownerID;
     [SyncVar] public string currentCountry;
     [SyncVar] public Color playerColor;
 
-    public PlayerUnitOrder currentOrder;
+    [HideInInspector] public PlayerUnitOrder currentOrder;
 
     private LineRenderer lineRenderer;
     private Coroutine moveCoroutine;
@@ -27,7 +27,7 @@ public class MainUnit : NetworkBehaviour
         lineRenderer.enabled = false;
     }
 
-    // Called by server to set initial values BEFORE spawning (we keep for backwards-compat)
+    #region Server → Client Initialization
     [ClientRpc]
     public void RpcInitialize(int playerID, Color color)
     {
@@ -35,17 +35,16 @@ public class MainUnit : NetworkBehaviour
         playerColor = color;
         SetColor(color);
     }
+    #endregion
 
-    // Server tells clients to move this unit to target
+    #region Server → Client Movement
     [ClientRpc]
     public void RpcMoveTo(Vector3 target)
     {
-        if (moveCoroutine != null)
-            StopCoroutine(moveCoroutine);
+        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
 
-        // hide any local-only line visually while moving
-        if (lineRenderer != null)
-            lineRenderer.enabled = false;
+        // Hide local line when server moves the unit
+        if (lineRenderer != null) lineRenderer.enabled = false;
 
         moveCoroutine = StartCoroutine(MoveToPosition(target));
     }
@@ -59,20 +58,23 @@ public class MainUnit : NetworkBehaviour
                                 new Vector3(targetPos.x, 0, targetPos.z)) > 0.05f)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-            // keep line start anchored if it's visible (rare here, since we disable when moving)
             yield return null;
         }
 
         transform.position = targetPos;
         moveCoroutine = null;
     }
+    #endregion
 
+    #region Client-Side Move Line
     /// <summary>
-    /// Draws a local move line only for this client (not networked).
-    /// Call this on the local player instance before sending the Cmd to server.
+    /// Shows a move line only for the local player.
+    /// Call before sending CmdMoveUnit to server.
     /// </summary>
     public void ShowLocalMoveLine(Vector3 targetPos)
     {
+        if (!isOwned) return; // Only for owning client
+
         if (lineRenderer == null) return;
         lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
@@ -81,14 +83,16 @@ public class MainUnit : NetworkBehaviour
     }
 
     /// <summary>
-    /// Called on the owning client to configure visuals for local control (color/line off)
+    /// Resets visuals for the owning client
     /// </summary>
     public void SetupLocalVisuals()
     {
         if (lineRenderer != null) lineRenderer.enabled = false;
         SetColor(playerColor);
     }
+    #endregion
 
+    #region Utility
     public void ClearOrder()
     {
         currentOrder = null;
@@ -97,6 +101,7 @@ public class MainUnit : NetworkBehaviour
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
         }
+
         if (lineRenderer != null) lineRenderer.enabled = false;
     }
 
@@ -105,4 +110,5 @@ public class MainUnit : NetworkBehaviour
         Renderer rend = GetComponent<Renderer>();
         if (rend != null) rend.material.color = c;
     }
+    #endregion
 }

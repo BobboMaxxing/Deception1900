@@ -8,7 +8,6 @@ using TMPro;
 public class MainPlayerController : NetworkBehaviour
 {
     [Header("Player Info")]
-    public string playerName = "Player";
     [SyncVar] public int playerID;
     [SyncVar] public Color playerColor = Color.white;
     [SyncVar] public string chosenCountry;
@@ -43,28 +42,21 @@ public class MainPlayerController : NetworkBehaviour
     public static Dictionary<int, bool> playersReady = new Dictionary<int, bool>();
     public static List<MainPlayerController> allPlayers = new List<MainPlayerController>();
 
+    #region Unity Callbacks
     void Awake()
     {
-        if (!allPlayers.Contains(this))
-            allPlayers.Add(this);
+        if (!allPlayers.Contains(this)) allPlayers.Add(this);
     }
 
     void OnDestroy()
     {
-        if (allPlayers.Contains(this))
-            allPlayers.Remove(this);
+        if (allPlayers.Contains(this)) allPlayers.Remove(this);
     }
 
     public override void OnStartServer()
     {
         base.OnStartServer();
-
-        // Ensure unique ID and registration in ready list
-        playerID = allPlayers.IndexOf(this);
-        if (!playersReady.ContainsKey(playerID))
-            playersReady[playerID] = false;
-
-        Debug.Log($"[SERVER] Registered player {playerID} in playersReady.");
+        if (!playersReady.ContainsKey(playerID)) playersReady[playerID] = false;
     }
 
     public override void OnStartLocalPlayer()
@@ -76,34 +68,31 @@ public class MainPlayerController : NetworkBehaviour
 
         if (unitManager == null) unitManager = MainUnitManager.Instance;
 
-        LocalPlayerSetup setup = FindObjectOfType<LocalPlayerSetup>();
-        if (setup != null) setup.Setup(this);
+        LocalPlayerSetup setup = Object.FindFirstObjectByType<LocalPlayerSetup>();
+        setup?.Setup(this);
 
         UpdateReadyUI();
     }
 
     void Update()
     {
-        if (!hasChosenCountry && isLocalPlayer)
-            HandleCountrySelection();
-
-        if (canIssueOrders && isLocalPlayer)
-            HandleUnitSelection();
+        if (!hasChosenCountry && isLocalPlayer) HandleCountrySelection();
+        if (canIssueOrders && isLocalPlayer) HandleUnitSelection();
     }
+    #endregion
 
     #region Country Selection
     void HandleCountrySelection()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
         {
-            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
-            {
-                pendingCountry = hit.transform.name;
-                selectedCountryText?.SetText("Selected: " + pendingCountry);
-                confirmButton?.gameObject.SetActive(true);
-                cancelButton?.gameObject.SetActive(true);
-            }
+            pendingCountry = hit.transform.name;
+            selectedCountryText?.SetText("Selected: " + pendingCountry);
+            confirmButton?.gameObject.SetActive(true);
+            cancelButton?.gameObject.SetActive(true);
         }
     }
 
@@ -114,6 +103,7 @@ public class MainPlayerController : NetworkBehaviour
         chosenCountry = pendingCountry;
         hasChosenCountry = true;
 
+        // Tell server which country was chosen
         CmdSetChosenCountry(chosenCountry);
 
         confirmButton?.gameObject.SetActive(false);
@@ -123,17 +113,11 @@ public class MainPlayerController : NetworkBehaviour
         AssignPlayerColorFromCountry();
         HighlightChosenCountryObjects();
 
-        Debug.Log($"[Player {playerID}] Confirmed country {chosenCountry}");
-
-        if (isServer)
-        {
-            unitManager.SpawnUnitsForCountryServer(chosenCountry, playerID, playerColor, 3);
-        }
+        // Request server to spawn units for this player
+        if (!isServer)
+            CmdRequestSpawnUnits(chosenCountry, playerID, playerColor, 3);
         else
-        {
-            unitManager.SpawnUnitsForCountryLocal(chosenCountry, playerID, playerColor, 3);
-            StartCoroutine(SendSpawnCommandDelayed());
-        }
+            unitManager.SpawnUnitsForCountryServer(chosenCountry, playerID, playerColor, 3);
     }
 
     [Command]
@@ -141,16 +125,28 @@ public class MainPlayerController : NetworkBehaviour
     {
         chosenCountry = country;
         hasChosenCountry = true;
-        Debug.Log($"[Server] Player {playerID} has chosen {country}");
+    }
+
+    [Command]
+    private void CmdRequestSpawnUnits(string country, int playerID, Color color, int count)
+    {
+        unitManager?.SpawnUnitsForCountryServer(country, playerID, color, count);
+        TargetSetupLocalUnits(connectionToClient, playerID);
+    }
+
+    [TargetRpc]
+    private void TargetSetupLocalUnits(NetworkConnection target, int playerID)
+    {
+        foreach (var unit in unitManager.GetAllUnits())
+            if (unit.ownerID == playerID)
+                unit.SetupLocalVisuals();
     }
 
     private IEnumerator SendSpawnCommandDelayed()
     {
         yield return new WaitForSeconds(0.1f);
         if (isLocalPlayer)
-        {
             CmdRequestSpawnUnits(chosenCountry, playerID, playerColor, 3);
-        }
     }
 
     public void CancelCountryChoice()
@@ -189,7 +185,6 @@ public class MainPlayerController : NetworkBehaviour
     {
         foreach (var obj in highlightedObjects)
             obj?.GetComponent<SimpleHighlighter>()?.Unhighlight();
-
         highlightedObjects.Clear();
     }
     #endregion
@@ -219,21 +214,16 @@ public class MainPlayerController : NetworkBehaviour
     public void ConfirmMoves()
     {
         if (!isLocalPlayer) return;
-
         ShowMoveButtons(false);
         moveStatusText?.SetText("Waiting for other players...");
-        Debug.Log("ConFirmMove");
-
         CmdSetReady(true);
     }
 
     public void CancelMoves()
     {
         if (!isLocalPlayer) return;
-
         ShowMoveButtons(false);
         moveStatusText?.SetText("Moves canceled — Plan again.");
-
         CmdSetReady(false);
     }
 
@@ -251,63 +241,29 @@ public class MainPlayerController : NetworkBehaviour
                 targetCountry = targetCountry,
                 targetPosition = targetPos
             };
-
-            if (unit.isOwned)
-                unit.ShowLocalMoveLine(targetPos);
         }
-    }
-
-    [Command]
-    private void CmdRequestSpawnUnits(string country, int playerID, Color color, int count)
-    {
-        unitManager?.SpawnUnitsForCountryServer(country, playerID, color, count);
-        TargetSetupLocalUnits(connectionToClient, playerID);
-    }
-
-    [TargetRpc]
-    private void TargetSetupLocalUnits(NetworkConnection target, int playerID)
-    {
-        foreach (var unit in unitManager.GetAllUnits())
-            if (unit.ownerID == playerID)
-                unit.SetupLocalVisuals();
     }
 
     [Command]
     private void CmdSetReady(bool readyState)
     {
-        Debug.Log("IsReadySIgnalToServer");
         SetReadyServer(readyState);
     }
 
     [Server]
     private void SetReadyServer(bool readyState)
     {
-        if (!playersReady.ContainsKey(playerID))
-            playersReady[playerID] = readyState;
-        else
-            playersReady[playerID] = readyState;
-
         isReady = readyState;
+        playersReady[playerID] = readyState;
+
         RpcUpdateReadyUI();
 
         bool allReady = true;
-        Debug.Log("serverKnow1IsReady");
-
         foreach (var player in allPlayers)
         {
             if (player == null) continue;
-            Debug.Log("ServerKnowAllIsReady");
-
-            if (!player.hasChosenCountry)
+            if (!player.hasChosenCountry || !playersReady.TryGetValue(player.playerID, out bool ready) || !ready)
             {
-                Debug.Log("ifBreake (no country)");
-                allReady = false;
-                break;
-            }
-
-            if (!playersReady.TryGetValue(player.playerID, out bool ready) || !ready)
-            {
-                Debug.Log($"ifBreake (not ready): Player {player.playerID}");
                 allReady = false;
                 break;
             }
@@ -315,29 +271,19 @@ public class MainPlayerController : NetworkBehaviour
 
         if (allReady)
         {
-            Debug.Log("✅ All players are ready — executing turn!");
             unitManager.ExecuteTurnServer();
             MainGameManager.Instance?.NextTurnServer();
-
-            foreach (var p in allPlayers)
-                p.RpcResetReady();
+            foreach (var p in allPlayers) p.RpcResetReady();
         }
     }
 
-    [ClientRpc]
-    public void RpcUpdateReadyUI()
-    {
-        UpdateReadyUI();
-    }
-
+    [ClientRpc] public void RpcUpdateReadyUI() => UpdateReadyUI();
     private void UpdateReadyUI()
     {
         if (moveStatusText == null) return;
-
         int readyCount = 0;
         foreach (var kv in playersReady)
             if (kv.Value) readyCount++;
-
         moveStatusText.text = $"Players ready: {readyCount}/{allPlayers.Count}";
     }
 
@@ -347,7 +293,6 @@ public class MainPlayerController : NetworkBehaviour
         isReady = false;
         if (playersReady.ContainsKey(playerID))
             playersReady[playerID] = false;
-
         UpdateReadyUI();
     }
 
@@ -367,8 +312,5 @@ public class MainPlayerController : NetworkBehaviour
         confirmMoveButton = confirmMoveButtonRef;
         cancelMoveButton = cancelMoveButtonRef;
     }
-
-    public static MainPlayerController GetPlayerByID(int id) => allPlayers.Find(p => p.playerID == id);
-
     #endregion
 }

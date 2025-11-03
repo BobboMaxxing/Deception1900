@@ -12,11 +12,12 @@ public class MainNetworkManager : NetworkManager
             ? Instantiate(playerPrefab, startPos.position, startPos.rotation)
             : Instantiate(playerPrefab);
 
-        // Assign a unique player ID
         MainPlayerController player = playerObj.GetComponent<MainPlayerController>();
         if (player != null)
         {
+            // Assign a unique server-side player ID
             player.playerID = nextPlayerId++;
+
             if (!MainPlayerController.allPlayers.Contains(player))
                 MainPlayerController.allPlayers.Add(player);
 
@@ -39,6 +40,8 @@ public class MainNetworkManager : NetworkManager
                 MainPlayerController.allPlayers.Remove(player);
                 if (MainPlayerController.playersReady.ContainsKey(player.playerID))
                     MainPlayerController.playersReady.Remove(player.playerID);
+
+                Debug.Log($"[Server] Player {player.playerID} disconnected");
             }
         }
 
@@ -51,5 +54,6 @@ public class MainNetworkManager : NetworkManager
         MainPlayerController.playersReady.Clear();
         nextPlayerId = 0;
         base.OnStopServer();
+        Debug.Log("[Server] Server stopped and reset player data");
     }
 }
