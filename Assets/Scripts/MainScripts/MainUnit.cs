@@ -67,13 +67,10 @@ public class MainUnit : NetworkBehaviour
     #endregion
 
     #region Client-Side Move Line
-    /// <summary>
-    /// Shows a move line only for the local player.
-    /// Call before sending CmdMoveUnit to server.
-    /// </summary>
+
     public void ShowLocalMoveLine(Vector3 targetPos)
     {
-        if (!isOwned) return; // Only for owning client
+        if (!isOwned) return; 
 
         if (lineRenderer == null) return;
         lineRenderer.enabled = true;
@@ -82,9 +79,7 @@ public class MainUnit : NetworkBehaviour
         lineRenderer.SetPosition(1, new Vector3(targetPos.x, transform.position.y, targetPos.z));
     }
 
-    /// <summary>
-    /// Resets visuals for the owning client
-    /// </summary>
+
     public void SetupLocalVisuals()
     {
         if (lineRenderer != null) lineRenderer.enabled = false;
