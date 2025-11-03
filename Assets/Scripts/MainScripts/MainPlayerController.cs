@@ -48,6 +48,8 @@ public class MainPlayerController : NetworkBehaviour
         if (!allPlayers.Contains(this)) allPlayers.Add(this);
     }
 
+
+
     void OnDestroy()
     {
         if (allPlayers.Contains(this)) allPlayers.Remove(this);
@@ -57,6 +59,11 @@ public class MainPlayerController : NetworkBehaviour
     {
         base.OnStartServer();
         if (!playersReady.ContainsKey(playerID)) playersReady[playerID] = false;
+        if (unitManager == null)
+            unitManager = MainUnitManager.Instance;
+
+        if (!playersReady.ContainsKey(playerID))
+            playersReady[playerID] = false;
     }
 
     public override void OnStartLocalPlayer()
@@ -103,7 +110,6 @@ public class MainPlayerController : NetworkBehaviour
         chosenCountry = pendingCountry;
         hasChosenCountry = true;
 
-        // Tell server which country was chosen
         CmdSetChosenCountry(chosenCountry);
 
         confirmButton?.gameObject.SetActive(false);
@@ -113,11 +119,30 @@ public class MainPlayerController : NetworkBehaviour
         AssignPlayerColorFromCountry();
         HighlightChosenCountryObjects();
 
-        // Request server to spawn units for this player
         if (!isServer)
-            CmdRequestSpawnUnits(chosenCountry, playerID, playerColor, 3);
+        {
+            Debug.Log($"[Client {playerID}] Requesting server to spawn units for {chosenCountry}");
+            CmdRequestSpawnUnitsServer(chosenCountry, playerID, playerColor, 3);
+        }
+
         else
+        {
             unitManager.SpawnUnitsForCountryServer(chosenCountry, playerID, playerColor, 3);
+            Debug.Log("cant spawn units for" + playerID);
+        }
+    }
+
+    [Command]
+    private void CmdRequestSpawnUnitsServer(string countryName, int playerID, Color color, int count)
+    {
+        if (MainUnitManager.Instance == null)
+        {
+            Debug.LogError("[CmdRequestSpawnUnitsServer] UnitManager instance not found!");
+            return;
+        }
+
+        Debug.Log($"[Server] Spawning units for Player {playerID} in {countryName}");
+        MainUnitManager.Instance.SpawnUnitsForCountryServer(countryName, playerID, color, count);
     }
 
     [Command]
@@ -253,6 +278,12 @@ public class MainPlayerController : NetworkBehaviour
     [Server]
     private void SetReadyServer(bool readyState)
     {
+        if (unitManager == null)
+        {
+            Debug.LogError("[Server] UnitManager not found!");
+            return;
+        }
+
         isReady = readyState;
         playersReady[playerID] = readyState;
 
@@ -261,19 +292,58 @@ public class MainPlayerController : NetworkBehaviour
         bool allReady = true;
         foreach (var player in allPlayers)
         {
-            if (player == null) continue;
-            if (!player.hasChosenCountry || !playersReady.TryGetValue(player.playerID, out bool ready) || !ready)
+            if (player == null)
             {
+                Debug.LogWarning("[Server] Found null player reference in allPlayers!");
                 allReady = false;
-                break;
+                continue;
+            }
+
+            if (!player.hasChosenCountry)
+            {
+                Debug.Log($"[Server] Player {player.playerID} has not chosen a country yet.");
+                allReady = false;
+            }
+
+            if (!playersReady.TryGetValue(player.playerID, out bool ready) || !ready)
+            {
+                Debug.Log($"[Server] Player {player.playerID} is not ready.");
+                allReady = false;
             }
         }
 
-        if (allReady)
+        if (!allReady) return;
+
+        Debug.Log("[Server] All players ready — executing turn...");
+        StartCoroutine(DelayedTurnExecution());
+    }
+
+    private IEnumerator DelayedTurnExecution()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        if (unitManager == null)
+        {
+            Debug.LogError("[Server] UnitManager is missing before executing turn!");
+            yield break;
+        }
+
+        try
         {
             unitManager.ExecuteTurnServer();
             MainGameManager.Instance?.NextTurnServer();
-            foreach (var p in allPlayers) p.RpcResetReady();
+
+            foreach (var p in allPlayers)
+            {
+                if (p != null && p.connectionToClient != null)
+                    p.RpcResetReady();
+            }
+
+            Debug.Log("[Server] Turn executed and players reset.");
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("[Server] Error during turn execution: " + ex);
         }
     }
 

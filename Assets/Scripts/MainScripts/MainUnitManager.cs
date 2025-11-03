@@ -24,6 +24,7 @@ public class MainUnitManager : NetworkBehaviour
     [Server]
     public void SpawnUnitsForCountryServer(string countryName, int playerID, Color playerColor, int count)
     {
+        Debug.Log("is spawning units for" + playerID);
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         List<Transform> validSpawns = new List<Transform>();
         foreach (var sp in spawnPoints)
@@ -62,11 +63,9 @@ public class MainUnitManager : NetworkBehaviour
 
             allUnits.Add(unit);
 
-            // Initialize client visuals
             unit.RpcInitialize(playerID, playerColor);
         }
 
-        // Update country ownership on all clients
         RpcUpdateCountryOwnership(countryName, playerColor);
     }
     #endregion
