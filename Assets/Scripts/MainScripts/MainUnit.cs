@@ -70,7 +70,7 @@ public class MainUnit : NetworkBehaviour
 
     public void ShowLocalMoveLine(Vector3 targetPos)
     {
-        if (!isOwned) return; 
+        if (isOwned) return; 
 
         if (lineRenderer == null) return;
         lineRenderer.enabled = true;

@@ -230,6 +230,9 @@ public class MainPlayerController : NetworkBehaviour
             }
             else if (selectedUnit != null)
             {
+                Vector3 targetPos = hit.point;
+                selectedUnit.ShowLocalMoveLine(targetPos);
+
                 CmdMoveUnit(selectedUnit.netId, hit.collider.name);
                 selectedUnit = null;
             }
