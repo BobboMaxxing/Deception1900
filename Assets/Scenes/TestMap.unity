@@ -716,7 +716,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countryName: "r\xF6d"
   ownerID: -1
-  countryRenderer: {fileID: 0}
+  isStarterCountry: 1
 --- !u!65 &424179401
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1748,7 +1748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countryName: "bl\xE5"
   ownerID: -1
-  countryRenderer: {fileID: 0}
+  isStarterCountry: 1
 --- !u!65 &1172396118
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2963,7 +2963,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countryName: "gr\xF6n"
   ownerID: -1
-  countryRenderer: {fileID: 0}
+  isStarterCountry: 1
 --- !u!65 &1963752701
 BoxCollider:
   m_ObjectHideFlags: 0

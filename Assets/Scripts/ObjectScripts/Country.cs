@@ -6,26 +6,11 @@ public class Country : MonoBehaviour
     public int ownerID = -1;
     public bool isStarterCountry = true;
 
-    [Header("Visual Settings")]
-    [SerializeField] private Renderer countryRenderer;
-
-    private void Awake()
-    {
-        if (countryRenderer == null)
-            countryRenderer = GetComponent<Renderer>();
-    }
+    public bool CanBeSelected() => isStarterCountry && ownerID == -1;
 
     public void SetOwner(int newOwnerID)
     {
         ownerID = newOwnerID;
+        Debug.Log($"{countryName} now owned by Player {ownerID}");
     }
-
-    public bool CanBeSelected()
-    {
-        bool canSelect = isStarterCountry && ownerID == -1;
-        Debug.Log($"{countryName} can be selected: {canSelect}");
-        return canSelect;
-    }
-
-
 }

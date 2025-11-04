@@ -91,28 +91,26 @@ public class MainPlayerController : NetworkBehaviour
     #region Country Selection
     void HandleCountrySelection()
     {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+        if (!Input.GetMouseButtonDown(0)) return; Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition); if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
         {
             Country countryComp = hit.collider.GetComponent<Country>();
             if (countryComp == null || !countryComp.CanBeSelected())
-            {
-                Debug.LogWarning($"Country {hit.collider.name} cannot be selected.");
-                return;
+            { 
+                Debug.LogWarning($"Country {hit.collider.name} cannot be selected."); return;
             }
-
-            pendingCountry = hit.collider.tag; // Use tag instead of name
-            selectedCountryText?.SetText("Selected: " + hit.collider.name);
-            confirmButton?.gameObject.SetActive(true);
+            pendingCountry = hit.collider.tag; // Use unique tag
+            selectedCountryText?.SetText("Selected: " + hit.collider.name); 
+            confirmButton?.gameObject.SetActive(true); 
             cancelButton?.gameObject.SetActive(true);
-        }
+        
+        } 
+    
     }
 
     public void ConfirmCountryChoice()
     {
-        if (string.IsNullOrEmpty(pendingCountry)) return;
+        if (string.IsNullOrEmpty(pendingCountry))
+            return;
 
         GameObject countryObj = GameObject.FindWithTag(pendingCountry);
         if (countryObj == null)
@@ -132,7 +130,7 @@ public class MainPlayerController : NetworkBehaviour
         hasChosenCountry = true;
 
         CmdSetChosenCountry(chosenCountry);
-        CmdAssignCountryToPlayer(chosenCountry, playerID);
+        CmdAssignCountryToPlayer(pendingCountry, playerID);
 
         confirmButton?.gameObject.SetActive(false);
         cancelButton?.gameObject.SetActive(false);
@@ -159,21 +157,61 @@ public class MainPlayerController : NetworkBehaviour
         GameObject countryObj = GameObject.FindWithTag(countryTag);
         if (countryObj == null)
         {
-            Debug.LogWarning($"[Server] Could not find country with tag {countryTag}");
+            Debug.LogWarning($"[Server] Country {countryTag} not found, cannot assign.");
             return;
         }
 
         Country countryComp = countryObj.GetComponent<Country>();
-        if (countryComp != null && countryComp.CanBeSelected())
+        if (countryComp == null)
+        {
+            Debug.LogWarning($"[Server] {countryTag} has no Country component.");
+            return;
+        }
+
+        if (countryComp.CanBeSelected()) 
         {
             countryComp.SetOwner(playerID);
+            RpcUpdateCountryOwnership(countryTag, playerID);
             Debug.Log($"[Server] Assigned {countryTag} to player {playerID}");
         }
         else
         {
-            Debug.LogWarning($"[Server] Could not assign {countryTag} to player {playerID}");
+            Debug.LogWarning($"[Server] {countryTag} already owned, cannot assign to {playerID}");
         }
     }
+
+    [ClientRpc]
+    private void RpcUpdateCountryOwnership(string countryTag, int playerID)
+    {
+        GameObject countryObj = GameObject.FindWithTag(countryTag);
+        if (countryObj == null) return;
+
+        Country countryComp = countryObj.GetComponent<Country>();
+        if (countryComp != null)
+            countryComp.SetOwner(playerID);
+
+        //// Update color / UI
+        //Renderer rend = countryObj.GetComponent<Renderer>();
+        //if (rend != null)
+        //    rend.material.color = MainPlayerController.GetPlayerColor(playerID);
+    }
+
+    private Country FindCountryByTag(string tag)
+    {
+        GameObject obj = GameObject.FindWithTag(tag);
+        if (obj != null) return obj.GetComponent<Country>();
+        return null;
+    }
+
+    private IEnumerator WaitAndAssign(string tag, int playerID)
+    {
+        while (FindCountryByTag(tag) == null)
+            yield return null;
+
+        FindCountryByTag(tag).SetOwner(playerID);
+        Debug.Log($"[Server] Assigned {tag} to player {playerID} after waiting");
+    }
+
 
     [Command]
     private void CmdRequestSpawnUnitsServer(string countryName, int playerID, Color color, int count)
