@@ -102,8 +102,14 @@ public class MainUnit : NetworkBehaviour
 
     private void SetColor(Color c)
     {
-        Renderer rend = GetComponent<Renderer>();
-        if (rend != null) rend.material.color = c;
+        Color darker = c * 0.5f;
+        darker.a = c.a;
+
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer rend in renderers)
+        {
+            rend.material.color = darker;
+        }
     }
     #endregion
 }
