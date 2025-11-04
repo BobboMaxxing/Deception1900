@@ -4,6 +4,7 @@ public class Country : MonoBehaviour
 {
     public string countryName;
     public int ownerID = -1;
+    public bool isStarterCountry = true;
 
     [Header("Visual Settings")]
     [SerializeField] private Renderer countryRenderer;
@@ -17,27 +18,14 @@ public class Country : MonoBehaviour
     public void SetOwner(int newOwnerID)
     {
         ownerID = newOwnerID;
-        UpdateColor();
     }
 
-    private void UpdateColor()
+    public bool CanBeSelected()
     {
-        if (countryRenderer == null) return;
-
-        switch (ownerID)
-        {
-            case 0:
-                countryRenderer.material.color = Color.blue;
-                break;
-            case 1:
-                countryRenderer.material.color = Color.red;
-                break;
-            case 2:
-                countryRenderer.material.color = Color.green;
-                break;
-            default:
-                countryRenderer.material.color = Color.gray;
-                break;
-        }
+        bool canSelect = isStarterCountry && ownerID == -1;
+        Debug.Log($"{countryName} can be selected: {canSelect}");
+        return canSelect;
     }
+
+
 }

@@ -96,8 +96,15 @@ public class MainPlayerController : NetworkBehaviour
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
         {
-            pendingCountry = hit.transform.name;
-            selectedCountryText?.SetText("Selected: " + pendingCountry);
+            Country countryComp = hit.collider.GetComponent<Country>();
+            if (countryComp == null || !countryComp.CanBeSelected())
+            {
+                Debug.LogWarning($"Country {hit.collider.name} cannot be selected.");
+                return;
+            }
+
+            pendingCountry = hit.collider.tag; // Use tag instead of name
+            selectedCountryText?.SetText("Selected: " + hit.collider.name);
             confirmButton?.gameObject.SetActive(true);
             cancelButton?.gameObject.SetActive(true);
         }
@@ -107,28 +114,64 @@ public class MainPlayerController : NetworkBehaviour
     {
         if (string.IsNullOrEmpty(pendingCountry)) return;
 
+        GameObject countryObj = GameObject.FindWithTag(pendingCountry);
+        if (countryObj == null)
+        {
+            Debug.LogWarning($"Selected country with tag {pendingCountry} not found in scene!");
+            return;
+        }
+
+        Country countryComp = countryObj.GetComponent<Country>();
+        if (countryComp == null || !countryComp.CanBeSelected())
+        {
+            Debug.LogWarning($"Country {pendingCountry} cannot be selected.");
+            return;
+        }
+
         chosenCountry = pendingCountry;
         hasChosenCountry = true;
 
         CmdSetChosenCountry(chosenCountry);
+        CmdAssignCountryToPlayer(chosenCountry, playerID);
 
         confirmButton?.gameObject.SetActive(false);
         cancelButton?.gameObject.SetActive(false);
-        selectedCountryText?.SetText("Chosen: " + chosenCountry);
+        selectedCountryText?.SetText("Chosen: " + countryObj.name);
 
         AssignPlayerColorFromCountry();
         HighlightChosenCountryObjects();
 
         if (!isServer)
         {
-            Debug.Log($"[Client {playerID}] Requesting server to spawn units for {chosenCountry}");
             CmdRequestSpawnUnitsServer(chosenCountry, playerID, playerColor, 3);
+            Debug.Log($"[Client {playerID}] Requesting server to spawn units for {countryObj.name}");
         }
-
         else
         {
-            unitManager.SpawnUnitsForCountryServer(chosenCountry, playerID, playerColor, 3);
-            Debug.Log("cant spawn units for" + playerID);
+            unitManager.SpawnUnitsForCountryServer(countryObj.name, playerID, playerColor, 3);
+            Debug.Log($"[Server] Spawned units for player {playerID}");
+        }
+    }
+
+    [Command]
+    private void CmdAssignCountryToPlayer(string countryTag, int playerID)
+    {
+        GameObject countryObj = GameObject.FindWithTag(countryTag);
+        if (countryObj == null)
+        {
+            Debug.LogWarning($"[Server] Could not find country with tag {countryTag}");
+            return;
+        }
+
+        Country countryComp = countryObj.GetComponent<Country>();
+        if (countryComp != null && countryComp.CanBeSelected())
+        {
+            countryComp.SetOwner(playerID);
+            Debug.Log($"[Server] Assigned {countryTag} to player {playerID}");
+        }
+        else
+        {
+            Debug.LogWarning($"[Server] Could not assign {countryTag} to player {playerID}");
         }
     }
 
