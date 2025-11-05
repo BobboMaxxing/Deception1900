@@ -24,7 +24,7 @@ public class MainUnitManager : NetworkBehaviour
     [Server]
     public void SpawnUnitsForCountryServer(string countryName, int playerID, Color playerColor, int count)
     {
-        Debug.Log("is spawning units for" + playerID);
+        Debug.Log("Spawning units for player " + playerID);
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         List<Transform> validSpawns = new List<Transform>();
         foreach (var sp in spawnPoints)
@@ -66,6 +66,7 @@ public class MainUnitManager : NetworkBehaviour
             unit.RpcInitialize(playerID, playerColor);
         }
 
+        // Original color logic: just update country renderer directly
         RpcUpdateCountryOwnership(countryName, playerColor);
     }
     #endregion
@@ -103,7 +104,20 @@ public class MainUnitManager : NetworkBehaviour
                 unit.RpcMoveTo(targetPos);
             }
 
+            // Determine the winner once
             int winnerID = GetDominantOwner(units);
+
+            // Placeholder for future actions:
+            // TODO: Handle Lose action
+            // TODO: Handle Bounce action
+            // TODO: Handle Defens action
+
+            // Update server-side ownership
+            Country countryComp = countryObj.GetComponent<Country>();
+            if (countryComp != null)
+                countryComp.SetOwner(winnerID);
+
+            // Update visuals on clients
             Color winnerColor = units.Find(u => u.ownerID == winnerID).playerColor;
             RpcUpdateCountryOwnership(countryName, winnerColor);
         }

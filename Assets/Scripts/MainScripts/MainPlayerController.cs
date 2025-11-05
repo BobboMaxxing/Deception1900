@@ -190,11 +190,9 @@ public class MainPlayerController : NetworkBehaviour
         if (countryComp != null)
             countryComp.SetOwner(playerID);
 
-        //// Update color / UI
-        //Renderer rend = countryObj.GetComponent<Renderer>();
-        //if (rend != null)
-        //    rend.material.color = MainPlayerController.GetPlayerColor(playerID);
     }
+
+    
 
     private Country FindCountryByTag(string tag)
     {
