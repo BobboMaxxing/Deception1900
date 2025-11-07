@@ -66,7 +66,6 @@ public class MainUnitManager : NetworkBehaviour
             unit.RpcInitialize(playerID, playerColor);
         }
 
-        // Original color logic: just update country renderer directly
         RpcUpdateCountryOwnership(countryName, playerColor);
     }
     #endregion
@@ -93,33 +92,94 @@ public class MainUnitManager : NetworkBehaviour
             GameObject countryObj = GameObject.Find(countryName);
             if (countryObj == null) continue;
 
-            for (int i = 0; i < units.Count; i++)
+            // === 1. Resolve support strength ===
+            Dictionary<int, int> supportStrength = new Dictionary<int, int>();
+            foreach (MainUnit unit in units)
             {
-                MainUnit unit = units[i];
-                Vector3 basePos = countryObj.transform.position;
-                Vector3 offset = GetSpawnOffset(i, units.Count);
-                Vector3 targetPos = new Vector3(basePos.x + offset.x, unit.transform.position.y, basePos.z + offset.z);
-
-                unit.currentCountry = countryName;
-                unit.RpcMoveTo(targetPos);
+                int baseStrength = 1;
+                if (unit.currentOrder.orderType == UnitOrderType.Support && unit.currentOrder.supportedUnit != null)
+                {
+                    if (unit.currentOrder.supportedUnit.currentOrder != null &&
+                        unit.currentOrder.supportedUnit.currentOrder.targetCountry == countryName)
+                    {
+                        int supportedOwner = unit.currentOrder.supportedUnit.ownerID;
+                        if (!supportStrength.ContainsKey(supportedOwner))
+                            supportStrength[supportedOwner] = 0;
+                        supportStrength[supportedOwner] += 1;
+                    }
+                }
             }
 
-            // Determine the winner once
-            int winnerID = GetDominantOwner(units);
+            // === 2. Calculate each army’s total strength ===
+            Dictionary<int, int> totalStrength = new Dictionary<int, int>();
+            foreach (MainUnit unit in units)
+            {
+                if (!totalStrength.ContainsKey(unit.ownerID))
+                    totalStrength[unit.ownerID] = 1;
+                else
+                    totalStrength[unit.ownerID] += 1;
+            }
 
-            // Placeholder for future actions:
-            // TODO: Handle Lose action
-            // TODO: Handle Bounce action
-            // TODO: Handle Defens action
+            // Add supports
+            foreach (var kv in supportStrength)
+            {
+                if (!totalStrength.ContainsKey(kv.Key))
+                    totalStrength[kv.Key] = kv.Value + 1;
+                else
+                    totalStrength[kv.Key] += kv.Value;
+            }
 
-            // Update server-side ownership
-            Country countryComp = countryObj.GetComponent<Country>();
-            if (countryComp != null)
-                countryComp.SetOwner(winnerID);
+            // === 3. Determine strongest owner ===
+            int maxStrength = 0;
+            int winnerID = -1;
+            bool isBounce = false;
+            foreach (var kv in totalStrength)
+            {
+                if (kv.Value > maxStrength)
+                {
+                    maxStrength = kv.Value;
+                    winnerID = kv.Key;
+                    isBounce = false;
+                }
+                else if (kv.Value == maxStrength)
+                {
+                    // Tie -> bounce (nobody moves)
+                    isBounce = true;
+                }
+            }
 
-            // Update visuals on clients
-            Color winnerColor = units.Find(u => u.ownerID == winnerID).playerColor;
-            RpcUpdateCountryOwnership(countryName, winnerColor);
+            // === 4. Apply results ===
+            if (isBounce)
+            {
+                // Everyone stays put (no ownership change)
+                Debug.Log($"[Server] Bounce at {countryName}");
+                foreach (MainUnit unit in units)
+                    unit.RpcMoveTo(unit.transform.position); // stay in place
+            }
+            else
+            {
+                // Winner moves in
+                Vector3 basePos = countryObj.transform.position;
+                List<MainUnit> winningUnits = units.FindAll(u => u.ownerID == winnerID);
+                for (int i = 0; i < winningUnits.Count; i++)
+                {
+                    MainUnit unit = winningUnits[i];
+                    Vector3 offset = GetSpawnOffset(i, winningUnits.Count);
+                    Vector3 targetPos = new Vector3(basePos.x + offset.x, unit.transform.position.y, basePos.z + offset.z);
+                    unit.currentCountry = countryName;
+                    unit.RpcMoveTo(targetPos);
+                }
+
+                // Losers get removed or pushed back (optional later)
+                Debug.Log($"[Server] Player {winnerID} wins {countryName}");
+
+                Country countryComp = countryObj.GetComponent<Country>();
+                if (countryComp != null)
+                    countryComp.SetOwner(winnerID);
+
+                Color winnerColor = winningUnits[0].playerColor;
+                RpcUpdateCountryOwnership(countryName, winnerColor);
+            }
         }
 
         foreach (var player in MainPlayerController.allPlayers)
