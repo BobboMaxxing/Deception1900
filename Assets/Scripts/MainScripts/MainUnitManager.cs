@@ -92,44 +92,33 @@ public class MainUnitManager : NetworkBehaviour
             GameObject countryObj = GameObject.Find(countryName);
             if (countryObj == null) continue;
 
-            // === 1. Resolve support strength ===
-            Dictionary<int, int> supportStrength = new Dictionary<int, int>();
-            foreach (MainUnit unit in units)
-            {
-                int baseStrength = 1;
-                if (unit.currentOrder.orderType == UnitOrderType.Support && unit.currentOrder.supportedUnit != null)
-                {
-                    if (unit.currentOrder.supportedUnit.currentOrder != null &&
-                        unit.currentOrder.supportedUnit.currentOrder.targetCountry == countryName)
-                    {
-                        int supportedOwner = unit.currentOrder.supportedUnit.ownerID;
-                        if (!supportStrength.ContainsKey(supportedOwner))
-                            supportStrength[supportedOwner] = 0;
-                        supportStrength[supportedOwner] += 1;
-                    }
-                }
-            }
-
-            // === 2. Calculate each army’s total strength ===
             Dictionary<int, int> totalStrength = new Dictionary<int, int>();
-            foreach (MainUnit unit in units)
+            foreach (MainUnit mover in units)
             {
-                if (!totalStrength.ContainsKey(unit.ownerID))
-                    totalStrength[unit.ownerID] = 1;
+                if (!totalStrength.ContainsKey(mover.ownerID))
+                    totalStrength[mover.ownerID] = 1;
                 else
-                    totalStrength[unit.ownerID] += 1;
+                    totalStrength[mover.ownerID] += 1;
             }
 
-            // Add supports
-            foreach (var kv in supportStrength)
+            foreach (MainUnit supporter in allUnits)
             {
-                if (!totalStrength.ContainsKey(kv.Key))
-                    totalStrength[kv.Key] = kv.Value + 1;
-                else
-                    totalStrength[kv.Key] += kv.Value;
+                if (supporter.currentOrder == null) continue;
+                if (supporter.currentOrder.orderType != UnitOrderType.Support) continue;
+                if (supporter.currentOrder.targetCountry != countryName) continue;
+
+                MainUnit supported = supporter.currentOrder.supportedUnit;
+                if (supported == null || supported.currentOrder == null) continue;
+                if (supported.currentOrder.targetCountry != countryName) continue;
+
+                int supportedOwner = supported.ownerID;
+                if (!totalStrength.ContainsKey(supportedOwner))
+                    totalStrength[supportedOwner] = 0;
+                totalStrength[supportedOwner] += 1;
+
+                Debug.Log($"[Support] {supporter.name} adds +1 to Player {supportedOwner} for {countryName}");
             }
 
-            // === 3. Determine strongest owner ===
             int maxStrength = 0;
             int winnerID = -1;
             bool isBounce = false;
@@ -143,34 +132,32 @@ public class MainUnitManager : NetworkBehaviour
                 }
                 else if (kv.Value == maxStrength)
                 {
-                    // Tie -> bounce (nobody moves)
                     isBounce = true;
                 }
             }
 
-            // === 4. Apply results ===
             if (isBounce)
             {
-                // Everyone stays put (no ownership change)
                 Debug.Log($"[Server] Bounce at {countryName}");
                 foreach (MainUnit unit in units)
-                    unit.RpcMoveTo(unit.transform.position); // stay in place
+                    unit.RpcMoveTo(unit.transform.position);
             }
             else
             {
-                // Winner moves in
                 Vector3 basePos = countryObj.transform.position;
                 List<MainUnit> winningUnits = units.FindAll(u => u.ownerID == winnerID);
                 for (int i = 0; i < winningUnits.Count; i++)
                 {
                     MainUnit unit = winningUnits[i];
+                    if (unit.currentOrder != null && unit.currentOrder.orderType == UnitOrderType.Support)
+                        continue;
+
                     Vector3 offset = GetSpawnOffset(i, winningUnits.Count);
                     Vector3 targetPos = new Vector3(basePos.x + offset.x, unit.transform.position.y, basePos.z + offset.z);
                     unit.currentCountry = countryName;
                     unit.RpcMoveTo(targetPos);
                 }
 
-                // Losers get removed or pushed back (optional later)
                 Debug.Log($"[Server] Player {winnerID} wins {countryName}");
 
                 Country countryComp = countryObj.GetComponent<Country>();
@@ -184,30 +171,6 @@ public class MainUnitManager : NetworkBehaviour
 
         foreach (var player in MainPlayerController.allPlayers)
             player.RpcResetReady();
-    }
-
-    private int GetDominantOwner(List<MainUnit> units)
-    {
-        Dictionary<int, int> counts = new Dictionary<int, int>();
-        foreach (var u in units)
-        {
-            if (!counts.ContainsKey(u.ownerID))
-                counts[u.ownerID] = 0;
-            counts[u.ownerID]++;
-        }
-
-        int bestOwner = -1;
-        int maxCount = 0;
-        foreach (var kv in counts)
-        {
-            if (kv.Value > maxCount)
-            {
-                maxCount = kv.Value;
-                bestOwner = kv.Key;
-            }
-        }
-
-        return bestOwner;
     }
     #endregion
 

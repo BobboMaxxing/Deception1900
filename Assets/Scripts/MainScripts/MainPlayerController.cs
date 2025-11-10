@@ -299,22 +299,74 @@ public class MainPlayerController : NetworkBehaviour
         if (!Input.GetMouseButtonDown(0)) return;
 
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            MainUnit clickedUnit = hit.collider.GetComponent<MainUnit>();
-            if (clickedUnit != null && clickedUnit.ownerID == playerID)
-            {
-                selectedUnit = clickedUnit;
-                ShowMoveButtons(true);
-            }
-            else if (selectedUnit != null)
-            {
-                Vector3 targetPos = hit.point;
-                selectedUnit.ShowLocalMoveLine(targetPos);
+        if (!Physics.Raycast(ray, out RaycastHit hit)) return;
 
-                CmdMoveUnit(selectedUnit.netId, hit.collider.name);
-                selectedUnit = null;
+        MainUnit clickedUnit = hit.collider.GetComponent<MainUnit>();
+
+        if (clickedUnit != null && clickedUnit.ownerID == playerID)
+        {
+            selectedUnit = clickedUnit;
+            ShowMoveButtons(true);
+            Debug.Log($"[Client] Selected unit: {clickedUnit.name}");
+            return;
+        }
+
+        if (selectedUnit != null)
+        {
+            bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+            if (isShiftHeld)
+            {
+                MainUnit targetUnit = hit.collider.GetComponent<MainUnit>();
+                string targetCountry = null;
+
+                if (targetUnit != null)
+                {
+                    targetCountry = targetUnit.currentOrder != null
+                        ? targetUnit.currentOrder.targetCountry
+                        : targetUnit.currentCountry;
+
+                    Debug.Log($"[Client] Support order: {selectedUnit.name} supports {targetUnit.name} -> {targetCountry}");
+                    CmdSupportUnit(selectedUnit.netId, targetUnit.netId, targetCountry);
+                }
+                else
+                {
+                    Country country = hit.collider.GetComponent<Country>();
+                    if (country != null)
+                    {
+                        targetCountry = country.name;
+
+                        MainUnit movingUnit = FindUnitTargetingCountry(targetCountry, playerID);
+                        if (movingUnit != null)
+                        {
+                            Debug.Log($"[Client] Support order: {selectedUnit.name} supports {movingUnit.name} -> {targetCountry}");
+                            CmdSupportUnit(selectedUnit.netId, movingUnit.netId, targetCountry);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"[Client] No friendly unit found moving into {targetCountry} to support.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("[Client] No valid unit or country to support at target click.");
+                    }
+                }
             }
+            else
+            {
+                GameObject countryObj = GameObject.Find(hit.collider.name);
+                if (countryObj != null)
+                {
+                    Vector3 targetPos = countryObj.transform.position;
+                    selectedUnit.ShowLocalMoveLine(targetPos);
+                    CmdMoveUnit(selectedUnit.netId, countryObj.name);
+                    Debug.Log($"[Client] Move order: {selectedUnit.name} -> {countryObj.name}");
+                }
+            }
+
+            selectedUnit = null;
+            ShowMoveButtons(false);
         }
     }
 
@@ -349,6 +401,41 @@ public class MainPlayerController : NetworkBehaviour
                 targetPosition = targetPos
             };
         }
+    }
+    [Command]
+    private void CmdSupportUnit(uint supporterNetId, uint supportedNetId, string supportTargetCountry)
+    {
+        if (!NetworkServer.spawned.TryGetValue(supporterNetId, out NetworkIdentity supId)) return;
+        if (!NetworkServer.spawned.TryGetValue(supportedNetId, out NetworkIdentity targetId)) return;
+
+        MainUnit supporter = supId.GetComponent<MainUnit>();
+        MainUnit supported = targetId.GetComponent<MainUnit>();
+        if (supporter == null || supported == null) return;
+        if (supporter.ownerID != playerID) return;
+
+        supporter.currentOrder = new PlayerUnitOrder
+        {
+            orderType = UnitOrderType.Support,
+            supportedUnit = supported,
+            targetCountry = supportTargetCountry
+        };
+
+        Debug.Log($"[Server] Player {playerID}: {supporter.name} SUPPORT {supported.name} -> {supportTargetCountry}");
+    }
+
+    private MainUnit FindUnitTargetingCountry(string targetCountry, int ownerId)
+    {
+        foreach (MainUnit unit in MainUnitManager.Instance.GetAllUnits())
+        {
+            if (unit.ownerID == ownerId &&
+                unit.currentOrder != null &&
+                unit.currentOrder.orderType == UnitOrderType.Move &&
+                unit.currentOrder.targetCountry == targetCountry)
+            {
+                return unit;
+            }
+        }
+        return null;
     }
 
     [Command]
