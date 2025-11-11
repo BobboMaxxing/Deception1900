@@ -98,7 +98,7 @@ public class MainPlayerController : NetworkBehaviour
             { 
                 Debug.LogWarning($"Country {hit.collider.name} cannot be selected."); return;
             }
-            pendingCountry = hit.collider.tag; // Use unique tag
+            pendingCountry = hit.collider.tag;
             selectedCountryText?.SetText("Selected: " + hit.collider.name); 
             confirmButton?.gameObject.SetActive(true); 
             cancelButton?.gameObject.SetActive(true);

@@ -1,6 +1,7 @@
 using Mirror;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class MainGameManager : NetworkBehaviour
 {
@@ -15,6 +16,7 @@ public class MainGameManager : NetworkBehaviour
     [Header("UI")]
     public TMP_Text seasonText;
     public TMP_Text yearText;
+    public TMP_Text winText; // Add a text element in UI for win message
 
     void Awake() => Instance = this;
     void Start() => UpdateSeasonUI();
@@ -44,5 +46,63 @@ public class MainGameManager : NetworkBehaviour
     {
         if (seasonText != null) seasonText.text = $"Season: {currentSeason}";
         if (yearText != null) yearText.text = $"Year: {currentYear}";
+    }
+
+    // -------------------------------
+    // Supply Center & Win Check Logic
+    // -------------------------------
+
+    [Server]
+    public void CheckWinConditionServer()
+    {
+        Country[] allCountries = GameObject.FindObjectsOfType<Country>();
+        List<Country> supplyCenters = new List<Country>();
+
+        foreach (var country in allCountries)
+        {
+            if (country.isSupplyCenter)
+                supplyCenters.Add(country);
+        }
+
+        if (supplyCenters.Count == 0)
+        {
+            Debug.LogWarning("[GameManager] No supply centers found.");
+            return;
+        }
+
+        // Count ownership
+        Dictionary<int, int> ownershipCounts = new Dictionary<int, int>();
+        foreach (var c in supplyCenters)
+        {
+            if (c.ownerID == -1) continue; // unowned
+            if (!ownershipCounts.ContainsKey(c.ownerID))
+                ownershipCounts[c.ownerID] = 0;
+            ownershipCounts[c.ownerID]++;
+        }
+
+        int totalCenters = supplyCenters.Count;
+        float required = totalCenters * 0.75f;
+
+        foreach (var kvp in ownershipCounts)
+        {
+            int playerId = kvp.Key;
+            int owned = kvp.Value;
+            if (owned >= required)
+            {
+                Debug.Log($"[Server] Player {playerId} wins with {owned}/{totalCenters} supply centers!");
+                RpcShowWinText($"Player {playerId} Wins!\nOwned {owned}/{totalCenters} supply centers.");
+                return;
+            }
+        }
+    }
+
+    [ClientRpc]
+    private void RpcShowWinText(string message)
+    {
+        if (winText != null)
+        {
+            winText.text = message;
+            winText.gameObject.SetActive(true);
+        }
     }
 }
