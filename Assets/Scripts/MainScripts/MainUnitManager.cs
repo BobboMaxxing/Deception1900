@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MainUnitManager : NetworkBehaviour
 {
+    private Dictionary<string, int> countrySpawnIndices = new Dictionary<string, int>();
+
     public static MainUnitManager Instance;
 
     [Tooltip("Prefab must be in the NetworkManager spawnable prefabs list")]
@@ -22,9 +24,8 @@ public class MainUnitManager : NetworkBehaviour
 
     #region Unit Spawning (Server Only)
     [Server]
-    public void SpawnUnitsForCountryServer(string countryName, int playerID, Color playerColor, int count)
+    public GameObject SpawnUnitsForCountryServer(string countryName, int playerID, Color playerColor, int count)
     {
-        Debug.Log("Spawning units for player " + playerID);
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         List<Transform> validSpawns = new List<Transform>();
         foreach (var sp in spawnPoints)
@@ -37,8 +38,10 @@ public class MainUnitManager : NetworkBehaviour
         if (validSpawns.Count == 0)
         {
             Debug.LogWarning($"[MainUnitManager] No spawn points found for country '{countryName}'");
-            return;
+            return null;
         }
+
+        GameObject lastSpawnedUnit = null;
 
         for (int i = 0; i < count; i++)
         {
@@ -60,14 +63,16 @@ public class MainUnitManager : NetworkBehaviour
             unit.currentCountry = countryName;
 
             NetworkServer.Spawn(unitObj);
-
             allUnits.Add(unit);
-
             unit.RpcInitialize(playerID, playerColor);
+
+            lastSpawnedUnit = unitObj;
         }
 
         RpcUpdateCountryOwnership(countryName, playerColor);
+        return lastSpawnedUnit;
     }
+
     #endregion
 
     #region Turn Execution (Server Only)

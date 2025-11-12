@@ -43,7 +43,6 @@ public class MainUnit : NetworkBehaviour
     {
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
 
-        // Hide local line when server moves the unit
         if (lineRenderer != null) lineRenderer.enabled = false;
 
         moveCoroutine = StartCoroutine(MoveToPosition(target));

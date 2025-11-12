@@ -152,7 +152,8 @@ Transform:
   m_LocalPosition: {x: -5.0299997, y: 1, z: 1.7400007}
   m_LocalScale: {x: 20, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1000802164}
   m_Father: {fileID: 1674590456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &41273965
@@ -179,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: "gr\xF6n"
+  countryName: Nothing (2)
   ownerID: -1
   isStarterCountry: 0
   isSupplyCenter: 1
@@ -410,6 +411,96 @@ Transform:
   - {fileID: 1061403097}
   m_Father: {fileID: 1566583147}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &157387418
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 157387419}
+  - component: {fileID: 157387420}
+  m_Layer: 6
+  m_Name: SpawnPointGreen
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &157387419
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157387418}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.017, y: 1.2, z: -0.146}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1446173243}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &157387420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157387418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Nothing (1)
+--- !u!1 &160621077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 160621078}
+  - component: {fileID: 160621079}
+  m_Layer: 6
+  m_Name: SpawnPointGreen
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &160621078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160621077}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.036, y: 1.2, z: 0.075}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1335687190}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &160621079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160621077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Nothing (6)
 --- !u!1 &173779392
 GameObject:
   m_ObjectHideFlags: 0
@@ -1107,7 +1198,7 @@ MonoBehaviour:
   countryName: "r\xF6d"
   ownerID: -1
   isStarterCountry: 1
-  isSupplyCenter: 1
+  isSupplyCenter: 0
 --- !u!65 &424179401
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2120,6 +2211,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1000802163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1000802164}
+  - component: {fileID: 1000802165}
+  m_Layer: 6
+  m_Name: SpawnPointGreen
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1000802164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000802163}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.077, y: 1.2, z: -0.168}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 41273964}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1000802165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000802163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Nothing (2)
 --- !u!1 &1019280740
 GameObject:
   m_ObjectHideFlags: 0
@@ -2394,7 +2530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: "gr\xF6n"
+  countryName: Nothing (5)
   ownerID: -1
   isStarterCountry: 1
   isSupplyCenter: 0
@@ -2555,7 +2691,7 @@ MonoBehaviour:
   countryName: "bl\xE5"
   ownerID: -1
   isStarterCountry: 1
-  isSupplyCenter: 1
+  isSupplyCenter: 0
 --- !u!23 &1172396119
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2811,7 +2947,8 @@ Transform:
   m_LocalPosition: {x: 15.400002, y: 1, z: -19.519999}
   m_LocalScale: {x: 20, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 160621078}
   m_Father: {fileID: 1674590456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1335687191
@@ -2838,7 +2975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: "gr\xF6n"
+  countryName: Nothing (6)
   ownerID: -1
   isStarterCountry: 0
   isSupplyCenter: 1
@@ -3130,7 +3267,8 @@ Transform:
   m_LocalPosition: {x: 15.310001, y: 1, z: 22.38}
   m_LocalScale: {x: 20, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 157387419}
   m_Father: {fileID: 1674590456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1446173244
@@ -3157,7 +3295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: "gr\xF6n"
+  countryName: Nothing (1)
   ownerID: -1
   isStarterCountry: 0
   isSupplyCenter: 1
@@ -4055,7 +4193,7 @@ MonoBehaviour:
   countryName: "gr\xF6n"
   ownerID: -1
   isStarterCountry: 1
-  isSupplyCenter: 1
+  isSupplyCenter: 0
 --- !u!65 &1963752701
 BoxCollider:
   m_ObjectHideFlags: 0

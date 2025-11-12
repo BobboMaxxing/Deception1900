@@ -83,6 +83,12 @@ public class MainPlayerController : NetworkBehaviour
 
     void Update()
     {
+        if (MainGameManager.Instance != null && MainGameManager.Instance.IsPlayerBuilding(playerID))
+        {
+            canIssueOrders = false;
+            return;
+        }
+
         if (!hasChosenCountry && isLocalPlayer) HandleCountrySelection();
         if (canIssueOrders && isLocalPlayer) HandleUnitSelection();
     }
@@ -550,6 +556,66 @@ public class MainPlayerController : NetworkBehaviour
         cancelButton = cancelButtonRef;
         confirmMoveButton = confirmMoveButtonRef;
         cancelMoveButton = cancelMoveButtonRef;
+    }
+    #endregion
+
+    #region NewUnitSpawning
+    public void StartBuildPhase(int buildCount)
+    {
+        if (!isLocalPlayer) return;
+
+        moveStatusText?.SetText($"You gained {buildCount} new supply center(s)! Click owned supply centers to build.");
+        canIssueOrders = false;
+        StartCoroutine(HandleBuildSelection(buildCount));
+    }
+
+    private bool isProcessingClick = false;
+
+    private IEnumerator HandleBuildSelection(int remainingBuilds)
+    {
+        while (remainingBuilds > 0)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    Country clicked = hit.collider.GetComponent<Country>();
+                    if (clicked != null && clicked.ownerID == playerID && clicked.isSupplyCenter)
+                    {
+                        CmdRequestBuildAt(clicked.tag);
+                        remainingBuilds--; 
+                    }
+                }
+            }
+            yield return null;
+        }
+
+        moveStatusText?.SetText("All builds completed.");
+        canIssueOrders = true;
+
+        CmdFinishBuildPhase();
+    }
+
+    [Command]
+    private void CmdRequestBuildAt(string countryTag)
+    {
+        MainGameManager.Instance.ServerTrySpawnUnit(playerID, countryTag, playerColor, connectionToClient);
+    }
+
+
+    [TargetRpc]
+    private void TargetSetupLocalUnit(NetworkConnection target, GameObject unitObj, string countryName)
+    {
+        unitObj?.GetComponent<MainUnit>()?.SetupLocalVisuals();
+
+        moveStatusText?.SetText($"Built unit at {countryName}");
+    }
+
+    [Command]
+    private void CmdFinishBuildPhase()
+    {
+        MainGameManager.Instance.FinishBuildPhaseForPlayer(playerID);
     }
     #endregion
 }
