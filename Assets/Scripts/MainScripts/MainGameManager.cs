@@ -164,11 +164,12 @@ public class MainGameManager : NetworkBehaviour
         MainPlayerController player = FindPlayerById(playerId);
         if (player != null && player.connectionToClient != null)
         {
-            player.StartBuildPhase(buildCount);
+            Debug.Log($"[Server] Sending build phase start to Player {playerId} ({buildCount} builds).");
+            player.TargetStartBuildPhase(player.connectionToClient, buildCount);
         }
         else
         {
-            Debug.LogError($"Cannot prompt build for player {playerId}, connection is null!");
+            Debug.LogError($"[Server] Cannot prompt build for player {playerId} — connection is null or player missing.");
         }
     }
 

@@ -406,8 +406,12 @@ public class MainPlayerController : NetworkBehaviour
                 targetCountry = targetCountry,
                 targetPosition = targetPos
             };
+
+            if (isLocalPlayer)
+                unit.ShowLocalMoveLine(targetPos);
         }
     }
+
     [Command]
     private void CmdSupportUnit(uint supporterNetId, uint supportedNetId, string supportTargetCountry)
     {
@@ -560,12 +564,21 @@ public class MainPlayerController : NetworkBehaviour
     #endregion
 
     #region NewUnitSpawning
+
+    [TargetRpc]
+    public void TargetStartBuildPhase(NetworkConnection target, int buildCount)
+    {
+        Debug.Log($"[Client] TargetStartBuildPhase received. Build count: {buildCount}");
+        StartBuildPhase(buildCount);
+        Debug.Log($"[Client] TargetStartBuildPhase running on object with playerID={playerID}, isLocalPlayer={isLocalPlayer}, connectionToServer={connectionToServer != null}");
+
+    }
     public void StartBuildPhase(int buildCount)
     {
-        if (!isLocalPlayer) return;
-
         moveStatusText?.SetText($"You gained {buildCount} new supply center(s)! Click owned supply centers to build.");
         canIssueOrders = false;
+
+        StopAllCoroutines();
         StartCoroutine(HandleBuildSelection(buildCount));
     }
 
@@ -573,6 +586,8 @@ public class MainPlayerController : NetworkBehaviour
 
     private IEnumerator HandleBuildSelection(int remainingBuilds)
     {
+        Debug.Log($"[Client {playerID}] Starting HandleBuildSelection with {remainingBuilds} builds. isLocalPlayer={isLocalPlayer}");
+
         while (remainingBuilds > 0)
         {
             if (Input.GetMouseButtonDown(0))
@@ -581,35 +596,46 @@ public class MainPlayerController : NetworkBehaviour
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     Country clicked = hit.collider.GetComponent<Country>();
-                    if (clicked != null && clicked.ownerID == playerID && clicked.isSupplyCenter)
+                    Debug.Log("Build raycast hit");
+
+                    if (clicked != null && clicked.isSupplyCenter)
                     {
-                        CmdRequestBuildAt(clicked.tag);
-                        remainingBuilds--; 
+                        Debug.Log($"[Client {playerID}] clicked {clicked.name}, sending build request (ownerID={clicked.ownerID})");
+                        RequestBuild(clicked.tag);
+                        remainingBuilds--;
+                    }
+                    else
+                    {
+                        Debug.Log("Clicked object not a supply center or missing Country component.");
                     }
                 }
             }
             yield return null;
         }
 
-        moveStatusText?.SetText("All builds completed.");
-        canIssueOrders = true;
 
-        CmdFinishBuildPhase();
+        BuildPhaseFinishedLocal();
+        if (isLocalPlayer)
+            CmdFinishBuildPhase();
+    }
+
+    private void BuildPhaseFinishedLocal()
+    {
+        canIssueOrders = true;
+        moveStatusText?.SetText("Build phase complete.");
+    }
+
+    private void RequestBuild(string countryTag)
+    {
+        if (!isLocalPlayer) return;
+        CmdRequestBuildAt(countryTag, playerColor);
     }
 
     [Command]
-    private void CmdRequestBuildAt(string countryTag)
+    private void CmdRequestBuildAt(string countryTag, Color color)
     {
-        MainGameManager.Instance.ServerTrySpawnUnit(playerID, countryTag, playerColor, connectionToClient);
-    }
-
-
-    [TargetRpc]
-    private void TargetSetupLocalUnit(NetworkConnection target, GameObject unitObj, string countryName)
-    {
-        unitObj?.GetComponent<MainUnit>()?.SetupLocalVisuals();
-
-        moveStatusText?.SetText($"Built unit at {countryName}");
+        MainGameManager.Instance.ServerTrySpawnUnit(playerID, countryTag, color, connectionToClient);
+        Debug.Log($"[Server] Player {playerID} building unit at {countryTag} with color {color}");
     }
 
     [Command]
