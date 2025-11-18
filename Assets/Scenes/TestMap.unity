@@ -184,6 +184,10 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 0
   isSupplyCenter: 1
+  adjacentCountries:
+  - {fileID: 604791699}
+  - {fileID: 1963752700}
+  - {fileID: 1097607251}
 --- !u!65 &41273967
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -565,6 +569,10 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 1
   isSupplyCenter: 0
+  adjacentCountries:
+  - {fileID: 1963752700}
+  - {fileID: 1446173245}
+  - {fileID: 604791699}
 --- !u!65 &173779396
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1072,6 +1080,10 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 0
   isSupplyCenter: 0
+  adjacentCountries:
+  - {fileID: 1963752700}
+  - {fileID: 1097607251}
+  - {fileID: 1335687192}
 --- !u!65 &411382158
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1199,6 +1211,9 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 1
   isSupplyCenter: 0
+  adjacentCountries:
+  - {fileID: 604791699}
+  - {fileID: 1446173245}
 --- !u!65 &424179401
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1946,6 +1961,10 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 0
   isSupplyCenter: 0
+  adjacentCountries:
+  - {fileID: 424179400}
+  - {fileID: 41273966}
+  - {fileID: 173779395}
 --- !u!65 &604791700
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2534,6 +2553,10 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 1
   isSupplyCenter: 0
+  adjacentCountries:
+  - {fileID: 1172396117}
+  - {fileID: 41273966}
+  - {fileID: 411382157}
 --- !u!65 &1097607252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2692,6 +2715,9 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 1
   isSupplyCenter: 0
+  adjacentCountries:
+  - {fileID: 1097607251}
+  - {fileID: 1335687192}
 --- !u!23 &1172396119
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2979,6 +3005,9 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 0
   isSupplyCenter: 1
+  adjacentCountries:
+  - {fileID: 1172396117}
+  - {fileID: 411382157}
 --- !u!65 &1335687193
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3299,6 +3328,9 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 0
   isSupplyCenter: 1
+  adjacentCountries:
+  - {fileID: 424179400}
+  - {fileID: 173779395}
 --- !u!65 &1446173246
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4194,6 +4226,10 @@ MonoBehaviour:
   ownerID: -1
   isStarterCountry: 1
   isSupplyCenter: 0
+  adjacentCountries:
+  - {fileID: 41273966}
+  - {fileID: 173779395}
+  - {fileID: 411382157}
 --- !u!65 &1963752701
 BoxCollider:
   m_ObjectHideFlags: 0

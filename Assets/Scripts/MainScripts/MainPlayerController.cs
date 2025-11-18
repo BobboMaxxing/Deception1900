@@ -364,8 +364,24 @@ public class MainPlayerController : NetworkBehaviour
                 GameObject countryObj = GameObject.Find(hit.collider.name);
                 if (countryObj != null)
                 {
+                    Country targetCountryComp = countryObj.GetComponent<Country>();
+                    Country fromCountryComp = GameObject.Find(selectedUnit.currentCountry)?.GetComponent<Country>();
+
+                    if (targetCountryComp == null || fromCountryComp == null)
+                    {
+                        Debug.LogWarning("Missing Country component, cannot move.");
+                        return;
+                    }
+
+                    if (!fromCountryComp.adjacentCountries.Contains(targetCountryComp))
+                    {
+                        Debug.Log($"[Client] Illegal move: {fromCountryComp.name} -> {targetCountryComp.name}. Not adjacent.");
+                        return;
+                    }
+
                     Vector3 targetPos = countryObj.transform.position;
                     selectedUnit.ShowLocalMoveLine(targetPos);
+
                     CmdMoveUnit(selectedUnit.netId, countryObj.name);
                     Debug.Log($"[Client] Move order: {selectedUnit.name} -> {countryObj.name}");
                 }
@@ -391,25 +407,38 @@ public class MainPlayerController : NetworkBehaviour
         moveStatusText?.SetText("Moves canceled — Plan again.");
         CmdSetReady(false);
     }
-
     [Command]
     private void CmdMoveUnit(uint unitNetId, string targetCountry)
     {
         if (!NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity)) return;
         MainUnit unit = identity.GetComponent<MainUnit>();
-        if (unit != null && unit.ownerID == playerID)
-        {
-            Vector3 targetPos = GameObject.Find(targetCountry).transform.position;
-            unit.currentOrder = new PlayerUnitOrder
-            {
-                orderType = UnitOrderType.Move,
-                targetCountry = targetCountry,
-                targetPosition = targetPos
-            };
 
-            if (isLocalPlayer)
-                unit.ShowLocalMoveLine(targetPos);
+        if (unit == null || unit.ownerID != playerID)
+            return;
+
+        Country fromCountry = GameObject.Find(unit.currentCountry)?.GetComponent<Country>();
+        Country toCountry = GameObject.Find(targetCountry)?.GetComponent<Country>();
+
+        if (fromCountry == null || toCountry == null)
+            return;
+
+        if (!fromCountry.adjacentCountries.Contains(toCountry))
+        {
+            Debug.LogWarning($"[Server] Illegal move: {fromCountry.name} -> {toCountry.name}. Not adjacent.");
+            return;
         }
+
+        Vector3 targetPos = toCountry.transform.position;
+
+        unit.currentOrder = new PlayerUnitOrder
+        {
+            orderType = UnitOrderType.Move,
+            targetCountry = targetCountry,
+            targetPosition = targetPos
+        };
+
+        if (isLocalPlayer)
+            unit.ShowLocalMoveLine(targetPos);
     }
 
     [Command]

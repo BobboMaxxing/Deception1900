@@ -1,5 +1,4 @@
-using UnityEngine;
-
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Country : MonoBehaviour
@@ -11,7 +10,15 @@ public class Country : MonoBehaviour
     [Header("Supply System")]
     public bool isSupplyCenter = false;
 
+    [Header("Adjacency List (drag neighboring countries here)")]
+    public List<Country> adjacentCountries = new List<Country>();
+
     public bool CanBeSelected() => isStarterCountry && ownerID == -1;
+
+    public bool IsAdjacentTo(Country target)
+    {
+        return adjacentCountries.Contains(target);
+    }
 
     public void SetOwner(int newOwnerID)
     {
