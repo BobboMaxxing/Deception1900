@@ -132,11 +132,18 @@ public class MainPlayerController : NetworkBehaviour
             return;
         }
 
+        List<Country> allCountries = countryComp.GetAllSelectableCountries();
+
+        foreach (var c in allCountries)
+        {
+            c.SetOwner(playerID);
+
+            if (!isServer)
+                CmdAssignCountryToPlayer(c.tag, playerID);
+        }
+
         chosenCountry = pendingCountry;
         hasChosenCountry = true;
-
-        CmdSetChosenCountry(chosenCountry);
-        CmdAssignCountryToPlayer(pendingCountry, playerID);
 
         confirmButton?.gameObject.SetActive(false);
         cancelButton?.gameObject.SetActive(false);
@@ -145,15 +152,24 @@ public class MainPlayerController : NetworkBehaviour
         AssignPlayerColorFromCountry();
         HighlightChosenCountryObjects();
 
-        if (!isServer)
+        int totalUnits = 3;
+        int countryCount = allCountries.Count;
+        int unitsPerCountry = Mathf.FloorToInt((float)totalUnits / countryCount);
+        int remainder = totalUnits % countryCount;
+
+        for (int i = 0; i < allCountries.Count; i++)
         {
-            CmdRequestSpawnUnitsServer(chosenCountry, playerID, playerColor, 3);
-            Debug.Log($"[Client {playerID}] Requesting server to spawn units for {countryObj.name}");
-        }
-        else
-        {
-            unitManager.SpawnUnitsForCountryServer(countryObj.name, playerID, playerColor, 3);
-            Debug.Log($"[Server] Spawned units for player {playerID}");
+            int unitsToSpawn = unitsPerCountry + (i < remainder ? 1 : 0); 
+            if (!isServer)
+            {
+                CmdRequestSpawnUnitsServer(allCountries[i].tag, playerID, playerColor, unitsToSpawn);
+                Debug.Log($"[Client {playerID}] Requesting {unitsToSpawn} units for {allCountries[i].name}");
+            }
+            else
+            {
+                unitManager.SpawnUnitsForCountryServer(allCountries[i].name, playerID, playerColor, unitsToSpawn);
+                Debug.Log($"[Server] Spawned {unitsToSpawn} units for player {playerID} in {allCountries[i].name}");
+            }
         }
     }
 
@@ -174,17 +190,14 @@ public class MainPlayerController : NetworkBehaviour
             return;
         }
 
-        if (countryComp.CanBeSelected()) 
+        if (countryComp.ownerID == -1)
         {
             countryComp.SetOwner(playerID);
             RpcUpdateCountryOwnership(countryTag, playerID);
             Debug.Log($"[Server] Assigned {countryTag} to player {playerID}");
         }
-        else
-        {
-            Debug.LogWarning($"[Server] {countryTag} already owned, cannot assign to {playerID}");
-        }
     }
+
 
     [ClientRpc]
     private void RpcUpdateCountryOwnership(string countryTag, int playerID)
