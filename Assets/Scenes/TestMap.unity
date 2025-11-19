@@ -506,6 +506,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Nothing (6)
+--- !u!1 &170704218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 170704219}
+  - component: {fileID: 170704220}
+  m_Layer: 6
+  m_Name: SpawnPointGreen
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &170704219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170704218}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.059, y: 1.2, z: -0.056}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 604791697}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &170704220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170704218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Nothing
 --- !u!1 &173779392
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,8 +1262,7 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 604791699}
   - {fileID: 1446173245}
-  starterSubCountries:
-  - {fileID: 1446173245}
+  starterSubCountries: []
 --- !u!65 &424179401
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1935,7 +1979,8 @@ Transform:
   m_LocalPosition: {x: -4.8599997, y: 1, z: 11.860001}
   m_LocalScale: {x: 20, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 170704219}
   m_Father: {fileID: 1674590456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &604791698
