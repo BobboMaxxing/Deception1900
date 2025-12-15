@@ -3029,6 +3029,34 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &713817362 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+  m_PrefabInstance: {fileID: 2022815788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &713817363 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+  m_PrefabInstance: {fileID: 2022815788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &713817364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713817362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: PolandReal
+  ownerID: -1
+  isStarterCountry: 0
+  isSupplyCenter: 1
+  adjacentCountries: []
+  starterSubCountries: []
 --- !u!1 &718729680
 GameObject:
   m_ObjectHideFlags: 0
@@ -3502,6 +3530,33 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1709378290324581762, guid: d199c7a234bc7ef44875663a0a6d37df, type: 3}
+--- !u!1 &886615071 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2308118288082286148, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+  m_PrefabInstance: {fileID: 2022815788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &886615073
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886615071}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -796080176884726461, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
 --- !u!1 &909470843 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
@@ -4463,24 +4518,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1577555481403046716, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
   m_PrefabInstance: {fileID: 1328846730}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1175002927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1175002919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countryName: MapEu.Russia
-  ownerID: -1
-  isStarterCountry: 1
-  isSupplyCenter: 0
-  adjacentCountries: []
-  starterSubCountries: []
 --- !u!1001 &1188488210
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5557,12 +5594,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 910673680}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2075623173}
     - targetCorrespondingSourceObject: {fileID: -8307184145222944406, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1175002923}
-    - targetCorrespondingSourceObject: {fileID: -8307184145222944406, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1175002927}
   m_SourcePrefab: {fileID: 100100000, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
 --- !u!1 &1341231980
 GameObject:
@@ -5679,6 +5716,7 @@ Transform:
   - {fileID: 1979568272}
   - {fileID: 1634309258}
   - {fileID: 1730688576}
+  - {fileID: 713817363}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1349704945
@@ -8646,6 +8684,101 @@ MonoBehaviour:
   isSupplyCenter: 0
   adjacentCountries: []
   starterSubCountries: []
+--- !u!1001 &2022815788
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1348907905}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_Name
+      value: PolandReal
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_TagString
+      value: Poland
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 713817364}
+    - targetCorrespondingSourceObject: {fileID: 2308118288082286148, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 886615073}
+  m_SourcePrefab: {fileID: 100100000, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
 --- !u!1001 &2032453992
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8814,6 +8947,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: MapEu.Uk+NorthIrland
+--- !u!1 &2075623172 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
+  m_PrefabInstance: {fileID: 1328846730}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2075623173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075623172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: MapEu.Russia
+  ownerID: -1
+  isStarterCountry: 1
+  isSupplyCenter: 0
+  adjacentCountries: []
+  starterSubCountries: []
 --- !u!1 &2101728162
 GameObject:
   m_ObjectHideFlags: 0
