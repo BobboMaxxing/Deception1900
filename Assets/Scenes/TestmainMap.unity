@@ -934,7 +934,7 @@ GameObject:
   - component: {fileID: 182070790}
   - component: {fileID: 182070791}
   m_Layer: 6
-  m_Name: MapEu.Russia2Spawn
+  m_Name: Russia3
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -967,7 +967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Russia3
+  countryName: Russia3
 --- !u!1001 &182188880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4077,7 +4077,7 @@ GameObject:
   - component: {fileID: 842307356}
   - component: {fileID: 842307357}
   m_Layer: 6
-  m_Name: MapEu.Germany
+  m_Name: Germany
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4110,7 +4110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Germany
+  countryName: Germany
 --- !u!114 &854585239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6054,7 +6054,7 @@ GameObject:
   - component: {fileID: 1214045840}
   - component: {fileID: 1214045841}
   m_Layer: 6
-  m_Name: MapEu.Italy
+  m_Name: Italy
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6087,7 +6087,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Italy
+  countryName: Italy
 --- !u!1 &1217525963
 GameObject:
   m_ObjectHideFlags: 0
@@ -6766,7 +6766,7 @@ GameObject:
   - component: {fileID: 1341231981}
   - component: {fileID: 1341231982}
   m_Layer: 6
-  m_Name: MapEu.Russia2Spawn
+  m_Name: Russia2
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6799,7 +6799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Russia2
+  countryName: Russia2
 --- !u!1 &1348907904
 GameObject:
   m_ObjectHideFlags: 0
@@ -7884,7 +7884,7 @@ GameObject:
   - component: {fileID: 1543276036}
   - component: {fileID: 1543276037}
   m_Layer: 6
-  m_Name: MapEu.Russia2Spawn
+  m_Name: Russia
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7917,7 +7917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Russia
+  countryName: Russia
 --- !u!1001 &1546094800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9615,7 +9615,7 @@ GameObject:
   - component: {fileID: 1859291964}
   - component: {fileID: 1859291965}
   m_Layer: 6
-  m_Name: MapEu.France+isl
+  m_Name: France
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9648,7 +9648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.France+isl
+  countryName: France
 --- !u!1001 &1864577981
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10870,7 +10870,7 @@ GameObject:
   - component: {fileID: 2035859111}
   - component: {fileID: 2035859112}
   m_Layer: 6
-  m_Name: MapEu.Uk+NorthIrland
+  m_Name: Uk+NorthIrland
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10903,7 +10903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Uk+NorthIrland
+  countryName: Uk+NorthIrland
 --- !u!1 &2044017562
 GameObject:
   m_ObjectHideFlags: 0

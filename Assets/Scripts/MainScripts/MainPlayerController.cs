@@ -195,7 +195,7 @@ public class MainPlayerController : NetworkBehaviour
             }
             else
             {
-                unitManager.SpawnUnitsForCountryServer(allCountries[i].name, playerID, playerColor, unitsToSpawn);
+                unitManager.SpawnUnitsForCountryServer(allCountries[i].tag, playerID, playerColor, unitsToSpawn);
                 Debug.Log($"[Server] Spawned {unitsToSpawn} units for player {playerID} in {allCountries[i].name}");
             }
         }
@@ -378,6 +378,30 @@ public class MainPlayerController : NetworkBehaviour
     #endregion
 
     #region Unit Orders
+    private Country FindCountryInHierarchy(GameObject obj)
+    {
+        if (obj == null) return null;
+
+        Country country = obj.GetComponent<Country>();
+        if (country != null) return country;
+
+        country = obj.GetComponentInParent<Country>();
+        if (country != null) return country;
+
+        country = obj.GetComponentInChildren<Country>();
+        if (country != null) return country;
+
+        return null;
+    }
+
+    private Country FindCountryByTagHierarchy(string tag)
+    {
+        GameObject obj = GameObject.FindWithTag(tag);
+        if (obj == null) return null;
+
+        return FindCountryInHierarchy(obj);
+    }
+
     void HandleUnitSelection()
     {
         if (!Input.GetMouseButtonDown(0)) return;
@@ -415,11 +439,11 @@ public class MainPlayerController : NetworkBehaviour
                 }
                 else
                 {
-                    Country country = GetCountryFromHit(hit);
+                    Country country = FindCountryInHierarchy(hit.collider.gameObject);
 
                     if (country != null)
                     {
-                        targetCountry = country.name;
+                        targetCountry = country.tag;
 
                         MainUnit movingUnit = FindUnitTargetingCountry(targetCountry, playerID);
                         if (movingUnit != null)
@@ -440,30 +464,30 @@ public class MainPlayerController : NetworkBehaviour
             }
             else
             {
-                GameObject countryObj = GameObject.Find(hit.collider.name);
-                if (countryObj != null)
+                Country targetCountryComp = FindCountryInHierarchy(hit.collider.gameObject);
+                Country fromCountryComp = FindCountryByTagHierarchy(selectedUnit.currentCountry); ;
+
+                if (targetCountryComp == null || fromCountryComp == null)
                 {
-                    Country targetCountryComp = countryObj.GetComponent<Country>();
-                    Country fromCountryComp = GameObject.Find(selectedUnit.currentCountry)?.GetComponent<Country>();
-
-                    if (targetCountryComp == null || fromCountryComp == null)
-                    {
-                        Debug.LogWarning("Missing Country component, cannot move.");
-                        return;
-                    }
-
-                    if (!fromCountryComp.adjacentCountries.Contains(targetCountryComp))
-                    {
-                        Debug.Log($"[Client] Illegal move: {fromCountryComp.name} -> {targetCountryComp.name}. Not adjacent.");
-                        return;
-                    }
-
-                    Vector3 targetPos = countryObj.transform.position;
-                    selectedUnit.ShowLocalMoveLine(targetPos);
-
-                    CmdMoveUnit(selectedUnit.netId, countryObj.name);
-                    Debug.Log($"[Client] Move order: {selectedUnit.name} -> {countryObj.name}");
+                    Debug.LogWarning("Missing Country component, cannot move.");
+                    selectedUnit = null;
+                    ShowMoveButtons(false);
+                    return;
                 }
+
+                if (!fromCountryComp.adjacentCountries.Contains(targetCountryComp))
+                {
+                    Debug.Log($"[Client] Illegal move: {fromCountryComp.name} -> {targetCountryComp.name}. Not adjacent.");
+                    selectedUnit = null;
+                    ShowMoveButtons(false);
+                    return;
+                }
+
+                Vector3 targetPos = targetCountryComp.transform.position;
+                selectedUnit.ShowLocalMoveLine(targetPos);
+
+                CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag);
+                Debug.Log($"[Client] Move order: {selectedUnit.name} -> {targetCountryComp.name}");
             }
 
             selectedUnit = null;
@@ -487,32 +511,24 @@ public class MainPlayerController : NetworkBehaviour
         CmdSetReady(false);
     }
     [Command]
-    private void CmdMoveUnit(uint unitNetId, string targetCountry)
+    private void CmdMoveUnit(uint unitNetId, string targetCountryTag)
     {
         if (!NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity)) return;
         MainUnit unit = identity.GetComponent<MainUnit>();
+        if (unit == null || unit.ownerID != playerID) return;
 
-        if (unit == null || unit.ownerID != playerID)
-            return;
+        Country fromCountry = FindCountryByTagHierarchy(unit.currentCountry);
+        Country toCountry = FindCountryByTagHierarchy(targetCountryTag);
 
-        Country fromCountry = GameObject.Find(unit.currentCountry)?.GetComponent<Country>();
-        Country toCountry = GameObject.Find(targetCountry)?.GetComponent<Country>();
-
-        if (fromCountry == null || toCountry == null)
-            return;
-
-        if (!fromCountry.adjacentCountries.Contains(toCountry))
-        {
-            Debug.LogWarning($"[Server] Illegal move: {fromCountry.name} -> {toCountry.name}. Not adjacent.");
-            return;
-        }
+        if (fromCountry == null || toCountry == null) return;
+        if (!fromCountry.adjacentCountries.Contains(toCountry)) return;
 
         Vector3 targetPos = toCountry.transform.position;
 
         unit.currentOrder = new PlayerUnitOrder
         {
             orderType = UnitOrderType.Move,
-            targetCountry = targetCountry,
+            targetCountry = targetCountryTag,
             targetPosition = targetPos
         };
 
