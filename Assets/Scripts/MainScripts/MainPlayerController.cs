@@ -92,6 +92,18 @@ public class MainPlayerController : NetworkBehaviour
         if (!hasChosenCountry && isLocalPlayer) HandleCountrySelection();
         if (canIssueOrders && isLocalPlayer) HandleUnitSelection();
     }
+
+    private Country GetCountryFromHit(RaycastHit hit)
+    {
+        return hit.collider.GetComponentInParent<Country>()
+            ?? hit.collider.GetComponentInChildren<Country>();
+    }
+
+    private MainUnit GetUnitFromHit(RaycastHit hit)
+    {
+        return hit.collider.GetComponentInParent<MainUnit>()
+            ?? hit.collider.GetComponentInChildren<MainUnit>();
+    }
     #endregion
 
     #region Country Selection
@@ -99,7 +111,7 @@ public class MainPlayerController : NetworkBehaviour
     {
         if (!Input.GetMouseButtonDown(0)) return; Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition); if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
         {
-            Country countryComp = hit.collider.GetComponent<Country>();
+            Country countryComp = GetCountryFromHit(hit);
             if (countryComp == null || !countryComp.CanBeSelected())
             { 
                 Debug.LogWarning($"Country {hit.collider.name} cannot be selected."); return;
@@ -320,7 +332,7 @@ public class MainPlayerController : NetworkBehaviour
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out RaycastHit hit)) return;
 
-        MainUnit clickedUnit = hit.collider.GetComponent<MainUnit>();
+        MainUnit clickedUnit = GetUnitFromHit(hit);
 
         if (clickedUnit != null && clickedUnit.ownerID == playerID)
         {
@@ -350,7 +362,8 @@ public class MainPlayerController : NetworkBehaviour
                 }
                 else
                 {
-                    Country country = hit.collider.GetComponent<Country>();
+                    Country country = GetCountryFromHit(hit);
+
                     if (country != null)
                     {
                         targetCountry = country.name;
@@ -637,7 +650,8 @@ public class MainPlayerController : NetworkBehaviour
                 Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    Country clicked = hit.collider.GetComponent<Country>();
+                    Country clicked = GetCountryFromHit(hit);
+
                     Debug.Log("Build raycast hit");
 
                     if (clicked != null && clicked.isSupplyCenter)

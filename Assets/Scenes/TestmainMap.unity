@@ -5334,8 +5334,16 @@ PrefabInstance:
       value: Germany
       objectReference: {fileID: 0}
     - target: {fileID: 3139767633578801239, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
+      propertyPath: m_Name
+      value: Germany
+      objectReference: {fileID: 0}
+    - target: {fileID: 3139767633578801239, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3139767633578801239, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
+      propertyPath: m_TagString
+      value: Germany
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6243,9 +6251,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Germany
   ownerID: -1
-  isStarterCountry: 0
+  isStarterCountry: 1
   isSupplyCenter: 0
   adjacentCountries: []
   starterSubCountries: []
