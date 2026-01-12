@@ -1,9 +1,10 @@
 ﻿using Mirror;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MainPlayerController : NetworkBehaviour
 {
@@ -107,44 +108,58 @@ public class MainPlayerController : NetworkBehaviour
     #endregion
 
     #region Country Selection
+
+    private Country pendingCountryComp;
+
     void HandleCountrySelection()
     {
-        if (!Input.GetMouseButtonDown(0)) return; Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition); if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+        if (!isLocalPlayer || Input.GetMouseButtonDown(0) == false) return;
+
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
         {
             Country countryComp = GetCountryFromHit(hit);
-            if (countryComp == null || !countryComp.CanBeSelected())
-            { 
-                Debug.LogWarning($"Country {hit.collider.name} cannot be selected."); return;
+            if (countryComp == null)
+            {
+                Debug.LogWarning($"Clicked object {hit.collider.name} has no Country component.");
+                return;
             }
-            pendingCountry = hit.collider.tag;
-            selectedCountryText?.SetText("Selected: " + hit.collider.name); 
-            confirmButton?.gameObject.SetActive(true); 
+
+            if (!countryComp.CanBeSelected())
+            {
+                Debug.LogWarning($"Country {countryComp.name} cannot be selected. ownerID={countryComp.ownerID}");
+                return;
+            }
+
+            pendingCountryComp = countryComp;
+            pendingCountry = countryComp.tag;
+
+            selectedCountryText?.SetText("Selected: " + countryComp.name);
+            confirmButton?.gameObject.SetActive(true);
             cancelButton?.gameObject.SetActive(true);
-        
-        } 
-    
+
+            Debug.Log($"[Client] Pending country selection: {countryComp.name}");
+        }
     }
 
     public void ConfirmCountryChoice()
     {
-        if (string.IsNullOrEmpty(pendingCountry))
-            return;
-
-        GameObject countryObj = GameObject.FindWithTag(pendingCountry);
-        if (countryObj == null)
+        if (pendingCountryComp == null)
         {
-            Debug.LogWarning($"Selected country with tag {pendingCountry} not found in scene!");
+            Debug.LogWarning("No country is pending selection.");
             return;
         }
 
-        Country countryComp = countryObj.GetComponent<Country>();
-        if (countryComp == null || !countryComp.CanBeSelected())
+        if (!pendingCountryComp.CanBeSelected())
         {
-            Debug.LogWarning($"Country {pendingCountry} cannot be selected.");
+            Debug.LogWarning($"Country {pendingCountryComp.name} cannot be selected at confirmation.");
             return;
         }
 
-        List<Country> allCountries = countryComp.GetAllSelectableCountries();
+        List<Country> allCountries = pendingCountryComp.GetAllSelectableCountries();
 
         foreach (var c in allCountries)
         {
@@ -154,12 +169,12 @@ public class MainPlayerController : NetworkBehaviour
                 CmdAssignCountryToPlayer(c.tag, playerID);
         }
 
-        chosenCountry = pendingCountry;
+        chosenCountry = pendingCountryComp.tag;
         hasChosenCountry = true;
 
         confirmButton?.gameObject.SetActive(false);
         cancelButton?.gameObject.SetActive(false);
-        selectedCountryText?.SetText("Chosen: " + countryObj.name);
+        selectedCountryText?.SetText("Chosen: " + pendingCountryComp.name);
 
         AssignPlayerColorFromCountry();
         HighlightChosenCountryObjects();
@@ -171,7 +186,8 @@ public class MainPlayerController : NetworkBehaviour
 
         for (int i = 0; i < allCountries.Count; i++)
         {
-            int unitsToSpawn = unitsPerCountry + (i < remainder ? 1 : 0); 
+            int unitsToSpawn = unitsPerCountry + (i < remainder ? 1 : 0);
+
             if (!isServer)
             {
                 CmdRequestSpawnUnitsServer(allCountries[i].tag, playerID, playerColor, unitsToSpawn);
@@ -183,6 +199,9 @@ public class MainPlayerController : NetworkBehaviour
                 Debug.Log($"[Server] Spawned {unitsToSpawn} units for player {playerID} in {allCountries[i].name}");
             }
         }
+
+        pendingCountryComp = null;
+        pendingCountry = "";
     }
 
     [Command]

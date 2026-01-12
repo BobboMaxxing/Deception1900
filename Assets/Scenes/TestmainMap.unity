@@ -860,6 +860,51 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1884365944458707393, guid: 208550b84fcb8884eb319d0f26c4c9c6, type: 3}
+--- !u!1 &182070789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 182070790}
+  - component: {fileID: 182070791}
+  m_Layer: 6
+  m_Name: MapEu.Russia2Spawn
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &182070790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182070789}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0.1, y: 2.7, z: 93.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1687318989}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &182070791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182070789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: MapEu.Russia3
 --- !u!1001 &182188880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1002,6 +1047,10 @@ PrefabInstance:
     - target: {fileID: -8686623521465530875, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -8686623521465530875, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
+      propertyPath: m_TagString
+      value: Uk+NorthIrland
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5790,6 +5839,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1543276036}
     - targetCorrespondingSourceObject: {fileID: 1577555481403046716, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 910673680}
@@ -5827,7 +5879,7 @@ Transform:
   m_GameObject: {fileID: 1341231980}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -26.1, y: 0, z: 139.6}
+  m_LocalPosition: {x: -26.1, y: 2.7, z: 139.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5845,7 +5897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Russia
+  countryName: MapEu.Russia2
 --- !u!1 &1348907904
 GameObject:
   m_ObjectHideFlags: 0
@@ -6232,7 +6284,7 @@ MonoBehaviour:
   isSupplyCenter: 0
   adjacentCountries: []
   starterSubCountries:
-  - {fileID: 0}
+  - {fileID: 2075623173}
   - {fileID: 1903568260}
 --- !u!1 &1481998392 stripped
 GameObject:
@@ -6678,6 +6730,51 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1115598374481442357, guid: efab04563ff85b2488ee6067f4cac4df, type: 3}
+--- !u!1 &1543276035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1543276036}
+  - component: {fileID: 1543276037}
+  m_Layer: 6
+  m_Name: MapEu.Russia2Spawn
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1543276036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543276035}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -81.3, y: 2.7, z: 109.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 454064454}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1543276037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543276035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: MapEu.Russia
 --- !u!1001 &1546094800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7617,6 +7714,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 527107853736939814, guid: 249a0f0da4fd9f840acab3860749cc99, type: 3}
+      propertyPath: m_TagString
+      value: Russia3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 249a0f0da4fd9f840acab3860749cc99, type: 3}
       propertyPath: m_Name
       value: MapEu.Russia3
@@ -7631,7 +7732,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 249a0f0da4fd9f840acab3860749cc99, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 182070790}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 249a0f0da4fd9f840acab3860749cc99, type: 3}
       insertIndex: -1
@@ -7747,6 +7851,10 @@ PrefabInstance:
     - target: {fileID: 683439938719794688, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 683439938719794688, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
+      propertyPath: m_TagString
+      value: France
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
       propertyPath: m_Name
@@ -8406,7 +8514,7 @@ MonoBehaviour:
   isSupplyCenter: 0
   adjacentCountries: []
   starterSubCountries:
-  - {fileID: 0}
+  - {fileID: 2075623173}
   - {fileID: 1467335333}
 --- !u!1001 &1942402413
 PrefabInstance:
@@ -9297,7 +9405,9 @@ MonoBehaviour:
   isStarterCountry: 1
   isSupplyCenter: 0
   adjacentCountries: []
-  starterSubCountries: []
+  starterSubCountries:
+  - {fileID: 1903568260}
+  - {fileID: 1467335333}
 --- !u!1 &2101728162
 GameObject:
   m_ObjectHideFlags: 0
