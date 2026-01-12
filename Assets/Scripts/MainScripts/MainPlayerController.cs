@@ -1,10 +1,12 @@
 ﻿using Mirror;
+using Mirror.BouncyCastle.Asn1.X509;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class MainPlayerController : NetworkBehaviour
 {
@@ -105,6 +107,25 @@ public class MainPlayerController : NetworkBehaviour
         return hit.collider.GetComponentInParent<MainUnit>()
             ?? hit.collider.GetComponentInChildren<MainUnit>();
     }
+    private Country GetCountryFromHitRecursive(RaycastHit hit)
+    {
+        if (hit.collider == null) return null;
+
+        Country country = hit.collider.GetComponent<Country>();
+        if (country != null) return country;
+
+        Transform parent = hit.collider.transform.parent;
+        while (parent != null)
+        {
+            country = parent.GetComponent<Country>();
+            if (country != null) return country;
+            parent = parent.parent;
+        }
+
+        country = hit.collider.GetComponentInChildren<Country>();
+        return country;
+    }
+
     #endregion
 
     #region Country Selection
@@ -121,7 +142,7 @@ public class MainPlayerController : NetworkBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
         {
-            Country countryComp = GetCountryFromHit(hit);
+            Country countryComp = GetCountryFromHitRecursive(hit);
             if (countryComp == null)
             {
                 Debug.LogWarning($"Clicked object {hit.collider.name} has no Country component.");
@@ -242,21 +263,31 @@ public class MainPlayerController : NetworkBehaviour
 
     }
 
-    
 
-    private Country FindCountryByTag(string tag)
+
+    private Country FindCountryByTagRecursive(string tag)
     {
         GameObject obj = GameObject.FindWithTag(tag);
-        if (obj != null) return obj.GetComponent<Country>();
+        if (obj == null) return null;
+
+        Country country = obj.GetComponent<Country>();
+        if (country != null) return country;
+
+        country = obj.GetComponentInChildren<Country>();
+        if (country != null) return country;
+
+        country = obj.GetComponentInParent<Country>();
+        if (country != null) return country;
+
         return null;
     }
 
     private IEnumerator WaitAndAssign(string tag, int playerID)
     {
-        while (FindCountryByTag(tag) == null)
+        while (FindCountryByTagRecursive(tag) == null)
             yield return null;
 
-        FindCountryByTag(tag).SetOwner(playerID);
+        FindCountryByTagRecursive(tag).SetOwner(playerID);
         Debug.Log($"[Server] Assigned {tag} to player {playerID} after waiting");
     }
 
@@ -345,7 +376,7 @@ public class MainPlayerController : NetworkBehaviour
                 break;
         }
 
-        float lightenFactor = 1.8f;
+        float lightenFactor = 110f;
         playerColor = new Color(
             Mathf.Clamp01(baseColor.r * lightenFactor),
             Mathf.Clamp01(baseColor.g * lightenFactor),
@@ -358,15 +389,15 @@ public class MainPlayerController : NetworkBehaviour
 
     void HighlightChosenCountryObjects()
     {
-        ClearHighlights();
-        GameObject[] objs = GameObject.FindGameObjectsWithTag(chosenCountry);
-        foreach (var obj in objs)
-        {
-            if (obj == null) continue;
-            SimpleHighlighter high = obj.GetComponent<SimpleHighlighter>() ?? obj.AddComponent<SimpleHighlighter>();
-            high.Highlight(highlightColor, highlightIntensity);
-            highlightedObjects.Add(obj);
-        }
+        //ClearHighlights();
+        //GameObject[] objs = GameObject.FindGameObjectsWithTag(chosenCountry);
+        //foreach (var obj in objs)
+        //{
+        //    if (obj == null) continue;
+        //    SimpleHighlighter high = obj.GetComponent<SimpleHighlighter>() ?? obj.AddComponent<SimpleHighlighter>();
+        //    high.Highlight(highlightColor, highlightIntensity);
+        //    highlightedObjects.Add(obj);
+        //}
     }
 
     public void ClearHighlights()
@@ -378,29 +409,10 @@ public class MainPlayerController : NetworkBehaviour
     #endregion
 
     #region Unit Orders
-    private Country FindCountryInHierarchy(GameObject obj)
-    {
-        if (obj == null) return null;
 
-        Country country = obj.GetComponent<Country>();
-        if (country != null) return country;
+   
 
-        country = obj.GetComponentInParent<Country>();
-        if (country != null) return country;
 
-        country = obj.GetComponentInChildren<Country>();
-        if (country != null) return country;
-
-        return null;
-    }
-
-    private Country FindCountryByTagHierarchy(string tag)
-    {
-        GameObject obj = GameObject.FindWithTag(tag);
-        if (obj == null) return null;
-
-        return FindCountryInHierarchy(obj);
-    }
 
     void HandleUnitSelection()
     {
@@ -439,7 +451,7 @@ public class MainPlayerController : NetworkBehaviour
                 }
                 else
                 {
-                    Country country = FindCountryInHierarchy(hit.collider.gameObject);
+                    Country country = GetCountryFromHit(hit);
 
                     if (country != null)
                     {
@@ -464,8 +476,8 @@ public class MainPlayerController : NetworkBehaviour
             }
             else
             {
-                Country targetCountryComp = FindCountryInHierarchy(hit.collider.gameObject);
-                Country fromCountryComp = FindCountryByTagHierarchy(selectedUnit.currentCountry); ;
+                Country targetCountryComp = GetCountryFromHit(hit);
+                Country fromCountryComp = FindCountryByTagRecursive(selectedUnit.currentCountry);
 
                 if (targetCountryComp == null || fromCountryComp == null)
                 {
@@ -482,11 +494,11 @@ public class MainPlayerController : NetworkBehaviour
                     ShowMoveButtons(false);
                     return;
                 }
+                Vector3 targetPos = targetCountryComp.centerWorldPos;
 
-                Vector3 targetPos = targetCountryComp.transform.position;
                 selectedUnit.ShowLocalMoveLine(targetPos);
 
-                CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag);
+                CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag, targetPos);
                 Debug.Log($"[Client] Move order: {selectedUnit.name} -> {targetCountryComp.name}");
             }
 
@@ -495,35 +507,38 @@ public class MainPlayerController : NetworkBehaviour
         }
     }
 
+
+
     public void ConfirmMoves()
     {
         if (!isLocalPlayer) return;
+
         ShowMoveButtons(false);
         moveStatusText?.SetText("Waiting for other players...");
+
         CmdSetReady(true);
     }
 
     public void CancelMoves()
     {
         if (!isLocalPlayer) return;
+
         ShowMoveButtons(false);
-        moveStatusText?.SetText("Moves canceled — Plan again.");
+        moveStatusText?.SetText("Moves canceled — plan again.");
+
         CmdSetReady(false);
     }
     [Command]
-    private void CmdMoveUnit(uint unitNetId, string targetCountryTag)
+    private void CmdMoveUnit(uint unitNetId, string targetCountryTag, Vector3 targetPos)
     {
         if (!NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity)) return;
         MainUnit unit = identity.GetComponent<MainUnit>();
         if (unit == null || unit.ownerID != playerID) return;
 
-        Country fromCountry = FindCountryByTagHierarchy(unit.currentCountry);
-        Country toCountry = FindCountryByTagHierarchy(targetCountryTag);
+        Country fromCountry = FindCountryByTagRecursive(unit.currentCountry);
+        Country toCountry = FindCountryByTagRecursive(targetCountryTag);
 
         if (fromCountry == null || toCountry == null) return;
-        if (!fromCountry.adjacentCountries.Contains(toCountry)) return;
-
-        Vector3 targetPos = toCountry.transform.position;
 
         unit.currentOrder = new PlayerUnitOrder
         {
@@ -532,8 +547,7 @@ public class MainPlayerController : NetworkBehaviour
             targetPosition = targetPos
         };
 
-        if (isLocalPlayer)
-            unit.ShowLocalMoveLine(targetPos);
+        Debug.Log($"[Server] CmdMoveUnit set currentOrder for {unit.name} from {unit.currentCountry} -> {targetCountryTag}");
     }
 
     [Command]
@@ -575,50 +589,34 @@ public class MainPlayerController : NetworkBehaviour
     [Command]
     private void CmdSetReady(bool readyState)
     {
-        SetReadyServer(readyState);
-    }
-
-    [Server]
-    private void SetReadyServer(bool readyState)
-    {
         if (unitManager == null)
-        {
-            Debug.LogError("[Server] UnitManager not found!");
-            return;
-        }
+            unitManager = MainUnitManager.Instance;
 
         isReady = readyState;
         playersReady[playerID] = readyState;
 
         RpcUpdateReadyUI();
 
-        bool allReady = true;
+        if (AreAllPlayersReady())
+        {
+            Debug.Log("[Server] All players ready — executing turn");
+            unitManager.ExecuteTurnServer();
+            MainGameManager.Instance?.NextTurnServer();
+
+            foreach (var p in allPlayers)
+                p.RpcResetReady();
+        }
+    }
+
+    private bool AreAllPlayersReady()
+    {
         foreach (var player in allPlayers)
         {
-            if (player == null)
-            {
-                Debug.LogWarning("[Server] Found null player reference in allPlayers!");
-                allReady = false;
-                continue;
-            }
-
-            if (!player.hasChosenCountry)
-            {
-                Debug.Log($"[Server] Player {player.playerID} has not chosen a country yet.");
-                allReady = false;
-            }
-
-            if (!playersReady.TryGetValue(player.playerID, out bool ready) || !ready)
-            {
-                Debug.Log($"[Server] Player {player.playerID} is not ready.");
-                allReady = false;
-            }
+            if (player == null) continue;
+            if (!player.hasChosenCountry || !playersReady.TryGetValue(player.playerID, out bool ready) || !ready)
+                return false;
         }
-
-        if (!allReady) return;
-
-        Debug.Log("[Server] All players ready — executing turn...");
-        StartCoroutine(DelayedTurnExecution());
+        return true;
     }
 
     private IEnumerator DelayedTurnExecution()
@@ -653,7 +651,7 @@ public class MainPlayerController : NetworkBehaviour
     [ClientRpc] public void RpcUpdateReadyUI() => UpdateReadyUI();
     private void UpdateReadyUI()
     {
-        if (moveStatusText == null) return;
+        if (moveStatusText == null) return; 
         int readyCount = 0;
         foreach (var kv in playersReady)
             if (kv.Value) readyCount++;

@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ public class MainUnitManager : NetworkBehaviour
     {
         if (unitPrefab == null)
             Debug.LogError("[MainUnitManager] unitPrefab is null!");
+
+        TestRpcMove();
     }
 
     public List<MainUnit> GetAllUnits() => allUnits;
@@ -84,9 +87,12 @@ public class MainUnitManager : NetworkBehaviour
         foreach (var unit in allUnits)
         {
             if (unit.currentOrder == null) continue;
+
             string targetCountry = unit.currentOrder.targetCountry;
+
             if (!unitsByTarget.ContainsKey(targetCountry))
                 unitsByTarget[targetCountry] = new List<MainUnit>();
+
             unitsByTarget[targetCountry].Add(unit);
         }
 
@@ -94,10 +100,16 @@ public class MainUnitManager : NetworkBehaviour
         {
             string countryName = kvp.Key;
             List<MainUnit> units = kvp.Value;
-            GameObject countryObj = GameObject.Find(countryName);
-            if (countryObj == null) continue;
+
+            GameObject countryObj = GameObject.FindWithTag(countryName);
+            if (countryObj == null)
+            {
+                Debug.LogWarning($"[Server] Country with tag '{countryName}' not found!");
+                continue;
+            }
 
             Dictionary<int, int> totalStrength = new Dictionary<int, int>();
+
             foreach (MainUnit mover in units)
             {
                 if (!totalStrength.ContainsKey(mover.ownerID))
@@ -105,6 +117,7 @@ public class MainUnitManager : NetworkBehaviour
                 else
                     totalStrength[mover.ownerID] += 1;
             }
+
 
             foreach (MainUnit supporter in allUnits)
             {
@@ -120,13 +133,12 @@ public class MainUnitManager : NetworkBehaviour
                 if (!totalStrength.ContainsKey(supportedOwner))
                     totalStrength[supportedOwner] = 0;
                 totalStrength[supportedOwner] += 1;
-
-                Debug.Log($"[Support] {supporter.name} adds +1 to Player {supportedOwner} for {countryName}");
             }
 
             int maxStrength = 0;
             int winnerID = -1;
             bool isBounce = false;
+
             foreach (var kv in totalStrength)
             {
                 if (kv.Value > maxStrength)
@@ -143,30 +155,31 @@ public class MainUnitManager : NetworkBehaviour
 
             if (isBounce)
             {
-                Debug.Log($"[Server] Bounce at {countryName}");
                 foreach (MainUnit unit in units)
-                    unit.RpcMoveTo(unit.transform.position);
+                {
+                    StartCoroutine(SendRpcWithDelay(unit, unit.transform.position, 0.05f));
+                }
+                Debug.Log($"[Server] Bounce at {countryName}");
             }
             else
             {
-                Vector3 basePos = countryObj.transform.position;
+                Country countryComp = countryObj.GetComponent<Country>();
                 List<MainUnit> winningUnits = units.FindAll(u => u.ownerID == winnerID);
-                for (int i = 0; i < winningUnits.Count; i++)
-                {
-                    MainUnit unit = winningUnits[i];
-                    if (unit.currentOrder != null && unit.currentOrder.orderType == UnitOrderType.Support)
-                        continue;
 
-                    Vector3 offset = GetSpawnOffset(i, winningUnits.Count);
-                    Vector3 targetPos = new Vector3(basePos.x + offset.x, unit.transform.position.y, basePos.z + offset.z);
-                    unit.currentCountry = countryName;
-                    unit.RpcMoveTo(targetPos);
+                foreach (MainUnit unit in winningUnits)
+                {
+                    if (unit.currentOrder == null) continue;
+                    if (unit.currentOrder.orderType == UnitOrderType.Support) continue;
+
+                    Vector3 targetPos = unit.currentOrder.targetPosition;
+                    if (targetPos == Vector3.zero && countryComp != null)
+                        targetPos = countryComp.centerWorldPos;
+
+                    StartCoroutine(SendRpcWithDelay(unit, targetPos, 0.05f));
                 }
 
                 Debug.Log($"[Server] Player {winnerID} wins {countryName}");
-
-                Country countryComp = countryObj.GetComponent<Country>();
-                if (countryComp != null)
+                if (!isBounce && countryComp != null)
                     countryComp.SetOwner(winnerID);
 
                 Color winnerColor = winningUnits[0].playerColor;
@@ -177,19 +190,40 @@ public class MainUnitManager : NetworkBehaviour
         foreach (var player in MainPlayerController.allPlayers)
             player.RpcResetReady();
     }
+
+
+
+    private IEnumerator SendRpcWithDelay(MainUnit unit, Vector3 targetPos, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        unit.RpcMoveTo(targetPos);
+    }
     #endregion
 
     #region Client RPCs
     [ClientRpc]
-    public void RpcUpdateCountryOwnership(string countryName, Color playerColor)
+    public void RpcUpdateCountryOwnership(string countryTag, Color playerColor)
     {
-        GameObject countryObj = GameObject.Find(countryName);
-        if (countryObj != null)
+        GameObject countryObj = GameObject.FindWithTag(countryTag);
+        if (countryObj == null)
         {
-            Renderer rend = countryObj.GetComponent<Renderer>();
-            if (rend != null)
-                rend.material.color = playerColor;
+            Debug.LogWarning($"[ClientRpc] Country with tag '{countryTag}' not found for coloring.");
+            return;
         }
+
+        Renderer[] renderers = countryObj.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0)
+        {
+            Debug.LogWarning($"[ClientRpc] No renderers found in '{countryTag}' or its children.");
+            return;
+        }
+
+        foreach (var rend in renderers)
+        {
+            rend.material.color = playerColor;
+        }
+
+        Debug.Log($"[ClientRpc] Updated color of {countryTag} to {playerColor}");
     }
     #endregion
 
@@ -201,5 +235,17 @@ public class MainUnitManager : NetworkBehaviour
         float angle = index * angleStep * Mathf.Deg2Rad;
         return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 2f;
     }
+
+    [Server]
+    public void TestRpcMove()
+    {
+        if (allUnits.Count > 0)
+        {
+            allUnits[0].RpcMoveTo(allUnits[0].transform.position + Vector3.forward * 3f);
+            Debug.Log("[Server] Called TestRpcMove on unit");
+        }
+    }
+
+
     #endregion
 }

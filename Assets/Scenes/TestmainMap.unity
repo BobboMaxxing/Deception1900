@@ -134,8 +134,14 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1520205655}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2075623173}
+  - {fileID: 2121766367}
+  - {fileID: 713817364}
+  - {fileID: 1316044725}
   starterSubCountries: []
 --- !u!1 &35597066 stripped
 GameObject:
@@ -314,8 +320,11 @@ MonoBehaviour:
   countryName: MapEu.Irland
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 841606457}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1616309165}
   starterSubCountries: []
 --- !u!1001 &131792658
 PrefabInstance:
@@ -471,8 +480,13 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 799568796}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 475990290}
+  - {fileID: 1670754594}
+  - {fileID: 854585239}
   starterSubCountries: []
 --- !u!1001 &138228283
 PrefabInstance:
@@ -488,7 +502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43631256e0e6c664aa2031df552c4741, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43631256e0e6c664aa2031df552c4741, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1607,8 +1621,15 @@ MonoBehaviour:
   countryName: France
   ownerID: -1
   isStarterCountry: 1
+  centerPoint: {fileID: 789661118}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1208557790}
+  - {fileID: 1481998393}
+  - {fileID: 1484275197}
+  - {fileID: 468064820}
+  - {fileID: 1550156736}
   starterSubCountries: []
 --- !u!1 &284046756
 GameObject:
@@ -1975,8 +1996,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1597947873}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1676261464}
+  - {fileID: 1987312188}
   starterSubCountries: []
 --- !u!1001 &386051264
 PrefabInstance:
@@ -2137,8 +2162,14 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1121582990}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1550156736}
+  - {fileID: 1762080732}
+  - {fileID: 925378339}
+  - {fileID: 1987312188}
   starterSubCountries: []
 --- !u!1 &446048601 stripped
 GameObject:
@@ -2196,8 +2227,14 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 1
+  centerPoint: {fileID: 2021159328}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 256292830}
+  - {fileID: 1484275197}
+  - {fileID: 854585239}
+  - {fileID: 990444434}
   starterSubCountries: []
 --- !u!114 &474248823
 MonoBehaviour:
@@ -2214,8 +2251,14 @@ MonoBehaviour:
   countryName: MapEu.Hungery
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 664085927}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 1
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2106912905}
+  - {fileID: 531523577}
+  - {fileID: 990444434}
+  - {fileID: 854585239}
   starterSubCountries: []
 --- !u!1 &475990289 stripped
 GameObject:
@@ -2237,8 +2280,15 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 608796394}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1898107558}
+  - {fileID: 1467335333}
+  - {fileID: 1670754594}
+  - {fileID: 137183499}
+  - {fileID: 1818832463}
   starterSubCountries: []
 --- !u!1 &497491991 stripped
 GameObject:
@@ -2532,8 +2582,15 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 64892983}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 713817364}
+  - {fileID: 1481998393}
+  - {fileID: 990444434}
+  - {fileID: 474248823}
+  - {fileID: 2106912905}
   starterSubCountries: []
 --- !u!1 &555666397
 GameObject:
@@ -2978,8 +3035,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1604649724}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1208557790}
+  - {fileID: 1481998393}
   starterSubCountries: []
 --- !u!1001 &628074943
 PrefabInstance:
@@ -3605,8 +3666,17 @@ MonoBehaviour:
   countryName: PolandReal
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 2044017563}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 1
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1349704945}
+  - {fileID: 2121766367}
+  - {fileID: 19829871}
+  - {fileID: 1316044725}
+  - {fileID: 2106912905}
+  - {fileID: 531523577}
+  - {fileID: 1481998393}
   starterSubCountries: []
 --- !u!1 &718729680
 GameObject:
@@ -3939,8 +4009,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 1
+  centerPoint: {fileID: 454074760}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1978168287}
+  - {fileID: 1055308298}
   starterSubCountries: []
 --- !u!1 &789661117
 GameObject:
@@ -4126,8 +4200,16 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 819622177}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 990444434}
+  - {fileID: 468064820}
+  - {fileID: 474248823}
+  - {fileID: 2106912905}
+  - {fileID: 1670754594}
+  - {fileID: 137183499}
   starterSubCountries: []
 --- !u!1001 &856477953
 PrefabInstance:
@@ -4365,8 +4447,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1935546783}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1987312188}
+  - {fileID: 402027827}
   starterSubCountries: []
 --- !u!1 &940969635 stripped
 GameObject:
@@ -4388,8 +4474,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 942621427}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1818832463}
+  - {fileID: 1800594092}
   starterSubCountries: []
 --- !u!1 &942621426
 GameObject:
@@ -4622,8 +4712,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 731145289}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2075623173}
+  - {fileID: 2121766367}
   starterSubCountries: []
 --- !u!114 &990444434
 MonoBehaviour:
@@ -4640,8 +4734,16 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1448411573}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 468064820}
+  - {fileID: 1481998393}
+  - {fileID: 531523577}
+  - {fileID: 474248823}
+  - {fileID: 854585239}
+  - {fileID: 1484275197}
   starterSubCountries: []
 --- !u!1 &993930880
 GameObject:
@@ -4976,9 +5078,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -4026412669794856765, guid: 1cb83657484284f43b1703642c802a27, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1894987118}
-    - targetCorrespondingSourceObject: {fileID: -4026412669794856765, guid: 1cb83657484284f43b1703642c802a27, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1894987119}
   m_SourcePrefab: {fileID: 100100000, guid: 1cb83657484284f43b1703642c802a27, type: 3}
 --- !u!114 &1055308298
 MonoBehaviour:
@@ -4995,8 +5094,13 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 284046757}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1978168287}
+  - {fileID: 783773925}
+  - {fileID: 1563805933}
   starterSubCountries: []
 --- !u!1 &1059617708
 GameObject:
@@ -5198,9 +5302,6 @@ MonoBehaviour:
   countryLayer:
     serializedVersion: 2
     m_Bits: 64
-  focusPointLayer:
-    serializedVersion: 2
-    m_Bits: 128
   focusOffset: {x: 0, y: 50, z: 0}
   dragSpeed: 80
   xLimits: {x: -50, y: 180}
@@ -6040,6 +6141,8 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 562814227}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
   adjacentCountries: []
   starterSubCountries: []
@@ -6631,8 +6734,14 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 993930881}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2075623173}
+  - {fileID: 19829871}
+  - {fileID: 713817364}
+  - {fileID: 2106912905}
   starterSubCountries: []
 --- !u!1 &1317167681 stripped
 GameObject:
@@ -6865,9 +6974,9 @@ Transform:
   - {fileID: 661452365}
   - {fileID: 1458269944}
   - {fileID: 1300866658}
-  - {fileID: 1617537850}
-  - {fileID: 1188488211}
   - {fileID: 1979568272}
+  - {fileID: 1188488211}
+  - {fileID: 1617537850}
   - {fileID: 1634309258}
   - {fileID: 1730688576}
   - {fileID: 713817363}
@@ -6888,8 +6997,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1235417611}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2121766367}
+  - {fileID: 713817364}
   starterSubCountries: []
 --- !u!1 &1380257459
 GameObject:
@@ -7284,8 +7397,13 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 1
+  centerPoint: {fileID: 1482672266}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2075623173}
+  - {fileID: 1898107558}
+  - {fileID: 475990290}
   starterSubCountries:
   - {fileID: 2075623173}
   - {fileID: 1903568260}
@@ -7340,8 +7458,18 @@ MonoBehaviour:
   countryName: Germany
   ownerID: -1
   isStarterCountry: 1
+  centerPoint: {fileID: 1941948999}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 713817364}
+  - {fileID: 1563805933}
+  - {fileID: 621459923}
+  - {fileID: 1208557790}
+  - {fileID: 256292830}
+  - {fileID: 1484275197}
+  - {fileID: 990444434}
+  - {fileID: 531523577}
   starterSubCountries: []
 --- !u!1 &1482672265
 GameObject:
@@ -7394,8 +7522,14 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 555666398}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 990444434}
+  - {fileID: 468064820}
+  - {fileID: 1481998393}
+  - {fileID: 256292830}
   starterSubCountries: []
 --- !u!1 &1520205654
 GameObject:
@@ -8077,8 +8211,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1476317395}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 256292830}
+  - {fileID: 1979685520}
   starterSubCountries: []
 --- !u!114 &1563805933
 MonoBehaviour:
@@ -8095,8 +8233,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1693571346}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1055308298}
+  - {fileID: 1481998393}
   starterSubCountries: []
 --- !u!1 &1563942525
 GameObject:
@@ -8388,8 +8530,11 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 1
+  centerPoint: {fileID: 1217525964}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 129070726}
   starterSubCountries: []
 --- !u!1001 &1617537849
 PrefabInstance:
@@ -8401,7 +8546,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 07b9b6be37be830418f3f62b060ffe4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07b9b6be37be830418f3f62b060ffe4a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8919,8 +9064,14 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 190882338}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2106912905}
+  - {fileID: 475990290}
+  - {fileID: 137183499}
+  - {fileID: 854585239}
   starterSubCountries: []
 --- !u!114 &1676261464
 MonoBehaviour:
@@ -8937,8 +9088,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1256226217}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1800594092}
+  - {fileID: 360796718}
   starterSubCountries: []
 --- !u!1001 &1687318988
 PrefabInstance:
@@ -9283,8 +9438,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1380257460}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 402027827}
+  - {fileID: 1550156736}
   starterSubCountries: []
 --- !u!114 &1800594092
 MonoBehaviour:
@@ -9301,8 +9460,13 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 356979970}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1818832463}
+  - {fileID: 940969636}
+  - {fileID: 1676261464}
   starterSubCountries: []
 --- !u!1001 &1805465903
 PrefabInstance:
@@ -9463,8 +9627,14 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1381326029}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1800594092}
+  - {fileID: 940969636}
+  - {fileID: 475990290}
+  - {fileID: 1898107558}
   starterSubCountries: []
 --- !u!1 &1841665271
 GameObject:
@@ -9815,24 +9985,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6854882485696325233, guid: 1cb83657484284f43b1703642c802a27, type: 3}
---- !u!114 &1894987119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894987114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countryName: MapEu.Russia2
-  ownerID: -1
-  isStarterCountry: 1
-  isSupplyCenter: 0
-  adjacentCountries: []
-  starterSubCountries: []
 --- !u!4 &1894987122 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6772140057318416404, guid: 1cb83657484284f43b1703642c802a27, type: 3}
@@ -9858,8 +10010,14 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 2009912102}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1903568260}
+  - {fileID: 1467335333}
+  - {fileID: 475990290}
+  - {fileID: 1818832463}
   starterSubCountries: []
 --- !u!1 &1903568259 stripped
 GameObject:
@@ -9881,8 +10039,12 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 1
+  centerPoint: {fileID: 628280899}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2075623173}
+  - {fileID: 1898107558}
   starterSubCountries:
   - {fileID: 2075623173}
   - {fileID: 1467335333}
@@ -10364,8 +10526,13 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1193549189}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2075623173}
+  - {fileID: 1055308298}
+  - {fileID: 783773925}
   starterSubCountries: []
 --- !u!1001 &1979568271
 PrefabInstance:
@@ -10377,7 +10544,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: bf896b5d5fa5eb14caf7eacd317f2004, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bf896b5d5fa5eb14caf7eacd317f2004, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10526,8 +10693,11 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 960473552}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1550156736}
   starterSubCountries: []
 --- !u!1 &1987312187 stripped
 GameObject:
@@ -10549,8 +10719,13 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1563942526}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 360796718}
+  - {fileID: 925378339}
+  - {fileID: 402027827}
   starterSubCountries: []
 --- !u!1 &2009912101
 GameObject:
@@ -10730,7 +10905,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b07c450597de8b649afb93a2799f6ed2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b07c450597de8b649afb93a2799f6ed2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10746,7 +10921,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b07c450597de8b649afb93a2799f6ed2, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b07c450597de8b649afb93a2799f6ed2, type: 3}
       propertyPath: m_LocalRotation.y
@@ -10955,8 +11130,17 @@ MonoBehaviour:
   countryName: MapEu.Russia
   ownerID: -1
   isStarterCountry: 1
+  centerPoint: {fileID: 1532244986}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1978168287}
+  - {fileID: 1349704945}
+  - {fileID: 990337893}
+  - {fileID: 1316044725}
+  - {fileID: 1903568260}
+  - {fileID: 1467335333}
+  - {fileID: 19829871}
   starterSubCountries:
   - {fileID: 1903568260}
   - {fileID: 1467335333}
@@ -11144,8 +11328,15 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 2076531864}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1316044725}
+  - {fileID: 713817364}
+  - {fileID: 474248823}
+  - {fileID: 854585239}
+  - {fileID: 1670754594}
   starterSubCountries: []
 --- !u!1 &2110924632
 GameObject:
@@ -11300,8 +11491,14 @@ MonoBehaviour:
   countryName: 
   ownerID: -1
   isStarterCountry: 0
+  centerPoint: {fileID: 1627383490}
+  centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 2075623173}
+  - {fileID: 1349704945}
+  - {fileID: 713817364}
+  - {fileID: 19829871}
   starterSubCountries: []
 --- !u!1 &2135311676
 GameObject:

@@ -86,7 +86,6 @@ public class PlayerInputController : MonoBehaviour
                 {
                     string countryName = hit.collider.name;
 
-                    // Issue move order
                     UnitOrder order = new UnitOrder(OrderType.Move, countryName);
                     unitManager.IssueOrder(selectedUnit, order);
                     selectedUnit = null;

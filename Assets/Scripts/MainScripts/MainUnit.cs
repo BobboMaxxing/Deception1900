@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer), typeof(LineRenderer))]
 public class MainUnit : NetworkBehaviour
 {
+
     [SyncVar] public int ownerID;
     [SyncVar] public string currentCountry;
     [SyncVar] public Color playerColor;
@@ -26,7 +27,12 @@ public class MainUnit : NetworkBehaviour
         lineRenderer.endColor = Color.green;
         lineRenderer.enabled = false;
     }
-
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        Debug.Log($"[Client] OnStartClient called for {name}, netId: {netId}");
+        Debug.Log($"Enabled: {enabled}, GameObject active: {gameObject.activeSelf}");
+    }
     #region Server → Client Initialization
     [ClientRpc]
     public void RpcInitialize(int playerID, Color color)
@@ -41,27 +47,25 @@ public class MainUnit : NetworkBehaviour
     [ClientRpc]
     public void RpcMoveTo(Vector3 target)
     {
+
+        if (!enabled || !gameObject.activeSelf)
+        {
+            Debug.LogWarning("Cannot move: component disabled or object inactive.");
+            return;
+        }
+
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-
-        if (lineRenderer != null) lineRenderer.enabled = false;
-
         moveCoroutine = StartCoroutine(MoveToPosition(target));
     }
 
-    private IEnumerator MoveToPosition(Vector3 targetPos)
+    private IEnumerator MoveToPosition(Vector3 target)
     {
-        Vector3 startPos = transform.position;
-        targetPos.y = startPos.y;
-
-        while (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z),
-                                new Vector3(targetPos.x, 0, targetPos.z)) > 0.05f)
+        while (Vector3.Distance(transform.position, target) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
             yield return null;
         }
-
-        transform.position = targetPos;
-        moveCoroutine = null;
+        transform.position = target;
     }
     #endregion
 
@@ -69,9 +73,8 @@ public class MainUnit : NetworkBehaviour
 
     public void ShowLocalMoveLine(Vector3 targetPos)
     {
-        if (isOwned) return; 
-
         if (lineRenderer == null) return;
+
         lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, transform.position);
@@ -110,5 +113,7 @@ public class MainUnit : NetworkBehaviour
             rend.material.color = darker;
         }
     }
+
+
     #endregion
 }

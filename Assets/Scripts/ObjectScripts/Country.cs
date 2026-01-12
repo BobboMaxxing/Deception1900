@@ -7,6 +7,11 @@ public class Country : MonoBehaviour
     public int ownerID = -1;
     public bool isStarterCountry = true;
 
+    [Header("Gameplay Anchor")]
+    public Transform centerPoint;
+    [Header("Cached World Data")]
+    public Vector3 centerWorldPos;
+
     [Header("Supply System")]
     public bool isSupplyCenter = false;
 
@@ -22,6 +27,7 @@ public class Country : MonoBehaviour
     {
         return adjacentCountries.Contains(target);
     }
+
 
     public List<Country> GetAllSelectableCountries()
     {
@@ -39,6 +45,17 @@ public class Country : MonoBehaviour
         return list;
     }
 
+    void Awake()
+    {
+        if (centerPoint != null)
+        {
+            centerWorldPos = centerPoint.position;
+        }
+        else
+        {
+            Debug.LogError($"Country {countryName} has NO centerPoint assigned!");
+        }
+    }
     public void SetOwner(int newOwnerID)
     {
         ownerID = newOwnerID;

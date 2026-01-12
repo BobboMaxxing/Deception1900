@@ -6,7 +6,6 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] Transform defaultPosition;
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] LayerMask countryLayer;
-    [SerializeField] LayerMask focusPointLayer;
     [SerializeField] Vector3 focusOffset = new Vector3(20f, 20f, 0f);
 
     [Header("Free Move Settings")]
@@ -61,47 +60,22 @@ public class CameraMovment : MonoBehaviour
         }
     }
 
-    void FocusOnCountry(Transform country)
+    void FocusOnCountry(Transform countryTransform)
     {
-        Transform focusPoint = null;
+        Country country = countryTransform.GetComponent<Country>();
 
-        foreach (Transform child in country)
+        if (country == null)
         {
-            if (child.gameObject.layer == LayerMask.NameToLayer("CameraFocusPoint"))
-            {
-                focusPoint = child;
-                break;
-            }
+            Debug.LogWarning("Clicked object has no Country component.");
+            return;
         }
 
-        if (focusPoint == null)
-        {
-            Debug.LogWarning($"No CameraFocusPoint found under {country.name}, using fallback position.");
-            targetPosition = defaultPosition.position;
-        }
-        else
-        {
-            targetPosition = focusPoint.position + new Vector3(20, 20, 0);
-        }
-
+        targetPosition = country.centerWorldPos + focusOffset;
         isFocusing = true;
     }
 
 
-    Transform FindFocusPointRecursive(Transform obj)
-    {
-        if (((1 << obj.gameObject.layer) & focusPointLayer) != 0)
-            return obj;
 
-        foreach (Transform child in obj)
-        {
-            Transform found = FindFocusPointRecursive(child);
-            if (found != null)
-                return found;
-        }
-
-        return null;
-    }
 
     public void ResetCamera()
     {
