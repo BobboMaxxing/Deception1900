@@ -314,12 +314,46 @@ public class MainPlayerController : NetworkBehaviour
 
     void AssignPlayerColorFromCountry()
     {
-        GameObject countryObj = GameObject.Find(chosenCountry);
-        if (countryObj != null)
+        if (string.IsNullOrEmpty(chosenCountry))
+            return;
+
+        Color baseColor;
+
+        switch (chosenCountry)
         {
-            Renderer rend = countryObj.GetComponent<Renderer>();
-            if (rend != null) playerColor = rend.material.color;
+            case "Germany":
+                baseColor = Color.black;
+                break;
+            case "France":
+                baseColor = Color.blue;
+                break;
+            case "Italy":
+                baseColor = Color.green;
+                break;
+            case "Russia":
+                baseColor = Color.red;
+                break;
+            case "Uk+NorthIrland":
+                baseColor = Color.yellow;
+                break;
+            case "NorwayTag":
+                baseColor = Color.cyan;
+                break;
+            default:
+                baseColor = Color.white; 
+                Debug.LogWarning($"No color assigned for country tag {chosenCountry}, using white.");
+                break;
         }
+
+        float lightenFactor = 1.8f;
+        playerColor = new Color(
+            Mathf.Clamp01(baseColor.r * lightenFactor),
+            Mathf.Clamp01(baseColor.g * lightenFactor),
+            Mathf.Clamp01(baseColor.b * lightenFactor),
+            1f
+        );
+
+        Debug.Log($"[Player {playerID}] Assigned color {playerColor} for country tag {chosenCountry}");
     }
 
     void HighlightChosenCountryObjects()

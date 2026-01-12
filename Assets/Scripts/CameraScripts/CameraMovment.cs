@@ -1,19 +1,13 @@
 using UnityEngine;
 
-
 public class CameraMovment : MonoBehaviour
 {
     [Header("Objects")]
     [SerializeField] Transform defaultPosition;
     [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float rotateSpeed = 2f;
     [SerializeField] LayerMask countryLayer;
-    [SerializeField] GameObject playercontroller;
-
-    [Header("Camera Settings")]
-    [SerializeField] Vector3 targetPosition;
-    [SerializeField] Quaternion targetRotation;
-    [SerializeField] bool isFocusing = false;
+    [SerializeField] LayerMask focusPointLayer;
+    [SerializeField] Vector3 focusOffset = new Vector3(20f, 20f, 0f);
 
     [Header("Free Move Settings")]
     [SerializeField] float dragSpeed = 20f;
@@ -21,13 +15,15 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] Vector2 zLimits = new Vector2(-50f, 50f);
 
     Camera cam;
+    Vector3 targetPosition;
+    Quaternion targetRotation;
+    bool isFocusing = false;
 
     void Start()
     {
         cam = Camera.main;
         targetPosition = defaultPosition.position;
         targetRotation = defaultPosition.rotation;
-        //if (playercontroller == null) playercontroller = FindObjectOfType<PlayerController>();
     }
 
     void Update()
@@ -55,10 +51,8 @@ public class CameraMovment : MonoBehaviour
 
     void CheckCountryClick()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, countryLayer))
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
         {
             if (!isFocusing)
             {
@@ -69,8 +63,44 @@ public class CameraMovment : MonoBehaviour
 
     void FocusOnCountry(Transform country)
     {
+        Transform focusPoint = null;
+
+        foreach (Transform child in country)
+        {
+            if (child.gameObject.layer == LayerMask.NameToLayer("CameraFocusPoint"))
+            {
+                focusPoint = child;
+                break;
+            }
+        }
+
+        if (focusPoint == null)
+        {
+            Debug.LogWarning($"No CameraFocusPoint found under {country.name}, using fallback position.");
+            targetPosition = defaultPosition.position;
+        }
+        else
+        {
+            targetPosition = focusPoint.position + new Vector3(20, 20, 0);
+        }
+
         isFocusing = true;
-        targetPosition = country.position + new Vector3(20, 20, 0);
+    }
+
+
+    Transform FindFocusPointRecursive(Transform obj)
+    {
+        if (((1 << obj.gameObject.layer) & focusPointLayer) != 0)
+            return obj;
+
+        foreach (Transform child in obj)
+        {
+            Transform found = FindFocusPointRecursive(child);
+            if (found != null)
+                return found;
+        }
+
+        return null;
     }
 
     public void ResetCamera()
@@ -82,10 +112,10 @@ public class CameraMovment : MonoBehaviour
 
     void FreeMove()
     {
-        isFocusing = false; 
+        isFocusing = false;
 
-        float moveX = Input.GetAxis("Mouse X") * dragSpeed * 1000 * Time.deltaTime;
-        float moveZ = Input.GetAxis("Mouse Y") * dragSpeed * 1000 * Time.deltaTime;
+        float moveX = Input.GetAxis("Mouse X") * dragSpeed * Time.deltaTime * 1000;
+        float moveZ = Input.GetAxis("Mouse Y") * dragSpeed * Time.deltaTime * 1000;
 
         Vector3 right = transform.right;
         Vector3 forward = transform.forward;
@@ -97,7 +127,6 @@ public class CameraMovment : MonoBehaviour
         Vector3 moveDir = right * -moveX + forward * -moveZ;
         Vector3 newPos = transform.position + moveDir;
 
-
         newPos.x = Mathf.Clamp(newPos.x, xLimits.x, xLimits.y);
         newPos.z = Mathf.Clamp(newPos.z, zLimits.x, zLimits.y);
 
@@ -107,6 +136,5 @@ public class CameraMovment : MonoBehaviour
     void SmoothMoveCamera()
     {
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotateSpeed);
     }
 }
