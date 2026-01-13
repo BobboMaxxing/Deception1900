@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class MainPlayerController : NetworkBehaviour
 {
@@ -511,12 +510,17 @@ public class MainPlayerController : NetworkBehaviour
 
     public void ConfirmMoves()
     {
+        Debug.Log("tried to conmove");
         if (!isLocalPlayer) return;
 
         ShowMoveButtons(false);
+        isReady = true;
+        playersReady[playerID] = true;
+        UpdateReadyUI();
         moveStatusText?.SetText("Waiting for other players...");
 
-        CmdSetReady(true);
+        CmdConfirmMoves();
+        Debug.Log("sent cmd and stuff");
     }
 
     public void CancelMoves()
@@ -526,7 +530,7 @@ public class MainPlayerController : NetworkBehaviour
         ShowMoveButtons(false);
         moveStatusText?.SetText("Moves canceled — plan again.");
 
-        CmdSetReady(false);
+        CmdCancelMoves();
     }
     [Command]
     private void CmdMoveUnit(uint unitNetId, string targetCountryTag, Vector3 targetPos)
@@ -587,13 +591,16 @@ public class MainPlayerController : NetworkBehaviour
     }
 
     [Command]
-    private void CmdSetReady(bool readyState)
+    private void CmdConfirmMoves()
     {
+        Debug.Log("sent to servercmdready");
+        if (!isServer) return;
+
         if (unitManager == null)
             unitManager = MainUnitManager.Instance;
 
-        isReady = readyState;
-        playersReady[playerID] = readyState;
+        isReady = true;
+        playersReady[playerID] = true;
 
         RpcUpdateReadyUI();
 
@@ -606,6 +613,16 @@ public class MainPlayerController : NetworkBehaviour
             foreach (var p in allPlayers)
                 p.RpcResetReady();
         }
+    }
+    [Command]
+    private void CmdCancelMoves()
+    {
+        if (!isServer) return;
+
+        isReady = false;
+        playersReady[playerID] = false;
+
+        RpcUpdateReadyUI();
     }
 
     private bool AreAllPlayersReady()
@@ -648,7 +665,18 @@ public class MainPlayerController : NetworkBehaviour
         }
     }
 
-    [ClientRpc] public void RpcUpdateReadyUI() => UpdateReadyUI();
+    [ClientRpc]
+    public void RpcUpdateReadyUI()
+    {
+        foreach (var kv in MainPlayerController.playersReady)
+        {
+        }
+
+        UpdateReadyUI();
+
+        if (isLocalPlayer && playersReady.TryGetValue(playerID, out bool ready))
+            isReady = ready;
+    }
     private void UpdateReadyUI()
     {
         if (moveStatusText == null) return; 

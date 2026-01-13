@@ -175,6 +175,10 @@ public class MainUnitManager : NetworkBehaviour
                     if (targetPos == Vector3.zero && countryComp != null)
                         targetPos = countryComp.centerWorldPos;
 
+                    unit.currentCountry = countryName;
+
+                    unit.currentOrder = null;
+
                     StartCoroutine(SendRpcWithDelay(unit, targetPos, 0.05f));
                 }
 
@@ -235,6 +239,8 @@ public class MainUnitManager : NetworkBehaviour
         float angle = index * angleStep * Mathf.Deg2Rad;
         return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 2f;
     }
+
+
 
     [Server]
     public void TestRpcMove()

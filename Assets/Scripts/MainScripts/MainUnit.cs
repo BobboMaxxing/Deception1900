@@ -55,17 +55,33 @@ public class MainUnit : NetworkBehaviour
         }
 
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-        moveCoroutine = StartCoroutine(MoveToPosition(target));
+        moveCoroutine = StartCoroutine(MoveToPositionXZ(target));
+        ClearMoveLine();
     }
 
-    private IEnumerator MoveToPosition(Vector3 target)
+    private IEnumerator MoveToPositionXZ(Vector3 target)
     {
-        while (Vector3.Distance(transform.position, target) > 0.01f)
+        Vector3 start = transform.position;
+
+        // Lock Y for movement only
+        target.y = start.y;
+
+        float time = 0f;
+        float duration = 0.5f;
+
+        while (time < duration)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+            time += Time.deltaTime;
+            float t = time / duration;
+
+            Vector3 pos = Vector3.Lerp(start, target, t);
+            pos.y = start.y; // hard guarantee
+
+            transform.position = pos;
             yield return null;
         }
-        transform.position = target;
+
+        transform.position = new Vector3(target.x, start.y, target.z);
     }
     #endregion
 
@@ -79,6 +95,12 @@ public class MainUnit : NetworkBehaviour
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, new Vector3(targetPos.x, transform.position.y, targetPos.z));
+    }
+
+    public void ClearMoveLine()
+    {
+        if (lineRenderer != null)
+            lineRenderer.positionCount = 0;
     }
 
 
