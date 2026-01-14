@@ -45,12 +45,6 @@ public class MainPlayerController : NetworkBehaviour
     public static List<MainPlayerController> allPlayers = new List<MainPlayerController>();
 
     #region Unity Callbacks
-    void Awake()
-    {
-        if (!allPlayers.Contains(this)) allPlayers.Add(this);
-    }
-
-
 
     void OnDestroy()
     {
@@ -60,12 +54,15 @@ public class MainPlayerController : NetworkBehaviour
     public override void OnStartServer()
     {
         base.OnStartServer();
-        if (!playersReady.ContainsKey(playerID)) playersReady[playerID] = false;
-        if (unitManager == null)
-            unitManager = MainUnitManager.Instance;
 
         if (!playersReady.ContainsKey(playerID))
             playersReady[playerID] = false;
+
+        if (!allPlayers.Contains(this))
+            allPlayers.Add(this);
+
+        if (unitManager == null)
+            unitManager = MainUnitManager.Instance;
     }
 
     public override void OnStartLocalPlayer()
@@ -510,17 +507,14 @@ public class MainPlayerController : NetworkBehaviour
 
     public void ConfirmMoves()
     {
-        Debug.Log("tried to conmove");
         if (!isLocalPlayer) return;
 
+        Debug.Log($"[ConfirmMoves] called | isLocalPlayer={isLocalPlayer} | netId={netId}");
+
         ShowMoveButtons(false);
-        isReady = true;
-        playersReady[playerID] = true;
-        UpdateReadyUI();
         moveStatusText?.SetText("Waiting for other players...");
 
         CmdConfirmMoves();
-        Debug.Log("sent cmd and stuff");
     }
 
     public void CancelMoves()
@@ -530,7 +524,7 @@ public class MainPlayerController : NetworkBehaviour
         ShowMoveButtons(false);
         moveStatusText?.SetText("Moves canceled — plan again.");
 
-        CmdCancelMoves();
+        CmdCancelReady();
     }
     [Command]
     private void CmdMoveUnit(uint unitNetId, string targetCountryTag, Vector3 targetPos)
@@ -593,76 +587,59 @@ public class MainPlayerController : NetworkBehaviour
     [Command]
     private void CmdConfirmMoves()
     {
-        Debug.Log("sent to servercmdready");
-        if (!isServer) return;
+        Debug.Log($"[SERVER] CmdConfirmMoves received from netId={netId}, playerID={playerID}");
 
         if (unitManager == null)
             unitManager = MainUnitManager.Instance;
 
-        isReady = true;
+        if (!playersReady.ContainsKey(playerID))
+            playersReady[playerID] = false;
+
         playersReady[playerID] = true;
+
+        Debug.Log("[SERVER] Updated playersReady:");
+        foreach (var kv in playersReady)
+            Debug.Log($"  Player {kv.Key} ready={kv.Value}");
+
+        Debug.Log("[SERVER] allPlayers list:");
+        foreach (var p in allPlayers)
+            if (p != null) Debug.Log($"  Player netId={p.netId}, playerID={p.playerID}");
 
         RpcUpdateReadyUI();
 
         if (AreAllPlayersReady())
         {
-            Debug.Log("[Server] All players ready — executing turn");
+            Debug.Log("[SERVER] All players ready — executing turn");
+
             unitManager.ExecuteTurnServer();
             MainGameManager.Instance?.NextTurnServer();
 
             foreach (var p in allPlayers)
                 p.RpcResetReady();
         }
+        else
+        {
+            Debug.Log("[SERVER] Not all players ready yet");
+        }
     }
+
     [Command]
-    private void CmdCancelMoves()
+    private void CmdCancelReady()
     {
-        if (!isServer) return;
+        if (!playersReady.ContainsKey(playerID)) return;
 
-        isReady = false;
         playersReady[playerID] = false;
-
         RpcUpdateReadyUI();
     }
 
     private bool AreAllPlayersReady()
     {
-        foreach (var player in allPlayers)
+        foreach (var kv in playersReady)
         {
-            if (player == null) continue;
-            if (!player.hasChosenCountry || !playersReady.TryGetValue(player.playerID, out bool ready) || !ready)
+            if (!kv.Value)
                 return false;
         }
         return true;
-    }
-
-    private IEnumerator DelayedTurnExecution()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        if (unitManager == null)
-        {
-            Debug.LogError("[Server] UnitManager is missing before executing turn!");
-            yield break;
-        }
-
-        try
-        {
-            unitManager.ExecuteTurnServer();
-            MainGameManager.Instance?.NextTurnServer();
-
-            foreach (var p in allPlayers)
-            {
-                if (p != null && p.connectionToClient != null)
-                    p.RpcResetReady();
-            }
-
-            Debug.Log("[Server] Turn executed and players reset.");
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError("[Server] Error during turn execution: " + ex);
-        }
     }
 
     [ClientRpc]
