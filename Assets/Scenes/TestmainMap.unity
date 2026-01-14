@@ -502,7 +502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43631256e0e6c664aa2031df552c4741, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43631256e0e6c664aa2031df552c4741, type: 3}
       propertyPath: m_LocalPosition.z
@@ -849,7 +849,7 @@ PrefabInstance:
     - target: {fileID: -5696682485450993088, guid: 208550b84fcb8884eb319d0f26c4c9c6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
+      objectReference: {fileID: 2100000, guid: cf7546d80a78309408c34f4c952556a3, type: 2}
     - target: {fileID: -992668862006731377, guid: 208550b84fcb8884eb319d0f26c4c9c6, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -889,6 +889,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 208550b84fcb8884eb319d0f26c4c9c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1949836923}
     - targetCorrespondingSourceObject: {fileID: 357414974771782721, guid: 208550b84fcb8884eb319d0f26c4c9c6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 608796394}
@@ -1623,7 +1626,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 789661118}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1208557790}
   - {fileID: 1481998393}
@@ -1753,6 +1756,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 27cad42cbf642eb45a7ab7eefc14f4d7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1561824622}
     - targetCorrespondingSourceObject: {fileID: 856593114686913981, guid: 27cad42cbf642eb45a7ab7eefc14f4d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1121582990}
@@ -2094,6 +2100,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e3875beaf46a0044bf2bfbaa8cd9b82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1349801652}
     - targetCorrespondingSourceObject: {fileID: 3115537368862364230, guid: 5e3875beaf46a0044bf2bfbaa8cd9b82, type: 3}
       insertIndex: -1
       addedObject: {fileID: 942621427}
@@ -2164,7 +2173,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1121582990}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1550156736}
   - {fileID: 1762080732}
@@ -2229,7 +2238,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 2021159328}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 256292830}
   - {fileID: 1484275197}
@@ -2279,10 +2288,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countryName: 
   ownerID: -1
-  isStarterCountry: 0
+  isStarterCountry: 1
   centerPoint: {fileID: 608796394}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1898107558}
   - {fileID: 1467335333}
@@ -2584,7 +2593,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 64892983}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 713817364}
   - {fileID: 1481998393}
@@ -3407,7 +3416,7 @@ PrefabInstance:
     - target: {fileID: -6255495124350813378, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
+      objectReference: {fileID: 2100000, guid: 774947958c3a81c4c82b836259f0ceb2, type: 2}
     - target: {fileID: 919132149155446097, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
       propertyPath: m_Name
       value: MapEu.Yugoslavia
@@ -3450,6 +3459,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1059617709}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2004137888}
     - targetCorrespondingSourceObject: {fileID: 4500551294344276839, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 819622177}
@@ -3641,6 +3653,51 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &678115668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 678115669}
+  - component: {fileID: 678115670}
+  m_Layer: 6
+  m_Name: MapEu.Spain
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &678115669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678115668}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 30.1, y: 2.7, z: -88.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1077786714}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &678115670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678115668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: MapEu.Spain
 --- !u!1 &713817362 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
@@ -3980,6 +4037,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8275789790238500374, guid: 39f4f609546fdb0438fbebe4cd03d5e4, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     - target: {fileID: 919132149155446097, guid: 39f4f609546fdb0438fbebe4cd03d5e4, type: 3}
       propertyPath: m_Name
       value: MapEu.FullMapWithOceans
@@ -4072,7 +4133,7 @@ Transform:
   m_GameObject: {fileID: 799568795}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 128, y: 0, z: 21.7}
+  m_LocalPosition: {x: 122.4, y: 0, z: 26.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4134,7 +4195,7 @@ Transform:
   m_GameObject: {fileID: 841606456}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 23.700014, y: 0, z: 97.40002}
+  m_LocalPosition: {x: 26.8, y: 0, z: 97.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4199,10 +4260,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countryName: 
   ownerID: -1
-  isStarterCountry: 0
+  isStarterCountry: 1
   centerPoint: {fileID: 819622177}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 990444434}
   - {fileID: 468064820}
@@ -4476,7 +4537,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 942621427}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1818832463}
   - {fileID: 1800594092}
@@ -5025,7 +5086,7 @@ PrefabInstance:
     - target: {fileID: -3439290253518080396, guid: 1cb83657484284f43b1703642c802a27, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: cf7546d80a78309408c34f4c952556a3, type: 2}
+      objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 919132149155446097, guid: 1cb83657484284f43b1703642c802a27, type: 3}
       propertyPath: m_Name
       value: MapEu.Russia2
@@ -5096,7 +5157,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 284046757}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1978168287}
   - {fileID: 783773925}
@@ -5397,6 +5458,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3b25c082c8ac30e448f4159b45e03c8a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 678115669}
     - targetCorrespondingSourceObject: {fileID: 7504791396959087588, guid: 3b25c082c8ac30e448f4159b45e03c8a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1476317395}
@@ -5445,6 +5509,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7504791396959087588, guid: 3b25c082c8ac30e448f4159b45e03c8a, type: 3}
   m_PrefabInstance: {fileID: 1077786713}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1092900399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1092900400}
+  - component: {fileID: 1092900401}
+  m_Layer: 6
+  m_Name: Russia.Ukrain
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1092900400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092900399}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -18.3, y: 2.7, z: 32.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1206973278}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1092900401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092900399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Russia.Ukrain
 --- !u!1 &1121582989
 GameObject:
   m_ObjectHideFlags: 0
@@ -5630,6 +5739,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4e0fc2eda7f29d145a51a59b10307b70, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1405292938}
     - targetCorrespondingSourceObject: {fileID: 8170033605958137559, guid: 4e0fc2eda7f29d145a51a59b10307b70, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2009912102}
@@ -5678,6 +5790,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8170033605958137559, guid: 4e0fc2eda7f29d145a51a59b10307b70, type: 3}
   m_PrefabInstance: {fileID: 1188488210}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1191379259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1191379260}
+  - component: {fileID: 1191379261}
+  m_Layer: 6
+  m_Name: PolandReal
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1191379260
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191379259}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -26.8, y: 2.7, z: -4.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 713817363}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1191379261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191379259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: PolandReal
 --- !u!1 &1193549188
 GameObject:
   m_ObjectHideFlags: 0
@@ -5939,6 +6096,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5fb479099e98320479ddf040eca87d83, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1766249940}
     - targetCorrespondingSourceObject: {fileID: 4458135299893548755, guid: 5fb479099e98320479ddf040eca87d83, type: 3}
       insertIndex: -1
       addedObject: {fileID: 284046757}
@@ -6078,6 +6238,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0537c0ef2210b3147a4df7df4244273b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1092900400}
     - targetCorrespondingSourceObject: {fileID: -8269602040048210403, guid: 0537c0ef2210b3147a4df7df4244273b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 993930881}
@@ -6736,7 +6899,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 993930881}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 19829871}
@@ -6843,7 +7006,7 @@ PrefabInstance:
     - target: {fileID: 4047204661819472111, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: cf7546d80a78309408c34f4c952556a3, type: 2}
+      objectReference: {fileID: 2100000, guid: 13d6fe2416fcbfe44894476930246ddd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -7004,6 +7167,51 @@ MonoBehaviour:
   - {fileID: 2121766367}
   - {fileID: 713817364}
   starterSubCountries: []
+--- !u!1 &1349801651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1349801652}
+  - component: {fileID: 1349801653}
+  m_Layer: 6
+  m_Name: SouthArabia
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1349801652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349801651}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 74, y: 2.7, z: 107.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 386051265}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1349801653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349801651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: SouthArabia
 --- !u!1 &1380257459
 GameObject:
   m_ObjectHideFlags: 0
@@ -7071,6 +7279,51 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: efab04563ff85b2488ee6067f4cac4df, type: 3}
   m_PrefabInstance: {fileID: 1538694739}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1405292937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1405292938}
+  - component: {fileID: 1405292939}
+  m_Layer: 6
+  m_Name: Iran
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1405292938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1405292937}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 23.4, y: 2.7, z: 127.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1188488211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1405292939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1405292937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Iran
 --- !u!1 &1427660114
 GameObject:
   m_ObjectHideFlags: 0
@@ -7396,7 +7649,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countryName: 
   ownerID: -1
-  isStarterCountry: 1
+  isStarterCountry: 0
   centerPoint: {fileID: 1482672266}
   centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
@@ -7404,9 +7657,7 @@ MonoBehaviour:
   - {fileID: 2075623173}
   - {fileID: 1898107558}
   - {fileID: 475990290}
-  starterSubCountries:
-  - {fileID: 2075623173}
-  - {fileID: 1903568260}
+  starterSubCountries: []
 --- !u!1 &1476317394
 GameObject:
   m_ObjectHideFlags: 0
@@ -8213,11 +8464,57 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1476317395}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 256292830}
   - {fileID: 1979685520}
+  - {fileID: 1762080732}
   starterSubCountries: []
+--- !u!1 &1561824621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1561824622}
+  - component: {fileID: 1561824623}
+  m_Layer: 6
+  m_Name: Algeria
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1561824622
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561824621}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 68.5, y: 2.7, z: -68}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 307893986}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1561824623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561824621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Algeria
 --- !u!114 &1563805933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8532,7 +8829,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1217525964}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 129070726}
   starterSubCountries: []
@@ -9166,7 +9463,7 @@ PrefabInstance:
     - target: {fileID: -5904014099677338807, guid: 249a0f0da4fd9f840acab3860749cc99, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: cf7546d80a78309408c34f4c952556a3, type: 2}
+      objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 527107853736939814, guid: 249a0f0da4fd9f840acab3860749cc99, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -9266,7 +9563,7 @@ Transform:
   m_GameObject: {fileID: 1693571345}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 78.10002, y: 0, z: 103.100006}
+  m_LocalPosition: {x: 75.77, y: 0, z: 104.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9445,6 +9742,51 @@ MonoBehaviour:
   - {fileID: 402027827}
   - {fileID: 1550156736}
   starterSubCountries: []
+--- !u!1 &1766249939
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1766249940}
+  - component: {fileID: 1766249941}
+  m_Layer: 6
+  m_Name: MapEu.Sweden
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1766249940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766249939}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -67.1, y: 2.7, z: -26.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1204074292}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1766249941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766249939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: MapEu.Sweden
 --- !u!114 &1800594092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10012,7 +10354,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 2009912102}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1903568260}
   - {fileID: 1467335333}
@@ -10038,16 +10380,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countryName: 
   ownerID: -1
-  isStarterCountry: 1
+  isStarterCountry: 0
   centerPoint: {fileID: 628280899}
   centerWorldPos: {x: 0, y: 0, z: 0}
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 1898107558}
-  starterSubCountries:
-  - {fileID: 2075623173}
-  - {fileID: 1467335333}
+  starterSubCountries: []
 --- !u!1 &1935546782
 GameObject:
   m_ObjectHideFlags: 0
@@ -10370,6 +10710,51 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &1949836922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1949836923}
+  - component: {fileID: 1949836924}
+  m_Layer: 6
+  m_Name: Turkaye
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1949836923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949836922}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 22.6, y: 2.7, z: 62.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 181118059}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1949836924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949836922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Turkaye
 --- !u!1 &1959115759
 GameObject:
   m_ObjectHideFlags: 0
@@ -10727,6 +11112,51 @@ MonoBehaviour:
   - {fileID: 925378339}
   - {fileID: 402027827}
   starterSubCountries: []
+--- !u!1 &2004137887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2004137888}
+  - component: {fileID: 2004137889}
+  m_Layer: 6
+  m_Name: Yugoslavia
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2004137888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004137887}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 14.1, y: 2.7, z: -6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 661452365}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2004137889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004137887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Yugoslavia
 --- !u!1 &2009912101
 GameObject:
   m_ObjectHideFlags: 0
@@ -10884,6 +11314,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1191379260}
     - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2044017563}
@@ -11132,7 +11565,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1532244986}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1978168287}
   - {fileID: 1349704945}
@@ -11141,9 +11574,7 @@ MonoBehaviour:
   - {fileID: 1903568260}
   - {fileID: 1467335333}
   - {fileID: 19829871}
-  starterSubCountries:
-  - {fileID: 1903568260}
-  - {fileID: 1467335333}
+  starterSubCountries: []
 --- !u!1 &2076531863
 GameObject:
   m_ObjectHideFlags: 0

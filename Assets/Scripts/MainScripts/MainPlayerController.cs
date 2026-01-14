@@ -3,6 +3,7 @@ using Mirror.BouncyCastle.Asn1.X509;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -278,14 +279,6 @@ public class MainPlayerController : NetworkBehaviour
         return null;
     }
 
-    private IEnumerator WaitAndAssign(string tag, int playerID)
-    {
-        while (FindCountryByTagRecursive(tag) == null)
-            yield return null;
-
-        FindCountryByTagRecursive(tag).SetOwner(playerID);
-        Debug.Log($"[Server] Assigned {tag} to player {playerID} after waiting");
-    }
 
 
     [Command]
@@ -299,13 +292,6 @@ public class MainPlayerController : NetworkBehaviour
 
         Debug.Log($"[Server] Spawning units for Player {playerID} in {countryName}");
         MainUnitManager.Instance.SpawnUnitsForCountryServer(countryName, playerID, color, count);
-    }
-
-    [Command]
-    private void CmdSetChosenCountry(string country)
-    {
-        chosenCountry = country;
-        hasChosenCountry = true;
     }
 
     [Command]
@@ -323,12 +309,6 @@ public class MainPlayerController : NetworkBehaviour
                 unit.SetupLocalVisuals();
     }
 
-    private IEnumerator SendSpawnCommandDelayed()
-    {
-        yield return new WaitForSeconds(0.1f);
-        if (isLocalPlayer)
-            CmdRequestSpawnUnits(chosenCountry, playerID, playerColor, 3);
-    }
 
     public void CancelCountryChoice()
     {
@@ -358,13 +338,16 @@ public class MainPlayerController : NetworkBehaviour
                 baseColor = Color.green;
                 break;
             case "Russia":
-                baseColor = Color.red;
+                baseColor = Color.gray;
                 break;
             case "Uk+NorthIrland":
                 baseColor = Color.yellow;
                 break;
-            case "NorwayTag":
-                baseColor = Color.cyan;
+            case "Yugoslavia":
+                baseColor = Color.magenta;
+                break;
+            case "Turkaye":
+                baseColor = Color.red;
                 break;
             default:
                 baseColor = Color.white; 
