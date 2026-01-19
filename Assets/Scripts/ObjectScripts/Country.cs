@@ -12,6 +12,9 @@ public class Country : MonoBehaviour
     [Header("Cached World Data")]
     public Vector3 centerWorldPos;
 
+    [Header("Unit Spawn Points")]
+    public List<Transform> spawnPoints = new List<Transform>();
+
     [Header("Supply System")]
     public bool isSupplyCenter = false;
 
@@ -74,5 +77,13 @@ public class Country : MonoBehaviour
         {
             MainGameManager.Instance.CheckWinConditionServer();
         }
+    }
+
+    public Transform GetRandomSpawnPoint()
+    {
+        if (spawnPoints == null || spawnPoints.Count == 0)
+            return null;
+
+        return spawnPoints[Random.Range(0, spawnPoints.Count)];
     }
 }

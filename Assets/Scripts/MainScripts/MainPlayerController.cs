@@ -324,44 +324,34 @@ public class MainPlayerController : NetworkBehaviour
         if (string.IsNullOrEmpty(chosenCountry))
             return;
 
-        Color baseColor;
-
         switch (chosenCountry)
         {
             case "Germany":
-                baseColor = Color.black;
+                playerColor = Color.black;
                 break;
             case "France":
-                baseColor = Color.blue;
+                playerColor = Color.blue;
                 break;
             case "Italy":
-                baseColor = Color.green;
+                playerColor = Color.green;
                 break;
             case "Russia":
-                baseColor = Color.gray;
+                playerColor = Color.cyan;
                 break;
-            case "Uk+NorthIrland":
-                baseColor = Color.yellow;
+            case "Uk":
+                playerColor = Color.yellow;
                 break;
             case "Yugoslavia":
-                baseColor = Color.magenta;
+                playerColor = Color.magenta;
                 break;
             case "Turkaye":
-                baseColor = Color.red;
+                playerColor = Color.red;
                 break;
             default:
-                baseColor = Color.white; 
-                Debug.LogWarning($"No color assigned for country tag {chosenCountry}, using white.");
+                playerColor = Color.gray;
+                Debug.LogWarning($"No color assigned for country tag {chosenCountry}");
                 break;
         }
-
-        float lightenFactor = 110f;
-        playerColor = new Color(
-            Mathf.Clamp01(baseColor.r * lightenFactor),
-            Mathf.Clamp01(baseColor.g * lightenFactor),
-            Mathf.Clamp01(baseColor.b * lightenFactor),
-            1f
-        );
 
         Debug.Log($"[Player {playerID}] Assigned color {playerColor} for country tag {chosenCountry}");
     }
@@ -705,14 +695,14 @@ public class MainPlayerController : NetworkBehaviour
                 Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    Country clicked = GetCountryFromHit(hit);
+                    Country clicked = GetCountryFromHitRecursive(hit);
 
                     Debug.Log("Build raycast hit");
 
                     if (clicked != null && clicked.isSupplyCenter)
                     {
                         Debug.Log($"[Client {playerID}] clicked {clicked.name}, sending build request (ownerID={clicked.ownerID})");
-                        RequestBuild(clicked.tag);
+                        RequestBuild(clicked.gameObject.tag);
                         remainingBuilds--;
                     }
                     else
@@ -739,6 +729,13 @@ public class MainPlayerController : NetworkBehaviour
     private void RequestBuild(string countryTag)
     {
         if (!isLocalPlayer) return;
+
+        if (string.IsNullOrEmpty(countryTag) || countryTag == "Untagged")
+        {
+            Debug.LogError("[Client] Tried to build with INVALID country tag");
+            return;
+        }
+
         CmdRequestBuildAt(countryTag, playerColor);
     }
 

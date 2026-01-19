@@ -131,11 +131,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Russia.Belarus
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1520205655}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 2075623173}
@@ -317,11 +318,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Irland
+  countryName: Irland
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 841606457}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1616309165}
@@ -400,7 +402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1abed8f5e5cd5424f85c59d8985666d7, type: 3}
       propertyPath: m_Name
-      value: MapEu.Tunisien
+      value: Tunisien
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1abed8f5e5cd5424f85c59d8985666d7, type: 3}
       propertyPath: m_Layer
@@ -477,11 +479,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Greace
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 799568796}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 475990290}
@@ -558,7 +561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 43631256e0e6c664aa2031df552c4741, type: 3}
       propertyPath: m_Name
-      value: MapEu.Romania
+      value: Romania
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 43631256e0e6c664aa2031df552c4741, type: 3}
       propertyPath: m_Layer
@@ -685,7 +688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ac5fac6c68423eb4090524a93534dacc, type: 3}
       propertyPath: m_Name
-      value: MapEu.Egypt2
+      value: Egypt2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ac5fac6c68423eb4090524a93534dacc, type: 3}
       propertyPath: m_Layer
@@ -718,6 +721,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ac5fac6c68423eb4090524a93534dacc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1708702372}
     - targetCorrespondingSourceObject: {fileID: 2061371324713757758, guid: ac5fac6c68423eb4090524a93534dacc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1597947873}
@@ -876,7 +882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 208550b84fcb8884eb319d0f26c4c9c6, type: 3}
       propertyPath: m_Name
-      value: MapEu.Turkaye
+      value: Turkaye
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 208550b84fcb8884eb319d0f26c4c9c6, type: 3}
       propertyPath: m_Layer
@@ -1063,7 +1069,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 919132149155446097, guid: 936bfb88e59c97249b923bc23b24c7a2, type: 3}
       propertyPath: m_Name
-      value: MapEu.Portugal
+      value: Portugal
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 936bfb88e59c97249b923bc23b24c7a2, type: 3}
       propertyPath: m_Layer
@@ -1138,7 +1144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8686623521465530875, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: m_TagString
-      value: Uk+NorthIrland
+      value: Uk
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1182,7 +1188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: m_Name
-      value: MapEu.Uk+NorthIrland
+      value: Uk
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: m_Layer
@@ -1190,7 +1196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: m_TagString
-      value: Uk+NorthIrland
+      value: Uk
       objectReference: {fileID: 0}
     - target: {fileID: 3609384539648960658, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -1444,6 +1450,131 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b3af07de4bb576f45b070654e56ba541, type: 3}
   m_PrefabInstance: {fileID: 1525881773}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &238648241
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1348907905}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4692735651470230587, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
+    - target: {fileID: -2531307124731692182, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -2531307124731692182, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -2531307124731692182, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -2531307124731692182, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2531307124731692182, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_Name
+      value: Albania
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -2531307124731692182, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1235417611}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 238648245}
+  m_SourcePrefab: {fileID: 100100000, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+--- !u!4 &238648242 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2531307124731692182, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+  m_PrefabInstance: {fileID: 238648241}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &238648243 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+  m_PrefabInstance: {fileID: 238648241}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &238648244 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+  m_PrefabInstance: {fileID: 238648241}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &238648245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238648243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Albania
+  ownerID: -1
+  isStarterCountry: 0
+  centerPoint: {fileID: 1235417611}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
+  isSupplyCenter: 0
+  adjacentCountries:
+  - {fileID: 854585239}
+  - {fileID: 137183499}
+  starterSubCountries: []
 --- !u!1 &239379016
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,6 +1757,8 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 789661118}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1859291964}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1208557790}
@@ -1739,7 +1872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 27cad42cbf642eb45a7ab7eefc14f4d7, type: 3}
       propertyPath: m_Name
-      value: MapEu.Algeria
+      value: Algeria
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 27cad42cbf642eb45a7ab7eefc14f4d7, type: 3}
       propertyPath: m_Layer
@@ -1877,7 +2010,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 21d6b21b1a8f3cd48b7cc77b0262dbd8, type: 3}
       propertyPath: m_Name
-      value: MapEu.Palestain
+      value: Palestain
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 21d6b21b1a8f3cd48b7cc77b0262dbd8, type: 3}
       propertyPath: m_Layer
@@ -1999,12 +2132,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Egypt2
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1597947873}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  isSupplyCenter: 0
+  spawnPoints:
+  - {fileID: 1708702372}
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1676261464}
   - {fileID: 1987312188}
@@ -2059,7 +2194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5e3875beaf46a0044bf2bfbaa8cd9b82, type: 3}
       propertyPath: m_Name
-      value: MapEu.SouthArabia
+      value: SouthArabia
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5e3875beaf46a0044bf2bfbaa8cd9b82, type: 3}
       propertyPath: m_Layer
@@ -2168,11 +2303,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Algeria
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1121582990}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1561824622}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1550156736}
@@ -2233,11 +2370,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Italy
   ownerID: -1
   isStarterCountry: 1
   centerPoint: {fileID: 2021159328}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1214045840}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 256292830}
@@ -2257,11 +2396,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Hungery
+  countryName: Hungery
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 664085927}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 2106912905}
@@ -2286,11 +2426,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Turkaye
   ownerID: -1
   isStarterCountry: 1
   centerPoint: {fileID: 608796394}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1949836923}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1898107558}
@@ -2588,11 +2730,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Chekoslovakia
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 64892983}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 713817364}
@@ -3041,11 +3184,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Netherlands
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1604649724}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1208557790}
@@ -3129,7 +3273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 210c552c7b0cbe24184bca467bef7b73, type: 3}
       propertyPath: m_Name
-      value: MapEu.Russia.Belarus
+      value: Russia.Belarus
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 210c552c7b0cbe24184bca467bef7b73, type: 3}
       propertyPath: m_Layer
@@ -3280,7 +3424,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 919132149155446097, guid: 26960d0a5ed50034198300a8109c6523, type: 3}
       propertyPath: m_Name
-      value: MapEu.Netherlands
+      value: Netherlands
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 26960d0a5ed50034198300a8109c6523, type: 3}
       propertyPath: m_Layer
@@ -3453,7 +3597,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 774947958c3a81c4c82b836259f0ceb2, type: 2}
     - target: {fileID: 919132149155446097, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
       propertyPath: m_Name
-      value: MapEu.Yugoslavia
+      value: Yugoslavia
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
       propertyPath: m_Layer
@@ -3490,9 +3634,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1059617709}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2004137888}
@@ -3698,7 +3839,7 @@ GameObject:
   - component: {fileID: 678115669}
   - component: {fileID: 678115670}
   m_Layer: 6
-  m_Name: MapEu.Spain
+  m_Name: Spain
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3731,7 +3872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Spain
+  countryName: Spain
 --- !u!1 &713817362 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
@@ -3754,11 +3895,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: PolandReal
+  countryName: Poland
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 2044017563}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1191379260}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1349704945}
@@ -3872,12 +4015,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 731145288}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -60.9, y: 0, z: 3.4}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 117.40003, y: 0, z: 120.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 856477954}
+  m_Father: {fileID: 856477959}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &766938153
 PrefabInstance:
@@ -3929,7 +4072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 65420ea61e343be43bfae803715d25ae, type: 3}
       propertyPath: m_Name
-      value: MapEu.Lithuania
+      value: Lithuania
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 65420ea61e343be43bfae803715d25ae, type: 3}
       propertyPath: m_Layer
@@ -3972,7 +4115,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3813316845065012053, guid: 65420ea61e343be43bfae803715d25ae, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1235417611}
+      addedObject: {fileID: 1097806691}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65420ea61e343be43bfae803715d25ae, type: 3}
       insertIndex: -1
@@ -4101,11 +4244,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Norway
   ownerID: -1
   isStarterCountry: 1
   centerPoint: {fileID: 454074760}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1978168287}
@@ -4292,11 +4436,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Yugoslavia
   ownerID: -1
   isStarterCountry: 1
   centerPoint: {fileID: 819622177}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 2004137888}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 990444434}
@@ -4376,7 +4522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d199c7a234bc7ef44875663a0a6d37df, type: 3}
       propertyPath: m_Name
-      value: MapEu.Estonia
+      value: Estonia
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d199c7a234bc7ef44875663a0a6d37df, type: 3}
       propertyPath: m_Layer
@@ -4397,7 +4543,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d199c7a234bc7ef44875663a0a6d37df, type: 3}
+    - targetCorrespondingSourceObject: {fileID: -500575803165824122, guid: d199c7a234bc7ef44875663a0a6d37df, type: 3}
       insertIndex: -1
       addedObject: {fileID: 731145289}
     m_AddedComponents:
@@ -4440,6 +4586,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1709378290324581762, guid: d199c7a234bc7ef44875663a0a6d37df, type: 3}
+--- !u!4 &856477959 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -500575803165824122, guid: d199c7a234bc7ef44875663a0a6d37df, type: 3}
+  m_PrefabInstance: {fileID: 856477953}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &886615071 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2308118288082286148, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
@@ -4477,51 +4628,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
   m_PrefabInstance: {fileID: 1730688575}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &910673679
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 910673680}
-  - component: {fileID: 910673681}
-  m_Layer: 6
-  m_Name: Solid2
-  m_TagString: SpawnPoint
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &910673680
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 910673679}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 192.30005, y: 2.2, z: 134.3}
-  m_LocalScale: {x: 20, y: 1, z: 10}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1175002926}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &910673681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 910673679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countryName: Solid2
 --- !u!1 &925378338 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1abed8f5e5cd5424f85c59d8985666d7, type: 3}
@@ -4539,11 +4645,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Tunisien
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1935546783}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1987312188}
@@ -4566,11 +4673,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: SouthArabia
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 942621427}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1349801652}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1818832463}
@@ -4722,7 +4831,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 919132149155446097, guid: af50c01d3282d1f40806e98ae41e0264, type: 3}
       propertyPath: m_Name
-      value: MapEu.Chekoslovakia
+      value: Chekoslovakia
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: af50c01d3282d1f40806e98ae41e0264, type: 3}
       propertyPath: m_Layer
@@ -4804,11 +4913,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Estonia
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 731145289}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 2075623173}
@@ -4826,11 +4936,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Austria
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1448411573}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 468064820}
@@ -4925,7 +5036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 54fa67532e17de84280ff49a5758ce62, type: 3}
       propertyPath: m_Name
-      value: MapEu.Austria
+      value: Austria
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 54fa67532e17de84280ff49a5758ce62, type: 3}
       propertyPath: m_Layer
@@ -5123,7 +5234,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 919132149155446097, guid: 1cb83657484284f43b1703642c802a27, type: 3}
       propertyPath: m_Name
-      value: MapEu.Russia2
+      value: Russia2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1cb83657484284f43b1703642c802a27, type: 3}
       propertyPath: m_Layer
@@ -5186,62 +5297,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Sweden
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 284046757}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1766249940}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1978168287}
   - {fileID: 783773925}
   - {fileID: 1563805933}
   starterSubCountries: []
---- !u!1 &1059617708
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1059617709}
-  - component: {fileID: 1059617710}
-  m_Layer: 6
-  m_Name: MapEu.Yugoslavia
-  m_TagString: SpawnPoint
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1059617709
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1059617708}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.6, y: 2.2, z: -10.5}
-  m_LocalScale: {x: 20, y: 1, z: 10}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 661452365}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1059617710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1059617708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countryName: MapEu.Yugoslavia
 --- !u!1 &1061403094
 GameObject:
   m_ObjectHideFlags: 0
@@ -5451,7 +5519,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3b25c082c8ac30e448f4159b45e03c8a, type: 3}
       propertyPath: m_Name
-      value: MapEu.Spain
+      value: Spain
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3b25c082c8ac30e448f4159b45e03c8a, type: 3}
       propertyPath: m_Layer
@@ -5588,6 +5656,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Russia.Ukrain
+--- !u!1 &1097806690
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1097806691}
+  m_Layer: 7
+  m_Name: CameraFocusPointLith
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1097806691
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097806690}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 115.40006, y: 0, z: 102.60006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 766938157}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1121582989
 GameObject:
   m_ObjectHideFlags: 0
@@ -5732,7 +5831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4e0fc2eda7f29d145a51a59b10307b70, type: 3}
       propertyPath: m_Name
-      value: MapEu.Iran+kha
+      value: Iran
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4e0fc2eda7f29d145a51a59b10307b70, type: 3}
       propertyPath: m_Layer
@@ -5835,7 +5934,7 @@ GameObject:
   - component: {fileID: 1191379260}
   - component: {fileID: 1191379261}
   m_Layer: 6
-  m_Name: PolandReal
+  m_Name: Poland
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5868,7 +5967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: PolandReal
+  countryName: Poland
 --- !u!1 &1193549188
 GameObject:
   m_ObjectHideFlags: 0
@@ -5974,7 +6073,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0c65b760fd34dd548817f00a8e4b3b3e, type: 3}
       propertyPath: m_Name
-      value: MapEu.Jordan
+      value: Jordan
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0c65b760fd34dd548817f00a8e4b3b3e, type: 3}
       propertyPath: m_Layer
@@ -6093,7 +6192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5fb479099e98320479ddf040eca87d83, type: 3}
       propertyPath: m_Name
-      value: MapEu.Sweden
+      value: Sweden
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5fb479099e98320479ddf040eca87d83, type: 3}
       propertyPath: m_Layer
@@ -6255,7 +6354,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 919132149155446097, guid: 0537c0ef2210b3147a4df7df4244273b, type: 3}
       propertyPath: m_Name
-      value: MapEu.Russia.Ukrain
+      value: Russia.Ukrain
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0537c0ef2210b3147a4df7df4244273b, type: 3}
       propertyPath: m_Layer
@@ -6335,11 +6434,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Belgium
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 562814227}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries: []
   starterSubCountries: []
@@ -6444,11 +6544,11 @@ Transform:
   m_GameObject: {fileID: 1235417610}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 115.4, y: 0, z: 102.6}
+  m_LocalPosition: {x: 114.2, y: 0, z: 32.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 766938157}
+  m_Father: {fileID: 238648242}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1246793406
 GameObject:
@@ -6555,7 +6655,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 375db09a2444e924c90b118ce3632420, type: 2}
     - target: {fileID: 919132149155446097, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
       propertyPath: m_Name
-      value: MapEu.Germany
+      value: Germany
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
       propertyPath: m_Layer
@@ -6877,7 +6977,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f203ec0bb1bc7b547b652a8496c93250, type: 3}
       propertyPath: m_Name
-      value: MapEu.Greace
+      value: Greace
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f203ec0bb1bc7b547b652a8496c93250, type: 3}
       propertyPath: m_Layer
@@ -6959,11 +7059,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Russia.Ukrain
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 993930881}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1092900400}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 2075623173}
@@ -7034,7 +7136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
       propertyPath: m_Name
-      value: MapEu.Russia
+      value: Russia
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
       propertyPath: m_Layer
@@ -7078,9 +7180,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1543276036}
-    - targetCorrespondingSourceObject: {fileID: 1577555481403046716, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 910673680}
     - targetCorrespondingSourceObject: {fileID: 1577555481403046716, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1532244986}
@@ -7183,6 +7282,7 @@ Transform:
   - {fileID: 1203740027}
   - {fileID: 1538694740}
   - {fileID: 1805465904}
+  - {fileID: 238648244}
   - {fileID: 766938154}
   - {fileID: 1627364691}
   - {fileID: 647151935}
@@ -7222,11 +7322,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Lithuania
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1235417611}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 2121766367}
@@ -7635,7 +7736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ab166048984c0944ea65dfd9cae9d07f, type: 3}
       propertyPath: m_Name
-      value: MapEu.Sweitch (1)
+      value: Sweitch
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ab166048984c0944ea65dfd9cae9d07f, type: 3}
       propertyPath: m_Layer
@@ -7712,11 +7813,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Russia3
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1482672266}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 2075623173}
@@ -7776,6 +7878,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1941948999}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 713817364}
@@ -7835,11 +7938,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Sweitch
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 555666398}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 990444434}
@@ -7952,7 +8056,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 919132149155446097, guid: b3af07de4bb576f45b070654e56ba541, type: 3}
       propertyPath: m_Name
-      value: MapEu.Denmark
+      value: Denmark
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b3af07de4bb576f45b070654e56ba541, type: 3}
       propertyPath: m_Layer
@@ -8242,7 +8346,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 919132149155446097, guid: efab04563ff85b2488ee6067f4cac4df, type: 3}
       propertyPath: m_Name
-      value: MapEu.Latvia
+      value: Latvia
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: efab04563ff85b2488ee6067f4cac4df, type: 3}
       propertyPath: m_Layer
@@ -8442,7 +8546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9f1f7fa06622f644d8f511ace2665a39, type: 3}
       propertyPath: m_Name
-      value: MapEu.Finland
+      value: Finland
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9f1f7fa06622f644d8f511ace2665a39, type: 3}
       propertyPath: m_Layer
@@ -8524,11 +8628,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Spain
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1476317395}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 678115669}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 256292830}
@@ -8592,11 +8698,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Denmark
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1693571346}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1055308298}
@@ -8722,7 +8829,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1a44c3ebe594b8f498f4470635420cc8, type: 2}
     - target: {fileID: 919132149155446097, guid: 4e589c8eb1ad7204188981ec0884bae4, type: 3}
       propertyPath: m_Name
-      value: MapEu.Italy
+      value: Italy
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4e589c8eb1ad7204188981ec0884bae4, type: 3}
       propertyPath: m_Layer
@@ -8889,11 +8996,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Uk
   ownerID: -1
   isStarterCountry: 1
   centerPoint: {fileID: 1217525964}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 2035859111}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 129070726}
@@ -8972,7 +9081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 07b9b6be37be830418f3f62b060ffe4a, type: 3}
       propertyPath: m_Name
-      value: MapEu.Irak
+      value: Irak
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 07b9b6be37be830418f3f62b060ffe4a, type: 3}
       propertyPath: m_Layer
@@ -9106,7 +9215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ca81caf27c9d93b4080faae2fe2dbcdb, type: 3}
       propertyPath: m_Name
-      value: MapEu.Moroco
+      value: Moroco
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ca81caf27c9d93b4080faae2fe2dbcdb, type: 3}
       propertyPath: m_Layer
@@ -9280,7 +9389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6318b5f7b0347de44bf52a10c3c8dc40, type: 3}
       propertyPath: m_Name
-      value: MapEu.Irland
+      value: Irland
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6318b5f7b0347de44bf52a10c3c8dc40, type: 3}
       propertyPath: m_Layer
@@ -9423,11 +9532,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Bulgaria
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 190882338}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 2106912905}
@@ -9447,11 +9557,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Palestain
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1256226217}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1800594092}
@@ -9539,7 +9650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 249a0f0da4fd9f840acab3860749cc99, type: 3}
       propertyPath: m_Name
-      value: MapEu.Russia3
+      value: Russia3
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 249a0f0da4fd9f840acab3860749cc99, type: 3}
       propertyPath: m_Layer
@@ -9634,6 +9745,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1525881777}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1708702371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1708702372}
+  - component: {fileID: 1708702373}
+  m_Layer: 6
+  m_Name: Egypt2
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1708702372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708702371}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 79.6, y: 2.2, z: 43.2}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 140762712}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1708702373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708702371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Egypt2
 --- !u!1001 &1730688575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9716,7 +9872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
       propertyPath: m_Name
-      value: MapEu.France+isl
+      value: France
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
       propertyPath: m_Layer
@@ -9797,11 +9953,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Moroco
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1380257460}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 402027827}
@@ -9818,7 +9975,7 @@ GameObject:
   - component: {fileID: 1766249940}
   - component: {fileID: 1766249941}
   m_Layer: 6
-  m_Name: MapEu.Sweden
+  m_Name: Sweden
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9851,7 +10008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Sweden
+  countryName: Sweden
 --- !u!114 &1800594092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9864,11 +10021,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Jordan
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 356979970}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1818832463}
@@ -9949,7 +10107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4e974e4571c83b644a53ca7f400dcc5a, type: 3}
       propertyPath: m_Name
-      value: MapEu.Libera
+      value: Libera
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4e974e4571c83b644a53ca7f400dcc5a, type: 3}
       propertyPath: m_Layer
@@ -10031,11 +10189,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Irak
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1381326029}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1800594092}
@@ -10280,7 +10439,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 3885ac89f1a89d548b84698791d808cb, type: 2}
     - target: {fileID: 919132149155446097, guid: b8c71edc198be01499f25b1a80df671e, type: 3}
       propertyPath: m_Name
-      value: MapEu.Bulgaria
+      value: Bulgaria
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b8c71edc198be01499f25b1a80df671e, type: 3}
       propertyPath: m_Layer
@@ -10414,11 +10573,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Iran
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 2009912102}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1405292938}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1903568260}
@@ -10443,11 +10604,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Russia2
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 628280899}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 2075623173}
@@ -10593,7 +10755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6ba6d9fe9a4c52c4f9f76822cb3cc47f, type: 3}
       propertyPath: m_Name
-      value: MapEu.Norway
+      value: Norway
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6ba6d9fe9a4c52c4f9f76822cb3cc47f, type: 3}
       propertyPath: m_Layer
@@ -10973,11 +11135,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Finland
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1193549189}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 2075623173}
@@ -11034,7 +11197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bf896b5d5fa5eb14caf7eacd317f2004, type: 3}
       propertyPath: m_Name
-      value: MapEu.Hungery
+      value: Hungery
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bf896b5d5fa5eb14caf7eacd317f2004, type: 3}
       propertyPath: m_Layer
@@ -11140,11 +11303,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Portugal
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 960473552}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1550156736}
@@ -11166,11 +11330,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Libera
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1563942526}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 360796718}
@@ -11354,7 +11519,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
       propertyPath: m_Name
-      value: PolandReal
+      value: Poland
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
       propertyPath: m_Layer
@@ -11467,7 +11632,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b07c450597de8b649afb93a2799f6ed2, type: 3}
       propertyPath: m_Name
-      value: MapEu.Belgium
+      value: Belgium
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b07c450597de8b649afb93a2799f6ed2, type: 3}
       propertyPath: m_Layer
@@ -11543,7 +11708,7 @@ GameObject:
   - component: {fileID: 2035859111}
   - component: {fileID: 2035859112}
   m_Layer: 6
-  m_Name: Uk+NorthIrland
+  m_Name: Uk
   m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11576,7 +11741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Uk+NorthIrland
+  countryName: Uk
 --- !u!1 &2044017562
 GameObject:
   m_ObjectHideFlags: 0
@@ -11625,11 +11790,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: MapEu.Russia
+  countryName: Russia
   ownerID: -1
   isStarterCountry: 1
   centerPoint: {fileID: 1532244986}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1543276036}
   isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 1978168287}
@@ -11821,11 +11988,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Romania
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 2076531864}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 1316044725}
@@ -11984,11 +12152,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: 
+  countryName: Latvia
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 1627383490}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints: []
   isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 2075623173}
