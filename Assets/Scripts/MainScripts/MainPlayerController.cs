@@ -15,6 +15,10 @@ public class MainPlayerController : NetworkBehaviour
     [SyncVar] public Color playerColor = Color.white;
     [SyncVar] public string chosenCountry;
 
+    [Header("Hover Highlight")]
+    private PulsingHighlighter currentHoverHighlighter;
+    private Country currentHoverCountry;
+
     [Header("Camera & Layers")]
     public Camera playerCamera;
     [SerializeField] private LayerMask countryLayer;
@@ -31,9 +35,6 @@ public class MainPlayerController : NetworkBehaviour
     public MainUnitManager unitManager;
     public CameraMovment cameraMovment;
 
-    [Header("Highlight")]
-    public Color highlightColor = Color.white;
-    public float highlightIntensity = 0.33f;
 
     private string pendingCountry;
     public bool hasChosenCountry = false;
@@ -88,6 +89,18 @@ public class MainPlayerController : NetworkBehaviour
             canIssueOrders = false;
             return;
         }
+
+        if (!hasChosenCountry && isLocalPlayer) HandleCountrySelection();
+        if (canIssueOrders && isLocalPlayer) HandleUnitSelection();
+
+        if (MainGameManager.Instance != null && MainGameManager.Instance.IsPlayerBuilding(playerID))
+        {
+            canIssueOrders = false;
+            return;
+        }
+
+        if (isLocalPlayer)
+            HandleCountryHover();
 
         if (!hasChosenCountry && isLocalPlayer) HandleCountrySelection();
         if (canIssueOrders && isLocalPlayer) HandleUnitSelection();
@@ -195,7 +208,6 @@ public class MainPlayerController : NetworkBehaviour
         selectedCountryText?.SetText("Chosen: " + pendingCountryComp.name);
 
         AssignPlayerColorFromCountry();
-        HighlightChosenCountryObjects();
 
         int totalUnits = 3;
         int countryCount = allCountries.Count;
@@ -356,30 +368,54 @@ public class MainPlayerController : NetworkBehaviour
         Debug.Log($"[Player {playerID}] Assigned color {playerColor} for country tag {chosenCountry}");
     }
 
-    void HighlightChosenCountryObjects()
+    void HandleCountryHover()
     {
-        //ClearHighlights();
-        //GameObject[] objs = GameObject.FindGameObjectsWithTag(chosenCountry);
-        //foreach (var obj in objs)
-        //{
-        //    if (obj == null) continue;
-        //    SimpleHighlighter high = obj.GetComponent<SimpleHighlighter>() ?? obj.AddComponent<SimpleHighlighter>();
-        //    high.Highlight(highlightColor, highlightIntensity);
-        //    highlightedObjects.Add(obj);
-        //}
+        if (!isLocalPlayer) return;
+
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+        {
+            Country country = GetCountryFromHitRecursive(hit);
+
+            if (country != null && country != currentHoverCountry)
+            {
+                ClearHoverHighlight();
+
+                Renderer rend = country.GetComponentInChildren<Renderer>();
+                if (rend == null) return;
+
+                PulsingHighlighter highlighter =
+                    rend.GetComponent<PulsingHighlighter>() ??
+                    rend.gameObject.AddComponent<PulsingHighlighter>();
+
+                highlighter.StartPulse();
+
+                currentHoverCountry = country;
+                currentHoverHighlighter = highlighter;
+            }
+
+            return;
+        }
+
+        ClearHoverHighlight();
     }
 
-    public void ClearHighlights()
+    void ClearHoverHighlight()
     {
-        foreach (var obj in highlightedObjects)
-            obj?.GetComponent<SimpleHighlighter>()?.Unhighlight();
-        highlightedObjects.Clear();
+        if (currentHoverHighlighter != null)
+        {
+            currentHoverHighlighter.StopPulse();
+            currentHoverHighlighter = null;
+            currentHoverCountry = null;
+        }
     }
+
     #endregion
 
     #region Unit Orders
 
-   
+
 
 
 

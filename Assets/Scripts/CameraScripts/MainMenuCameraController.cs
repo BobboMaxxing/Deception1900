@@ -19,7 +19,6 @@ public class MainMenuCameraController : MonoBehaviour
     [SerializeField] GameObject bigPowerButton;
 
     [Header("References")]
-    [SerializeField] PlayerController playerController;
 
     private Transform selectedCountry = null;
 
@@ -84,8 +83,6 @@ public class MainMenuCameraController : MonoBehaviour
         if (selectedCountryText != null)
             selectedCountryText.text = "Select a country";
 
-        if (playerController != null)
-            playerController.CancelCountryChoice();
     }
 
     void SmoothMoveCamera()
