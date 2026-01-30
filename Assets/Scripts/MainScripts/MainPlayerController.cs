@@ -1,9 +1,8 @@
-﻿using Mirror;
-using Mirror.BouncyCastle.Asn1.X509;
+﻿using System;
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,7 +12,7 @@ public class MainPlayerController : NetworkBehaviour
     [Header("Player Info")]
     [SyncVar] public int playerID;
     [SyncVar] public Color playerColor = Color.white;
-    [SyncVar] public string chosenCountry;
+    [SyncVar] public string chosenCountryRegionId;
 
     [Header("Hover Highlight")]
     private PulsingHighlighter currentHoverHighlighter;
@@ -35,18 +34,16 @@ public class MainPlayerController : NetworkBehaviour
     public MainUnitManager unitManager;
     public CameraMovment cameraMovment;
 
+    private string pendingCountryRegionId;
+    private Country pendingCountryComp;
 
-    private string pendingCountry;
     public bool hasChosenCountry = false;
-    private List<GameObject> highlightedObjects = new List<GameObject>();
     private MainUnit selectedUnit;
     public bool canIssueOrders = true;
 
     [SyncVar] private bool isReady = false;
     public static Dictionary<int, bool> playersReady = new Dictionary<int, bool>();
     public static List<MainPlayerController> allPlayers = new List<MainPlayerController>();
-
-    #region Unity Callbacks
 
     void OnDestroy()
     {
@@ -76,7 +73,7 @@ public class MainPlayerController : NetworkBehaviour
 
         if (unitManager == null) unitManager = MainUnitManager.Instance;
 
-        LocalPlayerSetup setup = Object.FindFirstObjectByType<LocalPlayerSetup>();
+        LocalPlayerSetup setup = UnityEngine.Object.FindFirstObjectByType<LocalPlayerSetup>();
         setup?.Setup(this);
 
         UpdateReadyUI();
@@ -92,24 +89,28 @@ public class MainPlayerController : NetworkBehaviour
 
         if (!hasChosenCountry && isLocalPlayer) HandleCountrySelection();
         if (canIssueOrders && isLocalPlayer) HandleUnitSelection();
-
-        if (MainGameManager.Instance != null && MainGameManager.Instance.IsPlayerBuilding(playerID))
-        {
-            canIssueOrders = false;
-            return;
-        }
-
-        if (isLocalPlayer)
-            HandleCountryHover();
-
-        if (!hasChosenCountry && isLocalPlayer) HandleCountrySelection();
-        if (canIssueOrders && isLocalPlayer) HandleUnitSelection();
+        if (isLocalPlayer) HandleCountryHover();
     }
 
-    private Country GetCountryFromHit(RaycastHit hit)
+
+    private Country GetCountryFromHitRecursive(RaycastHit hit)
     {
-        return hit.collider.GetComponentInParent<Country>()
-            ?? hit.collider.GetComponentInChildren<Country>();
+        if (hit.collider == null) return null;
+
+        var t = hit.collider.transform;
+
+        while (t != null)
+        {
+            Country c = t.GetComponent<Country>();
+            if (c != null) return c;
+
+            c = t.GetComponentInChildren<Country>(true);
+            if (c != null) return c;
+
+            t = t.parent;
+        }
+
+        return null;
     }
 
     private MainUnit GetUnitFromHit(RaycastHit hit)
@@ -117,78 +118,95 @@ public class MainPlayerController : NetworkBehaviour
         return hit.collider.GetComponentInParent<MainUnit>()
             ?? hit.collider.GetComponentInChildren<MainUnit>();
     }
-    private Country GetCountryFromHitRecursive(RaycastHit hit)
+
+    private void DebugClick(string label)
     {
-        if (hit.collider == null) return null;
+        if (!isLocalPlayer) return;
 
-        Country country = hit.collider.GetComponent<Country>();
-        if (country != null) return country;
+        Debug.Log($"[{label}] Click: frame={Time.frameCount} mouse={Input.mousePosition} overUI={(EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())}");
 
-        Transform parent = hit.collider.transform.parent;
-        while (parent != null)
+        if (playerCamera == null)
         {
-            country = parent.GetComponent<Country>();
-            if (country != null) return country;
-            parent = parent.parent;
+            Debug.Log($"[{label}] playerCamera is NULL");
+            return;
         }
-
-        country = hit.collider.GetComponentInChildren<Country>();
-        return country;
-    }
-
-    #endregion
-
-    #region Country Selection
-
-    private Country pendingCountryComp;
-
-    void HandleCountrySelection()
-    {
-        if (!isLocalPlayer || Input.GetMouseButtonDown(0) == false) return;
-
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+        RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, ~0, QueryTriggerInteraction.Collide);
+        Debug.Log($"[{label}] RaycastAll hits = {hits.Length}");
+
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        for (int i = 0; i < hits.Length; i++)
         {
-            Country countryComp = GetCountryFromHitRecursive(hit);
-            if (countryComp == null)
-            {
-                Debug.LogWarning($"Clicked object {hit.collider.name} has no Country component.");
-                return;
-            }
+            var h = hits[i];
+            if (h.collider == null) continue;
 
-            if (!countryComp.CanBeSelected())
-            {
-                Debug.LogWarning($"Country {countryComp.name} cannot be selected. ownerID={countryComp.ownerID}");
-                return;
-            }
+            var unitBlock = h.collider.GetComponentInParent<MainUnit>() != null;
+            var countryFound = GetCountryFromHitRecursive(h);
 
-            pendingCountryComp = countryComp;
-            pendingCountry = countryComp.tag;
-
-            selectedCountryText?.SetText("Selected: " + countryComp.name);
-            confirmButton?.gameObject.SetActive(true);
-            cancelButton?.gameObject.SetActive(true);
-
-            Debug.Log($"[Client] Pending country selection: {countryComp.name}");
+            Debug.Log($"[{label}] hit[{i}] name={h.collider.name} layer={LayerMask.LayerToName(h.collider.gameObject.layer)} dist={h.distance:0.00} unitBlock={unitBlock} country={(countryFound ? countryFound.name : "null")} regionId={(countryFound ? countryFound.regionId : "null")} canSelect={(countryFound ? countryFound.CanBeSelected().ToString() : "n/a")}");
         }
+    }
+
+    private bool TryPickCountryUnderMouse(out Country country)
+    {
+        country = null;
+        if (playerCamera == null) return false;
+
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+        RaycastHit[] hits = Physics.RaycastAll(
+            ray,
+            Mathf.Infinity,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
+
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            var h = hits[i];
+            if (h.collider == null) continue;
+
+            if (h.collider.GetComponentInParent<MainUnit>() != null)
+                continue;
+
+            Country c = GetCountryFromHitRecursive(h);
+            if (c == null) continue;
+
+            country = c;
+            return true;
+        }
+
+        return false;
+    }
+
+    void HandleCountrySelection()
+    {
+        if (!isLocalPlayer || !Input.GetMouseButtonDown(0)) return;
+
+        DebugClick("CountrySelect");
+
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+
+        if (!TryPickCountryUnderMouse(out Country countryComp)) return;
+        if (!countryComp.CanBeSelected()) return;
+
+        pendingCountryComp = countryComp;
+        pendingCountryRegionId = countryComp.regionId;
+
+        selectedCountryText?.SetText("Selected: " + countryComp.name);
+        confirmButton?.gameObject.SetActive(true);
+        cancelButton?.gameObject.SetActive(true);
     }
 
     public void ConfirmCountryChoice()
     {
-        if (pendingCountryComp == null)
-        {
-            Debug.LogWarning("No country is pending selection.");
-            return;
-        }
-
-        if (!pendingCountryComp.CanBeSelected())
-        {
-            Debug.LogWarning($"Country {pendingCountryComp.name} cannot be selected at confirmation.");
-            return;
-        }
+        if (pendingCountryComp == null) return;
+        if (!pendingCountryComp.CanBeSelected()) return;
 
         List<Country> allCountries = pendingCountryComp.GetAllSelectableCountries();
 
@@ -197,17 +215,17 @@ public class MainPlayerController : NetworkBehaviour
             c.SetOwner(playerID);
 
             if (!isServer)
-                CmdAssignCountryToPlayer(c.tag, playerID);
+                CmdAssignCountryToPlayer(c.regionId, playerID);
         }
 
-        chosenCountry = pendingCountryComp.tag;
+        chosenCountryRegionId = pendingCountryComp.regionId;
         hasChosenCountry = true;
 
         confirmButton?.gameObject.SetActive(false);
         cancelButton?.gameObject.SetActive(false);
         selectedCountryText?.SetText("Chosen: " + pendingCountryComp.name);
 
-        AssignPlayerColorFromCountry();
+        AssignPlayerColorFromCountryRegionId();
 
         int totalUnits = 3;
         int countryCount = allCountries.Count;
@@ -219,165 +237,82 @@ public class MainPlayerController : NetworkBehaviour
             int unitsToSpawn = unitsPerCountry + (i < remainder ? 1 : 0);
 
             if (!isServer)
-            {
-                CmdRequestSpawnUnitsServer(allCountries[i].tag, playerID, playerColor, unitsToSpawn);
-                Debug.Log($"[Client {playerID}] Requesting {unitsToSpawn} units for {allCountries[i].name}");
-            }
+                CmdRequestSpawnUnitsServer(allCountries[i].regionId, playerID, playerColor, unitsToSpawn);
             else
-            {
-                unitManager.SpawnUnitsForCountryServer(allCountries[i].tag, playerID, playerColor, unitsToSpawn);
-                Debug.Log($"[Server] Spawned {unitsToSpawn} units for player {playerID} in {allCountries[i].name}");
-            }
+                unitManager.SpawnUnitsForRegionServer(allCountries[i].regionId, playerID, playerColor, unitsToSpawn);
         }
 
         pendingCountryComp = null;
-        pendingCountry = "";
+        pendingCountryRegionId = "";
     }
 
     [Command]
-    private void CmdAssignCountryToPlayer(string countryTag, int playerID)
+    private void CmdAssignCountryToPlayer(string countryRegionId, int playerID)
     {
-        GameObject countryObj = GameObject.FindWithTag(countryTag);
-        if (countryObj == null)
-        {
-            Debug.LogWarning($"[Server] Country {countryTag} not found, cannot assign.");
-            return;
-        }
+        if (RegionDirectory.Instance == null) return;
 
-        Country countryComp = countryObj.GetComponent<Country>();
-        if (countryComp == null)
-        {
-            Debug.LogWarning($"[Server] {countryTag} has no Country component.");
-            return;
-        }
+        Country countryComp = RegionDirectory.Instance.GetCountryOrNull(countryRegionId);
+        if (countryComp == null) return;
 
         if (countryComp.ownerID == -1)
         {
             countryComp.SetOwner(playerID);
-            RpcUpdateCountryOwnership(countryTag, playerID);
-            Debug.Log($"[Server] Assigned {countryTag} to player {playerID}");
+            RpcSetCountryOwner(countryRegionId, playerID);
         }
     }
-
 
     [ClientRpc]
-    private void RpcUpdateCountryOwnership(string countryTag, int playerID)
+    private void RpcSetCountryOwner(string countryIdOrTag, int newOwnerId)
     {
-        GameObject countryObj = GameObject.FindWithTag(countryTag);
-        if (countryObj == null) return;
+        Country c = CountryLookup.FindCountry(countryIdOrTag);
+        if (c == null) return;
 
-        Country countryComp = countryObj.GetComponent<Country>();
-        if (countryComp != null)
-            countryComp.SetOwner(playerID);
+        c.SetOwner(newOwnerId);
 
-    }
+        var renderers = c.GetComponentsInChildren<Renderer>(true);
+        if (renderers == null || renderers.Length == 0) return;
 
-
-
-    private Country FindCountryByTagRecursive(string tag)
-    {
-        GameObject obj = GameObject.FindWithTag(tag);
-        if (obj == null) return null;
-
-        Country country = obj.GetComponent<Country>();
-        if (country != null) return country;
-
-        country = obj.GetComponentInChildren<Country>();
-        if (country != null) return country;
-
-        country = obj.GetComponentInParent<Country>();
-        if (country != null) return country;
-
-        return null;
-    }
-
-
-
-    [Command]
-    private void CmdRequestSpawnUnitsServer(string countryName, int playerID, Color color, int count)
-    {
-        if (MainUnitManager.Instance == null)
-        {
-            Debug.LogError("[CmdRequestSpawnUnitsServer] UnitManager instance not found!");
-            return;
-        }
-
-        Debug.Log($"[Server] Spawning units for Player {playerID} in {countryName}");
-        MainUnitManager.Instance.SpawnUnitsForCountryServer(countryName, playerID, color, count);
+        foreach (var r in renderers)
+            r.material.color = playerColor;
     }
 
     [Command]
-    private void CmdRequestSpawnUnits(string country, int playerID, Color color, int count)
+    private void CmdRequestSpawnUnitsServer(string regionId, int playerID, Color color, int count)
     {
-        unitManager?.SpawnUnitsForCountryServer(country, playerID, color, count);
-        TargetSetupLocalUnits(connectionToClient, playerID);
+        if (MainUnitManager.Instance == null) return;
+        MainUnitManager.Instance.SpawnUnitsForRegionServer(regionId, playerID, color, count);
     }
-
-    [TargetRpc]
-    private void TargetSetupLocalUnits(NetworkConnection target, int playerID)
-    {
-        foreach (var unit in unitManager.GetAllUnits())
-            if (unit.ownerID == playerID)
-                unit.SetupLocalVisuals();
-    }
-
 
     public void CancelCountryChoice()
     {
-        pendingCountry = "";
+        pendingCountryRegionId = "";
         selectedCountryText?.SetText("Selection cleared");
         confirmButton?.gameObject.SetActive(false);
         cancelButton?.gameObject.SetActive(false);
         cameraMovment?.ResetCamera();
     }
 
-    void AssignPlayerColorFromCountry()
+    void AssignPlayerColorFromCountryRegionId()
     {
-        if (string.IsNullOrEmpty(chosenCountry))
-            return;
-
-        switch (chosenCountry)
+        switch (chosenCountryRegionId)
         {
-            case "Germany":
-                playerColor = Color.black;
-                break;
-            case "France":
-                playerColor = Color.blue;
-                break;
-            case "Italy":
-                playerColor = Color.green;
-                break;
-            case "Russia":
-                playerColor = Color.cyan;
-                break;
-            case "Uk":
-                playerColor = Color.yellow;
-                break;
-            case "Yugoslavia":
-                playerColor = Color.magenta;
-                break;
-            case "Turkaye":
-                playerColor = Color.red;
-                break;
-            default:
-                playerColor = Color.gray;
-                Debug.LogWarning($"No color assigned for country tag {chosenCountry}");
-                break;
+            case "Germany": playerColor = Color.black; break;
+            case "France": playerColor = Color.blue; break;
+            case "Italy": playerColor = Color.green; break;
+            case "Russia": playerColor = Color.cyan; break;
+            case "Uk": playerColor = Color.yellow; break;
+            case "Yugoslavia": playerColor = Color.magenta; break;
+            case "Turkaye": playerColor = Color.red; break;
+            default: playerColor = Color.gray; break;
         }
-
-        Debug.Log($"[Player {playerID}] Assigned color {playerColor} for country tag {chosenCountry}");
     }
 
     void HandleCountryHover()
     {
         if (!isLocalPlayer) return;
 
-        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+        if (TryPickCountryUnderMouse(out Country country))
         {
-            Country country = GetCountryFromHitRecursive(hit);
-
             if (country != null && country != currentHoverCountry)
             {
                 ClearHoverHighlight();
@@ -394,7 +329,6 @@ public class MainPlayerController : NetworkBehaviour
                 currentHoverCountry = country;
                 currentHoverHighlighter = highlighter;
             }
-
             return;
         }
 
@@ -411,154 +345,99 @@ public class MainPlayerController : NetworkBehaviour
         }
     }
 
-    #endregion
-
-    #region Unit Orders
-
-
-
-
-
     void HandleUnitSelection()
     {
         if (!Input.GetMouseButtonDown(0)) return;
-
-        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit)) return;
-
-        MainUnit clickedUnit = GetUnitFromHit(hit);
-
-        if (clickedUnit != null && clickedUnit.ownerID == playerID)
-        {
-            selectedUnit = clickedUnit;
-            ShowMoveButtons(true);
-            Debug.Log($"[Client] Selected unit: {clickedUnit.name}");
-            return;
-        }
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
         if (selectedUnit != null)
         {
+            if (!TryPickCountryUnderMouse(out Country targetCountryComp)) return;
+            if (targetCountryComp == null) return;
+
             bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
             if (isShiftHeld)
             {
-                MainUnit targetUnit = hit.collider.GetComponent<MainUnit>();
-                string targetCountry = null;
+                string targetRegionId = targetCountryComp.regionId;
 
-                if (targetUnit != null)
+                MainUnit movingUnit = FindUnitTargetingRegion(targetRegionId, playerID);
+                if (movingUnit != null)
                 {
-                    targetCountry = targetUnit.currentOrder != null
-                        ? targetUnit.currentOrder.targetCountry
-                        : targetUnit.currentCountry;
-
-                    Debug.Log($"[Client] Support order: {selectedUnit.name} supports {targetUnit.name} -> {targetCountry}");
-                    CmdSupportUnit(selectedUnit.netId, targetUnit.netId, targetCountry);
+                    CmdSupportUnit(selectedUnit.netId, movingUnit.netId, targetRegionId);
+                    selectedUnit = null;
+                    ShowMoveButtons(false);
                 }
-                else
-                {
-                    Country country = GetCountryFromHit(hit);
 
-                    if (country != null)
-                    {
-                        targetCountry = country.tag;
-
-                        MainUnit movingUnit = FindUnitTargetingCountry(targetCountry, playerID);
-                        if (movingUnit != null)
-                        {
-                            Debug.Log($"[Client] Support order: {selectedUnit.name} supports {movingUnit.name} -> {targetCountry}");
-                            CmdSupportUnit(selectedUnit.netId, movingUnit.netId, targetCountry);
-                        }
-                        else
-                        {
-                            Debug.LogWarning($"[Client] No friendly unit found moving into {targetCountry} to support.");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("[Client] No valid unit or country to support at target click.");
-                    }
-                }
+                return;
             }
-            else
+
+            if (RegionDirectory.Instance == null) return;
+
+            Country fromCountryComp = RegionDirectory.Instance.GetCountryOrNull(selectedUnit.currentRegionId);
+            if (fromCountryComp == null)
             {
-                Country targetCountryComp = GetCountryFromHit(hit);
-                Country fromCountryComp = FindCountryByTagRecursive(selectedUnit.currentCountry);
-
-                if (targetCountryComp == null || fromCountryComp == null)
-                {
-                    Debug.LogWarning("Missing Country component, cannot move.");
-                    selectedUnit = null;
-                    ShowMoveButtons(false);
-                    return;
-                }
-
-                if (!fromCountryComp.adjacentCountries.Contains(targetCountryComp))
-                {
-                    Debug.Log($"[Client] Illegal move: {fromCountryComp.name} -> {targetCountryComp.name}. Not adjacent.");
-                    selectedUnit = null;
-                    ShowMoveButtons(false);
-                    return;
-                }
-                Vector3 targetPos = targetCountryComp.centerWorldPos;
-
-                selectedUnit.ShowLocalMoveLine(targetPos);
-
-                CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag, targetPos);
-                Debug.Log($"[Client] Move order: {selectedUnit.name} -> {targetCountryComp.name}");
+                Debug.Log($"[UnitMove] fromCountryComp null. selectedUnit.currentRegionId='{selectedUnit.currentRegionId}'");
+                return;
             }
+
+            if (!fromCountryComp.adjacentCountries.Contains(targetCountryComp)) return;
+
+            Vector3 targetPos = targetCountryComp.centerWorldPos;
+            selectedUnit.ShowLocalMoveLine(targetPos);
+            CmdMoveUnit(selectedUnit.netId, targetCountryComp.regionId, targetPos);
 
             selectedUnit = null;
             ShowMoveButtons(false);
+            return;
+        }
+
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hitAny))
+        {
+            MainUnit clickedUnit = GetUnitFromHit(hitAny);
+            if (clickedUnit != null && clickedUnit.ownerID == playerID)
+            {
+                selectedUnit = clickedUnit;
+                ShowMoveButtons(true);
+            }
         }
     }
-
-
 
     public void ConfirmMoves()
     {
         if (!isLocalPlayer) return;
-
-        Debug.Log($"[ConfirmMoves] called | isLocalPlayer={isLocalPlayer} | netId={netId}");
-
         ShowMoveButtons(false);
         moveStatusText?.SetText("Waiting for other players...");
-
         CmdConfirmMoves();
     }
 
     public void CancelMoves()
     {
         if (!isLocalPlayer) return;
-
         ShowMoveButtons(false);
         moveStatusText?.SetText("Moves canceled — plan again.");
-
         CmdCancelReady();
     }
+
     [Command]
-    private void CmdMoveUnit(uint unitNetId, string targetCountryTag, Vector3 targetPos)
+    private void CmdMoveUnit(uint unitNetId, string targetRegionId, Vector3 targetPos)
     {
         if (!NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity)) return;
         MainUnit unit = identity.GetComponent<MainUnit>();
         if (unit == null || unit.ownerID != playerID) return;
 
-        Country fromCountry = FindCountryByTagRecursive(unit.currentCountry);
-        Country toCountry = FindCountryByTagRecursive(targetCountryTag);
-
-        if (fromCountry == null || toCountry == null) return;
-
         unit.currentOrder = new PlayerUnitOrder
         {
             orderType = UnitOrderType.Move,
-            targetCountry = targetCountryTag,
+            targetRegionId = targetRegionId,
             targetPosition = targetPos
         };
-
-        Debug.Log($"[Server] CmdMoveUnit set currentOrder for {unit.name} from {unit.currentCountry} -> {targetCountryTag}");
     }
 
     [Command]
-    private void CmdSupportUnit(uint supporterNetId, uint supportedNetId, string supportTargetCountry)
+    private void CmdSupportUnit(uint supporterNetId, uint supportedNetId, string supportTargetRegionId)
     {
         if (!NetworkServer.spawned.TryGetValue(supporterNetId, out NetworkIdentity supId)) return;
         if (!NetworkServer.spawned.TryGetValue(supportedNetId, out NetworkIdentity targetId)) return;
@@ -572,23 +451,19 @@ public class MainPlayerController : NetworkBehaviour
         {
             orderType = UnitOrderType.Support,
             supportedUnit = supported,
-            targetCountry = supportTargetCountry
+            targetRegionId = supportTargetRegionId
         };
-
-        Debug.Log($"[Server] Player {playerID}: {supporter.name} SUPPORT {supported.name} -> {supportTargetCountry}");
     }
 
-    private MainUnit FindUnitTargetingCountry(string targetCountry, int ownerId)
+    private MainUnit FindUnitTargetingRegion(string targetRegionId, int ownerId)
     {
         foreach (MainUnit unit in MainUnitManager.Instance.GetAllUnits())
         {
             if (unit.ownerID == ownerId &&
                 unit.currentOrder != null &&
                 unit.currentOrder.orderType == UnitOrderType.Move &&
-                unit.currentOrder.targetCountry == targetCountry)
-            {
+                unit.currentOrder.targetRegionId == targetRegionId)
                 return unit;
-            }
         }
         return null;
     }
@@ -596,8 +471,6 @@ public class MainPlayerController : NetworkBehaviour
     [Command]
     private void CmdConfirmMoves()
     {
-        Debug.Log($"[SERVER] CmdConfirmMoves received from netId={netId}, playerID={playerID}");
-
         if (unitManager == null)
             unitManager = MainUnitManager.Instance;
 
@@ -606,29 +479,15 @@ public class MainPlayerController : NetworkBehaviour
 
         playersReady[playerID] = true;
 
-        Debug.Log("[SERVER] Updated playersReady:");
-        foreach (var kv in playersReady)
-            Debug.Log($"  Player {kv.Key} ready={kv.Value}");
-
-        Debug.Log("[SERVER] allPlayers list:");
-        foreach (var p in allPlayers)
-            if (p != null) Debug.Log($"  Player netId={p.netId}, playerID={p.playerID}");
-
         RpcUpdateReadyUI();
 
         if (AreAllPlayersReady())
         {
-            Debug.Log("[SERVER] All players ready — executing turn");
-
             unitManager.ExecuteTurnServer();
             MainGameManager.Instance?.NextTurnServer();
 
             foreach (var p in allPlayers)
                 p.RpcResetReady();
-        }
-        else
-        {
-            Debug.Log("[SERVER] Not all players ready yet");
         }
     }
 
@@ -636,7 +495,6 @@ public class MainPlayerController : NetworkBehaviour
     private void CmdCancelReady()
     {
         if (!playersReady.ContainsKey(playerID)) return;
-
         playersReady[playerID] = false;
         RpcUpdateReadyUI();
     }
@@ -644,28 +502,22 @@ public class MainPlayerController : NetworkBehaviour
     private bool AreAllPlayersReady()
     {
         foreach (var kv in playersReady)
-        {
-            if (!kv.Value)
-                return false;
-        }
+            if (!kv.Value) return false;
         return true;
     }
 
     [ClientRpc]
     public void RpcUpdateReadyUI()
     {
-        foreach (var kv in MainPlayerController.playersReady)
-        {
-        }
-
         UpdateReadyUI();
 
         if (isLocalPlayer && playersReady.TryGetValue(playerID, out bool ready))
             isReady = ready;
     }
+
     private void UpdateReadyUI()
     {
-        if (moveStatusText == null) return; 
+        if (moveStatusText == null) return;
         int readyCount = 0;
         foreach (var kv in playersReady)
             if (kv.Value) readyCount++;
@@ -697,63 +549,61 @@ public class MainPlayerController : NetworkBehaviour
         confirmMoveButton = confirmMoveButtonRef;
         cancelMoveButton = cancelMoveButtonRef;
     }
-    #endregion
 
-    #region NewUnitSpawning
+    #region Build Phase (Client + Server)
 
     [TargetRpc]
     public void TargetStartBuildPhase(NetworkConnection target, int buildCount)
     {
-        Debug.Log($"[Client] TargetStartBuildPhase received. Build count: {buildCount}");
         StartBuildPhase(buildCount);
-        Debug.Log($"[Client] TargetStartBuildPhase running on object with playerID={playerID}, isLocalPlayer={isLocalPlayer}, connectionToServer={connectionToServer != null}");
-
     }
+
+    private Coroutine buildRoutine;
+
     public void StartBuildPhase(int buildCount)
     {
-        moveStatusText?.SetText($"You gained {buildCount} new supply center(s)! Click owned supply centers to build.");
+        if (!isLocalPlayer) return;
+
         canIssueOrders = false;
+        moveStatusText?.SetText($"Build phase: You have {buildCount} build(s). Click owned supply centers to build.");
 
-        StopAllCoroutines();
-        StartCoroutine(HandleBuildSelection(buildCount));
+        if (buildRoutine != null) StopCoroutine(buildRoutine);
+        buildRoutine = StartCoroutine(HandleBuildSelection(buildCount));
     }
-
-    private bool isProcessingClick = false;
 
     private IEnumerator HandleBuildSelection(int remainingBuilds)
     {
-        Debug.Log($"[Client {playerID}] Starting HandleBuildSelection with {remainingBuilds} builds. isLocalPlayer={isLocalPlayer}");
-
         while (remainingBuilds > 0)
         {
             if (Input.GetMouseButtonDown(0))
             {
+                if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                {
+                    yield return null;
+                    continue;
+                }
+
                 Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    Country clicked = GetCountryFromHitRecursive(hit);
-
-                    Debug.Log("Build raycast hit");
-
+                    Country clicked = CountryLookup.FromHit(hit);
                     if (clicked != null && clicked.isSupplyCenter)
                     {
-                        Debug.Log($"[Client {playerID}] clicked {clicked.name}, sending build request (ownerID={clicked.ownerID})");
-                        RequestBuild(clicked.gameObject.tag);
-                        remainingBuilds--;
-                    }
-                    else
-                    {
-                        Debug.Log("Clicked object not a supply center or missing Country component.");
+                        if (clicked.ownerID == playerID)
+                        {
+                            RequestBuild(clicked.tag);
+                            remainingBuilds--;
+                            moveStatusText?.SetText($"Build phase: Remaining builds = {remainingBuilds}");
+                        }
                     }
                 }
             }
+
             yield return null;
         }
 
-
         BuildPhaseFinishedLocal();
-        if (isLocalPlayer)
-            CmdFinishBuildPhase();
+        CmdFinishBuildPhase();
     }
 
     private void BuildPhaseFinishedLocal()
@@ -765,12 +615,7 @@ public class MainPlayerController : NetworkBehaviour
     private void RequestBuild(string countryTag)
     {
         if (!isLocalPlayer) return;
-
-        if (string.IsNullOrEmpty(countryTag) || countryTag == "Untagged")
-        {
-            Debug.LogError("[Client] Tried to build with INVALID country tag");
-            return;
-        }
+        if (string.IsNullOrEmpty(countryTag) || countryTag == "Untagged") return;
 
         CmdRequestBuildAt(countryTag, playerColor);
     }
@@ -778,14 +623,16 @@ public class MainPlayerController : NetworkBehaviour
     [Command]
     private void CmdRequestBuildAt(string countryTag, Color color)
     {
+        if (MainGameManager.Instance == null) return;
         MainGameManager.Instance.ServerTrySpawnUnit(playerID, countryTag, color, connectionToClient);
-        Debug.Log($"[Server] Player {playerID} building unit at {countryTag} with color {color}");
     }
 
     [Command]
     private void CmdFinishBuildPhase()
     {
+        if (MainGameManager.Instance == null) return;
         MainGameManager.Instance.FinishBuildPhaseForPlayer(playerID);
     }
+
     #endregion
 }

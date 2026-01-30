@@ -22,15 +22,11 @@ public class MainGameManager : NetworkBehaviour
     private Dictionary<int, int> buildCredits = new Dictionary<int, int>();
     private HashSet<int> playersBuilding = new HashSet<int>();
 
-    public bool IsPlayerBuilding(int playerId)
-    {
-        return playersBuilding.Contains(playerId);
-    }
+    public bool IsPlayerBuilding(int playerId) => playersBuilding.Contains(playerId);
+
     void Awake() => Instance = this;
     void Start() => UpdateSeasonUI();
 
-
-    #region Turn & Season Management
     [Server]
     public void NextTurnServer()
     {
@@ -39,7 +35,6 @@ public class MainGameManager : NetworkBehaviour
         {
             currentSeasonIndex = 0;
             currentYear++;
-
             CheckSupplyChangesAndGrantBuilds();
         }
 
@@ -60,9 +55,7 @@ public class MainGameManager : NetworkBehaviour
         if (seasonText != null) seasonText.text = $"Season: {currentSeason}";
         if (yearText != null) yearText.text = $"Year: {currentYear}";
     }
-    #endregion
 
-    #region Win Condition
     [Server]
     public void CheckWinConditionServer()
     {
@@ -111,9 +104,7 @@ public class MainGameManager : NetworkBehaviour
             winText.gameObject.SetActive(true);
         }
     }
-    #endregion
 
-    #region Build Phase
     [Server]
     private void CheckSupplyChangesAndGrantBuilds()
     {
@@ -141,7 +132,6 @@ public class MainGameManager : NetworkBehaviour
                     buildCredits[playerId] = 0;
                 buildCredits[playerId] += gained;
 
-                Debug.Log($"[Server] Player {playerId} gained {gained} supply centers. Build credits: {buildCredits[playerId]}");
                 StartBuildPhaseForPlayer(playerId);
             }
         }
@@ -155,103 +145,57 @@ public class MainGameManager : NetworkBehaviour
         if (playersBuilding.Contains(playerId)) return;
 
         playersBuilding.Add(playerId);
-        TargetPromptForBuild(playerId, buildCredits.ContainsKey(playerId) ? buildCredits[playerId] : 0);
-    }
 
-    [Server]
-    private void TargetPromptForBuild(int playerId, int buildCount)
-    {
         MainPlayerController player = FindPlayerById(playerId);
         if (player != null && player.connectionToClient != null)
         {
-            Debug.Log($"[Server] Sending build phase start to Player {playerId} ({buildCount} builds).");
-            player.TargetStartBuildPhase(player.connectionToClient, buildCount);
-        }
-        else
-        {
-            Debug.LogError($"[Server] Cannot prompt build for player {playerId} — connection is null or player missing.");
+            int credits = buildCredits.ContainsKey(playerId) ? buildCredits[playerId] : 0;
+            player.TargetStartBuildPhase(player.connectionToClient, credits);
         }
     }
 
     [Server]
-    public void ConsumeBuildCredit(int playerId)
+    public void ServerTrySpawnUnit(int playerId, string countryRegionId, Color playerColor, NetworkConnection requester)
     {
-        if (!buildCredits.ContainsKey(playerId)) return;
+        if (!buildCredits.ContainsKey(playerId) || buildCredits[playerId] <= 0) return;
+        if (RegionDirectory.Instance == null) return;
+
+        Country c = RegionDirectory.Instance.GetCountryOrNull(countryRegionId);
+        if (c == null) return;
+
+        if (c.ownerID != playerId) return;
+
+        GameObject unitObj = MainUnitManager.Instance.SpawnUnitsForRegionServer(c.regionId, playerId, playerColor, 1);
 
         buildCredits[playerId]--;
+
+        if (requester != null)
+            TargetSetupLocalUnit(requester, unitObj);
+
         if (buildCredits[playerId] <= 0)
-        {
-            buildCredits.Remove(playerId);
             FinishBuildPhaseForPlayer(playerId);
-            Debug.Log($"[Server] Player {playerId} finished all builds.");
-        }
     }
+
     [TargetRpc]
-    public void TargetSetupLocalUnit(NetworkConnection target, GameObject unitObj, string countryName)
+    public void TargetSetupLocalUnit(NetworkConnection target, GameObject unitObj)
     {
         unitObj?.GetComponent<MainUnit>()?.SetupLocalVisuals();
-
-    }
-
-    [Server]
-    public void ServerTrySpawnUnit(int playerId, string countryTag, Color playerColor, NetworkConnection requester)
-    {
-        if (!buildCredits.ContainsKey(playerId) || buildCredits[playerId] <= 0)
-        {
-            Debug.LogWarning($"[Server] Player {playerId} tried to build but has no build credits!");
-            return;
-        }
-
-        GameObject countryObj = GameObject.FindGameObjectWithTag(countryTag);
-        if (countryObj == null)
-        {
-            Debug.LogWarning($"[Server] Country with tag {countryTag} not found!");
-            return;
-        }
-
-        Country c = countryObj.GetComponent<Country>();
-        if (c == null)
-        {
-            Debug.LogWarning($"[Server] Country {countryTag} has no Country component");
-            return;
-        }
-
-        if (c.ownerID != playerId)
-        {
-            Debug.LogWarning($"[Server] Player {playerId} does not own country {countryTag}");
-            return;
-        }
-
-        GameObject unitObj = MainUnitManager.Instance.SpawnUnitsForCountryServer(c.countryName, playerId, playerColor, 1);
-
-        buildCredits[playerId]--;
-        Debug.Log($"[Server] Player {playerId} spawned unit at {countryTag}. Remaining credits: {buildCredits[playerId]}");
-
-        TargetSetupLocalUnit(requester, unitObj, c.countryName);
-
-        if (buildCredits[playerId] <= 0)
-            FinishBuildPhaseForPlayer(playerId);
     }
 
     [Server]
     public void FinishBuildPhaseForPlayer(int playerId)
     {
         playersBuilding.Remove(playerId);
-        Debug.Log($"[Server] Player {playerId} finished building.");
 
         if (playersBuilding.Count == 0)
         {
-            Debug.Log("[Server] All players finished building. Turn continues.");
             foreach (var player in MainPlayerController.allPlayers)
                 player.RpcResetReady();
         }
     }
 
     public bool HasBuildCredits(int playerId)
-    {
-        return buildCredits.ContainsKey(playerId) && buildCredits[playerId] > 0;
-    }
-    #endregion
+        => buildCredits.ContainsKey(playerId) && buildCredits[playerId] > 0;
 
     private MainPlayerController FindPlayerById(int playerId)
     {
