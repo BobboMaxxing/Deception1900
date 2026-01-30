@@ -5,14 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer), typeof(LineRenderer))]
 public class MainUnit : NetworkBehaviour
 {
+
     [SyncVar] public int ownerID;
-    [SyncVar] public string currentRegionId;
+    [SyncVar] public string currentCountry;
     [SyncVar] public Color playerColor;
 
     [HideInInspector] public PlayerUnitOrder currentOrder;
 
     private LineRenderer lineRenderer;
     private Coroutine moveCoroutine;
+    [SerializeField] private float moveSpeed = 5f;
 
     void Awake()
     {
@@ -25,7 +27,13 @@ public class MainUnit : NetworkBehaviour
         lineRenderer.endColor = Color.green;
         lineRenderer.enabled = false;
     }
-
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        Debug.Log($"[Client] OnStartClient called for {name}, netId: {netId}");
+        Debug.Log($"Enabled: {enabled}, GameObject active: {gameObject.activeSelf}");
+    }
+    #region Server → Client Initialization
     [ClientRpc]
     public void RpcInitialize(int playerID, Color color)
     {
@@ -33,11 +41,18 @@ public class MainUnit : NetworkBehaviour
         playerColor = color;
         SetColor(color);
     }
+    #endregion
 
+    #region Server → Client Movement
     [ClientRpc]
     public void RpcMoveTo(Vector3 target)
     {
-        if (!enabled || !gameObject.activeSelf) return;
+
+        if (!enabled || !gameObject.activeSelf)
+        {
+            Debug.LogWarning("Cannot move: component disabled or object inactive.");
+            return;
+        }
 
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
         moveCoroutine = StartCoroutine(MoveToPositionXZ(target));
@@ -47,6 +62,8 @@ public class MainUnit : NetworkBehaviour
     private IEnumerator MoveToPositionXZ(Vector3 target)
     {
         Vector3 start = transform.position;
+
+        // Lock Y for movement only
         target.y = start.y;
 
         float time = 0f;
@@ -58,13 +75,17 @@ public class MainUnit : NetworkBehaviour
             float t = time / duration;
 
             Vector3 pos = Vector3.Lerp(start, target, t);
-            pos.y = start.y;
+            pos.y = start.y; // hard guarantee
+
             transform.position = pos;
             yield return null;
         }
 
         transform.position = new Vector3(target.x, start.y, target.z);
     }
+    #endregion
+
+    #region Client-Side Move Line
 
     public void ShowLocalMoveLine(Vector3 targetPos)
     {
@@ -82,12 +103,15 @@ public class MainUnit : NetworkBehaviour
             lineRenderer.positionCount = 0;
     }
 
+
     public void SetupLocalVisuals()
     {
         if (lineRenderer != null) lineRenderer.enabled = false;
         SetColor(playerColor);
     }
+    #endregion
 
+    #region Utility
     public void ClearOrder()
     {
         currentOrder = null;
@@ -107,6 +131,11 @@ public class MainUnit : NetworkBehaviour
 
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
         foreach (Renderer rend in renderers)
+        {
             rend.material.color = darker;
+        }
     }
+
+
+    #endregion
 }

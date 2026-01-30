@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 public enum UnitOrderType
@@ -10,7 +11,7 @@ public enum UnitOrderType
 public class PlayerUnitOrder
 {
     public UnitOrderType orderType = UnitOrderType.None;
-    public string targetRegionId;
+    public string targetCountry;
     public Vector3 targetPosition;
     public MainUnit supportedUnit;
 }

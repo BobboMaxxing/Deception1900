@@ -48,45 +48,34 @@ public class CameraMovment : MonoBehaviour
         }
     }
 
-    private Country GetCountryFromHit(RaycastHit hit)
-    {
-        if (hit.collider == null) return null;
-
-        Country c = hit.collider.GetComponentInParent<Country>();
-        if (c != null) return c;
-
-        c = hit.collider.GetComponent<Country>();
-        if (c != null) return c;
-
-        c = hit.collider.GetComponentInChildren<Country>();
-        return c;
-    }
-
     void CheckCountryClick()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
         {
-            if (isFocusing) return;
-
-            Country clickedCountry = GetCountryFromHit(hit);
-            if (clickedCountry == null)
+            if (!isFocusing)
             {
-                Debug.LogWarning($"Clicked object {hit.collider.name} has no Country component (parent/child lookup failed).");
-                return;
+                FocusOnCountry(hit.transform);
             }
-
-            FocusOnCountry(clickedCountry);
         }
     }
 
-    void FocusOnCountry(Country country)
+    void FocusOnCountry(Transform countryTransform)
     {
-        if (country == null) return;
+        Country country = countryTransform.GetComponent<Country>();
+
+        if (country == null)
+        {
+            Debug.LogWarning("Clicked object has no Country component.");
+            return;
+        }
 
         targetPosition = country.centerWorldPos + focusOffset;
         isFocusing = true;
     }
+
+
+
 
     public void ResetCamera()
     {
