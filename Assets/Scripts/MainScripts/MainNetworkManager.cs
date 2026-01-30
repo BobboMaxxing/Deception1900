@@ -15,7 +15,6 @@ public class MainNetworkManager : NetworkManager
         MainPlayerController player = playerObj.GetComponent<MainPlayerController>();
         if (player != null)
         {
-            // Assign a unique server-side player ID
             player.playerID = nextPlayerId++;
 
             if (!MainPlayerController.allPlayers.Contains(player))

@@ -3,12 +3,16 @@ using UnityEngine;
 
 public class Country : MonoBehaviour
 {
+    [Header("Identity")]
+    public string regionId;          // NEW: used by directory + orders
     public string countryName;
+
     public int ownerID = -1;
     public bool isStarterCountry = true;
 
     [Header("Gameplay Anchor")]
     public Transform centerPoint;
+
     [Header("Cached World Data")]
     public Vector3 centerWorldPos;
 
@@ -26,11 +30,7 @@ public class Country : MonoBehaviour
 
     public bool CanBeSelected() => isStarterCountry && ownerID == -1;
 
-    public bool IsAdjacentTo(Country target)
-    {
-        return adjacentCountries.Contains(target);
-    }
-
+    public bool IsAdjacentTo(Country target) => adjacentCountries.Contains(target);
 
     public List<Country> GetAllSelectableCountries()
     {
@@ -39,10 +39,7 @@ public class Country : MonoBehaviour
         if (isStarterCountry)
         {
             foreach (var sub in starterSubCountries)
-            {
-                if (sub != null)
-                    list.Add(sub);
-            }
+                if (sub != null) list.Add(sub);
         }
 
         return list;
@@ -50,15 +47,10 @@ public class Country : MonoBehaviour
 
     void Awake()
     {
-        if (centerPoint != null)
-        {
-            centerWorldPos = centerPoint.position;
-        }
-        else
-        {
-            Debug.LogError($"Country {countryName} has NO centerPoint assigned!");
-        }
+        if (centerPoint != null) centerWorldPos = centerPoint.position;
+        else Debug.LogError($"Country {countryName} has NO centerPoint assigned!");
     }
+
     public void SetOwner(int newOwnerID)
     {
         ownerID = newOwnerID;
@@ -67,23 +59,16 @@ public class Country : MonoBehaviour
         if (isStarterCountry)
         {
             foreach (var sub in starterSubCountries)
-            {
-                if (sub != null)
-                    sub.ownerID = newOwnerID;
-            }
+                if (sub != null) sub.ownerID = newOwnerID;
         }
 
-        if (MainGameManager.Instance != null)
-        {
+        if (MainGameManager.Instance != null && MainGameManager.Instance.isServer)
             MainGameManager.Instance.CheckWinConditionServer();
-        }
     }
 
     public Transform GetRandomSpawnPoint()
     {
-        if (spawnPoints == null || spawnPoints.Count == 0)
-            return null;
-
+        if (spawnPoints == null || spawnPoints.Count == 0) return null;
         return spawnPoints[Random.Range(0, spawnPoints.Count)];
     }
 }

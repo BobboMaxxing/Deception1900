@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &19095585 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+  m_PrefabInstance: {fileID: 1517787381}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &19829871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Russia.Belarus
   countryName: Russia.Belarus
   ownerID: -1
   isStarterCountry: 0
@@ -306,6 +312,104 @@ Transform:
   m_Children: []
   m_Father: {fileID: 980580655}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &85688875 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+  m_PrefabInstance: {fileID: 1770529897}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &118382961
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 531258013274435151, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_Name
+      value: MapEu.BalticOcean
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
 --- !u!114 &129070726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,6 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Irland
   countryName: Irland
   ownerID: -1
   isStarterCountry: 0
@@ -479,6 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Greace
   countryName: Greace
   ownerID: -1
   isStarterCountry: 0
@@ -990,7 +1096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Russia3
+  regionId: Russia3
 --- !u!1001 &182188880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1322,6 +1428,75 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5fb479099e98320479ddf040eca87d83, type: 3}
   m_PrefabInstance: {fileID: 1204074291}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &199615185
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_Name
+      value: MapEu.EnglishSea
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
 --- !u!1 &220001007 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 210c552c7b0cbe24184bca467bef7b73, type: 3}
@@ -1498,6 +1673,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5974652200663596714, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: -4692735651470230587, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -1524,6 +1703,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
       propertyPath: m_Name
+      value: Albania
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_TagString
       value: Albania
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1564,6 +1751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Albania
   countryName: Albania
   ownerID: -1
   isStarterCountry: 0
@@ -1752,6 +1940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: France
   countryName: France
   ownerID: -1
   isStarterCountry: 1
@@ -2132,6 +2321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Egypt2
   countryName: Egypt2
   ownerID: -1
   isStarterCountry: 0
@@ -2303,6 +2493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Algeria
   countryName: Algeria
   ownerID: -1
   isStarterCountry: 0
@@ -2321,6 +2512,11 @@ MonoBehaviour:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 00cc48acd4633b242b9563088479ecce, type: 3}
   m_PrefabInstance: {fileID: 661452364}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &447899948 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+  m_PrefabInstance: {fileID: 1089428788}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &454064454 stripped
 Transform:
@@ -2370,6 +2566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Italy
   countryName: Italy
   ownerID: -1
   isStarterCountry: 1
@@ -2396,6 +2593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Hungery
   countryName: Hungery
   ownerID: -1
   isStarterCountry: 0
@@ -2426,6 +2624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Turkaye
   countryName: Turkaye
   ownerID: -1
   isStarterCountry: 1
@@ -2730,13 +2929,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Chekoslovakia
   countryName: Chekoslovakia
   ownerID: -1
   isStarterCountry: 0
   centerPoint: {fileID: 64892983}
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
-  isSupplyCenter: 1
+  isSupplyCenter: 0
   adjacentCountries:
   - {fileID: 713817364}
   - {fileID: 1481998393}
@@ -3020,6 +3220,75 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!1001 &590043233
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_Name
+      value: MapEu.NorthAtlantic2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
 --- !u!1 &602644007
 GameObject:
   m_ObjectHideFlags: 0
@@ -3184,6 +3453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Netherlands
   countryName: Netherlands
   ownerID: -1
   isStarterCountry: 0
@@ -3541,8 +3811,14 @@ Transform:
   - {fileID: 1348907905}
   - {fileID: 677045069}
   - {fileID: 1246793407}
+  - {fileID: 1466373505}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &654283303 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+  m_PrefabInstance: {fileID: 836307044}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &661452364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3872,7 +4148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Spain
+  regionId: Spain
 --- !u!1 &713817362 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
@@ -3895,6 +4171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Poland
   countryName: Poland
   ownerID: -1
   isStarterCountry: 0
@@ -4244,6 +4521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Norway
   countryName: Norway
   ownerID: -1
   isStarterCountry: 1
@@ -4348,6 +4626,75 @@ Transform:
   m_Children: []
   m_Father: {fileID: 661452368}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &836307044
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_Name
+      value: MapEu.CaspianSea
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
 --- !u!1 &841606456
 GameObject:
   m_ObjectHideFlags: 0
@@ -4423,7 +4770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Germany
+  regionId: Germany
 --- !u!114 &854585239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4436,6 +4783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Yugoslavia
   countryName: Yugoslavia
   ownerID: -1
   isStarterCountry: 1
@@ -4645,6 +4993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Tunisien
   countryName: Tunisien
   ownerID: -1
   isStarterCountry: 0
@@ -4673,6 +5022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: SouthArabia
   countryName: SouthArabia
   ownerID: -1
   isStarterCountry: 0
@@ -4720,6 +5070,11 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: af50c01d3282d1f40806e98ae41e0264, type: 3}
   m_PrefabInstance: {fileID: 980580651}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &957195387 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+  m_PrefabInstance: {fileID: 199615185}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &959189045 stripped
 GameObject:
@@ -4913,6 +5268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Estonia
   countryName: Estonia
   ownerID: -1
   isStarterCountry: 0
@@ -4936,6 +5292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Austria
   countryName: Austria
   ownerID: -1
   isStarterCountry: 0
@@ -5297,6 +5654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Sweden
   countryName: Sweden
   ownerID: -1
   isStarterCountry: 0
@@ -5465,7 +5823,7 @@ MonoBehaviour:
   countryLayer:
     serializedVersion: 2
     m_Bits: 64
-  focusOffset: {x: 0, y: 50, z: 0}
+  focusOffset: {x: 30, y: 30, z: 0}
   dragSpeed: 80
   xLimits: {x: -50, y: 180}
   zLimits: {x: -80, y: 80}
@@ -5611,6 +5969,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7504791396959087588, guid: 3b25c082c8ac30e448f4159b45e03c8a, type: 3}
   m_PrefabInstance: {fileID: 1077786713}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1089428788
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_Name
+      value: MapEu.NorthAtlantic
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_TagString
+      value: GameController
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
 --- !u!1 &1092900399
 GameObject:
   m_ObjectHideFlags: 0
@@ -5655,7 +6086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Russia.Ukrain
+  regionId: Russia.Ukrain
 --- !u!1 &1097806690
 GameObject:
   m_ObjectHideFlags: 0
@@ -5780,6 +6211,11 @@ MeshCollider:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1577555481403046716, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
   m_PrefabInstance: {fileID: 1328846730}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1186188937 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+  m_PrefabInstance: {fileID: 1928615102}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1188488210
 PrefabInstance:
@@ -5967,7 +6403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Poland
+  regionId: Poland
 --- !u!1 &1193549188
 GameObject:
   m_ObjectHideFlags: 0
@@ -6434,6 +6870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Belgium
   countryName: Belgium
   ownerID: -1
   isStarterCountry: 0
@@ -6487,7 +6924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Italy
+  regionId: Italy
 --- !u!1 &1217525963
 GameObject:
   m_ObjectHideFlags: 0
@@ -7059,6 +7496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Russia.Ukrain
   countryName: Russia.Ukrain
   ownerID: -1
   isStarterCountry: 0
@@ -7235,7 +7673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Russia2
+  regionId: 
 --- !u!1 &1348907904
 GameObject:
   m_ObjectHideFlags: 0
@@ -7322,6 +7760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Lithuania
   countryName: Lithuania
   ownerID: -1
   isStarterCountry: 0
@@ -7377,7 +7816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: SouthArabia
+  regionId: SouthArabia
 --- !u!1 &1380257459
 GameObject:
   m_ObjectHideFlags: 0
@@ -7489,7 +7928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Iran
+  regionId: Iran
 --- !u!1 &1427660114
 GameObject:
   m_ObjectHideFlags: 0
@@ -7801,6 +8240,47 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -918436752293123416, guid: ab166048984c0944ea65dfd9cae9d07f, type: 3}
   m_PrefabInstance: {fileID: 1458269943}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1466373504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1466373505}
+  m_Layer: 0
+  m_Name: Oceans
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1466373505
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466373504}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1554369593}
+  - {fileID: 2125364468}
+  - {fileID: 654283303}
+  - {fileID: 957195387}
+  - {fileID: 1186188937}
+  - {fileID: 19095585}
+  - {fileID: 447899948}
+  - {fileID: 1630356254}
+  - {fileID: 85688875}
+  - {fileID: 1522163213}
+  m_Father: {fileID: 647504767}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1467335333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7813,6 +8293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Russia3
   countryName: Russia3
   ownerID: -1
   isStarterCountry: 0
@@ -7825,6 +8306,75 @@ MonoBehaviour:
   - {fileID: 1898107558}
   - {fileID: 475990290}
   starterSubCountries: []
+--- !u!1001 &1469030042
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_Name
+      value: MapEu.BlackSea
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
 --- !u!1 &1476317394
 GameObject:
   m_ObjectHideFlags: 0
@@ -7873,13 +8423,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Germany
   countryName: Germany
   ownerID: -1
   isStarterCountry: 1
   centerPoint: {fileID: 1941948999}
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
-  isSupplyCenter: 0
+  isSupplyCenter: 1
   adjacentCountries:
   - {fileID: 713817364}
   - {fileID: 1563805933}
@@ -7938,6 +8489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Sweitch
   countryName: Sweitch
   ownerID: -1
   isStarterCountry: 0
@@ -7951,6 +8503,75 @@ MonoBehaviour:
   - {fileID: 1481998393}
   - {fileID: 256292830}
   starterSubCountries: []
+--- !u!1001 &1517787381
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_Name
+      value: MapEu.MedetarenianSea
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b62f75ee45fabd44688ef90165008356, type: 3}
 --- !u!1 &1520205654
 GameObject:
   m_ObjectHideFlags: 0
@@ -7982,6 +8603,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 628074947}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1522163213 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+  m_PrefabInstance: {fileID: 1816057747}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1525881773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8471,7 +9097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Russia
+  regionId: Russia
 --- !u!1001 &1546094800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8628,6 +9254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Spain
   countryName: Spain
   ownerID: -1
   isStarterCountry: 0
@@ -8641,6 +9268,11 @@ MonoBehaviour:
   - {fileID: 1979685520}
   - {fileID: 1762080732}
   starterSubCountries: []
+--- !u!4 &1554369593 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+  m_PrefabInstance: {fileID: 118382961}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1561824621
 GameObject:
   m_ObjectHideFlags: 0
@@ -8685,7 +9317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Algeria
+  regionId: Algeria
 --- !u!114 &1563805933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8698,6 +9330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Denmark
   countryName: Denmark
   ownerID: -1
   isStarterCountry: 0
@@ -8996,6 +9629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Uk
   countryName: Uk
   ownerID: -1
   isStarterCountry: 1
@@ -9311,6 +9945,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1538694743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1630356254 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+  m_PrefabInstance: {fileID: 590043233}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1634309257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9532,6 +10171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Bulgaria
   countryName: Bulgaria
   ownerID: -1
   isStarterCountry: 0
@@ -9557,6 +10197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Palestain
   countryName: Palestain
   ownerID: -1
   isStarterCountry: 0
@@ -9789,7 +10430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Egypt2
+  regionId: Egypt2
 --- !u!1001 &1730688575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9953,6 +10594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Moroco
   countryName: Moroco
   ownerID: -1
   isStarterCountry: 0
@@ -10008,7 +10650,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Sweden
+  regionId: Sweden
+--- !u!1001 &1770529897
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_Name
+      value: MapEu.NorthOcean
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
 --- !u!114 &1800594092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10021,6 +10732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Jordan
   countryName: Jordan
   ownerID: -1
   isStarterCountry: 0
@@ -10172,6 +10884,75 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -7975642399687148296, guid: 4e974e4571c83b644a53ca7f400dcc5a, type: 3}
   m_PrefabInstance: {fileID: 1805465903}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1816057747
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_Name
+      value: MapEu.SouthAtlantic
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
 --- !u!1 &1818832462 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 07b9b6be37be830418f3f62b060ffe4a, type: 3}
@@ -10189,6 +10970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Irak
   countryName: Irak
   ownerID: -1
   isStarterCountry: 0
@@ -10384,7 +11166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: France
+  regionId: France
 --- !u!1001 &1864577981
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10573,6 +11355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Iran
   countryName: Iran
   ownerID: -1
   isStarterCountry: 0
@@ -10604,6 +11387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Russia2
   countryName: Russia2
   ownerID: -1
   isStarterCountry: 0
@@ -10615,6 +11399,75 @@ MonoBehaviour:
   - {fileID: 2075623173}
   - {fileID: 1898107558}
   starterSubCountries: []
+--- !u!1001 &1928615102
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1466373505}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -114
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_Name
+      value: MapEu.MedateraininaSea2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308118288082286148, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9168144775367499574, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
 --- !u!1 &1935546782
 GameObject:
   m_ObjectHideFlags: 0
@@ -10981,7 +11834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Turkaye
+  regionId: Turkaye
 --- !u!1 &1959115759
 GameObject:
   m_ObjectHideFlags: 0
@@ -11135,6 +11988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Finland
   countryName: Finland
   ownerID: -1
   isStarterCountry: 0
@@ -11303,6 +12157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Portugal
   countryName: Portugal
   ownerID: -1
   isStarterCountry: 0
@@ -11330,6 +12185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Libera
   countryName: Libera
   ownerID: -1
   isStarterCountry: 0
@@ -11386,7 +12242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Yugoslavia
+  regionId: Yugoslavia
 --- !u!1 &2009912101
 GameObject:
   m_ObjectHideFlags: 0
@@ -11535,7 +12391,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -11741,7 +12597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countryName: Uk
+  regionId: Uk
 --- !u!1 &2044017562
 GameObject:
   m_ObjectHideFlags: 0
@@ -11790,6 +12646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Russia
   countryName: Russia
   ownerID: -1
   isStarterCountry: 1
@@ -11988,6 +12845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Romania
   countryName: Romania
   ownerID: -1
   isStarterCountry: 0
@@ -12152,6 +13010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regionId: Latvia
   countryName: Latvia
   ownerID: -1
   isStarterCountry: 0
@@ -12165,6 +13024,11 @@ MonoBehaviour:
   - {fileID: 713817364}
   - {fileID: 19829871}
   starterSubCountries: []
+--- !u!4 &2125364468 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+  m_PrefabInstance: {fileID: 1469030042}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2135311676
 GameObject:
   m_ObjectHideFlags: 0
