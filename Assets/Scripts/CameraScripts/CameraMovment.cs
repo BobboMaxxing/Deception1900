@@ -51,7 +51,7 @@ public class CameraMovment : MonoBehaviour
     void CheckCountryClick()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer, QueryTriggerInteraction.Collide))
         {
             if (!isFocusing)
             {

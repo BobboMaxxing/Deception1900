@@ -161,7 +161,7 @@ public class MainPlayerController : NetworkBehaviour
 
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer, QueryTriggerInteraction.Collide))
         {
             Country countryComp = GetCountryFromHitRecursive(hit);
             if (countryComp == null)
@@ -320,7 +320,7 @@ public class MainPlayerController : NetworkBehaviour
 
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer, QueryTriggerInteraction.Collide))
         {
             Country country = GetCountryFromHitRecursive(hit);
 
@@ -794,7 +794,7 @@ public class MainPlayerController : NetworkBehaviour
                 }
 
                 Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity);
+                RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, ~0, QueryTriggerInteraction.Collide);
                 if (hits == null || hits.Length == 0)
                 {
                     yield return null;

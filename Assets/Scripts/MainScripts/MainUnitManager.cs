@@ -21,7 +21,7 @@ public class MainUnitManager : NetworkBehaviour
     [SerializeField] private float spawnSpacing = 2.0f;
 
     [Tooltip("Max radius per type. Increase if units still overlap.")]
-    [SerializeField] private float landSpawnRadius = 8.0f;
+    [SerializeField] private float landSpawnRadius = 15.0f;
     [SerializeField] private float boatSpawnRadius = 10.0f;
     [SerializeField] private float planeSpawnRadius = 8.0f;
 
@@ -49,9 +49,6 @@ public class MainUnitManager : NetworkBehaviour
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         List<SpawnPoint> validSpawns = new List<SpawnPoint>();
 
-        bool boatOceanClickFallback = (unitType == UnitType.Boat && string.IsNullOrEmpty(requiredSpawnTileTag));
-        if (boatOceanClickFallback)
-            requiredSpawnTileTag = ownerCountryTag;
 
         foreach (var spObj in spawnPoints)
         {
@@ -67,16 +64,13 @@ public class MainUnitManager : NetworkBehaviour
 
             bool tileMatch = true;
             if (!string.IsNullOrEmpty(requiredSpawnTileTag))
-                tileMatch = (sp.spawnTileTag == requiredSpawnTileTag);
+                tileMatch = sp.spawnTileTag == requiredSpawnTileTag;
 
-            bool allow =
-                (ownerMatch && tileMatch) ||
-                (unitType == UnitType.Boat && tileMatch && boatOceanClickFallback);
-
-            if (!allow) continue;
+            if (!(ownerMatch && tileMatch)) continue;
 
             validSpawns.Add(sp);
         }
+
 
         if (validSpawns.Count == 0)
         {

@@ -436,7 +436,7 @@ Transform:
   m_GameObject: {fileID: 81158662}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 37.7, y: 2.2, z: 74.7}
+  m_LocalPosition: {x: 37.70001, y: 2.2, z: 74.70001}
   m_LocalScale: {x: 20, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3898,7 +3898,9 @@ MonoBehaviour:
   boatUnitPrefab: {fileID: 1842898901605351783, guid: fee261efbeb24924aad50c8ef654b99b, type: 3}
   planeUnitPrefab: {fileID: 3173827503613529280, guid: 4c512d319f04e0d4bb87e9e7a9a2d21d, type: 3}
   spawnSpacing: 1.2
-  spawnMaxRadius: 4.5
+  landSpawnRadius: 2.5
+  boatSpawnRadius: 3.5
+  planeSpawnRadius: 2.5
 --- !u!114 &580381274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7380,7 +7382,7 @@ Transform:
   m_GameObject: {fileID: 1066087298}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 15.9, y: 2.2, z: 55.5}
+  m_LocalPosition: {x: 15.900003, y: 2.2, z: 55.500015}
   m_LocalScale: {x: 20, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
