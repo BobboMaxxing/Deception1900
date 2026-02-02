@@ -1,4 +1,3 @@
-using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,6 +8,11 @@ public class LocalPlayerSetup : MonoBehaviour
     public Button cancelButton;
     public Button confirmMoveButton;
     public Button cancelMoveButton;
+
+    public Button buildLandButton;
+    public Button buildBoatButton;
+    public Button buildPlaneButton;
+    public Button buildPassButton;
 
     public TMP_Text selectedCountryText;
     public TMP_Text moveStatusText;
@@ -47,6 +51,36 @@ public class LocalPlayerSetup : MonoBehaviour
             cancelMoveButton.onClick.RemoveAllListeners();
             cancelMoveButton.onClick.AddListener(localPlayer.CancelMoves);
         }
+
+        if (buildLandButton != null)
+        {
+            buildLandButton.gameObject.SetActive(false);
+            buildLandButton.onClick.RemoveAllListeners();
+            buildLandButton.onClick.AddListener(localPlayer.SelectBuildLand);
+        }
+
+        if (buildBoatButton != null)
+        {
+            buildBoatButton.gameObject.SetActive(false);
+            buildBoatButton.onClick.RemoveAllListeners();
+            buildBoatButton.onClick.AddListener(localPlayer.SelectBuildBoat);
+        }
+
+        if (buildPlaneButton != null)
+        {
+            buildPlaneButton.gameObject.SetActive(false);
+            buildPlaneButton.onClick.RemoveAllListeners();
+            buildPlaneButton.onClick.AddListener(localPlayer.SelectBuildPlane);
+        }
+
+        if (buildPassButton != null)
+        {
+            buildPassButton.gameObject.SetActive(false);
+            buildPassButton.onClick.RemoveAllListeners();
+            buildPassButton.onClick.AddListener(localPlayer.PassBuildPhase);
+        }
+
+        localPlayer.SetupBuildUI(buildLandButton, buildBoatButton, buildPlaneButton, buildPassButton);
 
         localPlayer.SetupUIReferences(
             selectedCountryText,

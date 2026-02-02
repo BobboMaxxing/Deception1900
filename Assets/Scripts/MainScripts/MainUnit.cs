@@ -9,6 +9,7 @@ public class MainUnit : NetworkBehaviour
     [SyncVar] public int ownerID;
     [SyncVar] public string currentCountry;
     [SyncVar] public Color playerColor;
+    [SyncVar] public UnitType unitType;
 
     [HideInInspector] public PlayerUnitOrder currentOrder;
 
@@ -35,10 +36,11 @@ public class MainUnit : NetworkBehaviour
     }
     #region Server → Client Initialization
     [ClientRpc]
-    public void RpcInitialize(int playerID, Color color)
+    public void RpcInitialize(int playerID, Color color, UnitType type)
     {
         ownerID = playerID;
         playerColor = color;
+        unitType = type;
         SetColor(color);
     }
     #endregion

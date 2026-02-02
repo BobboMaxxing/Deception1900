@@ -5,80 +5,195 @@ using UnityEngine;
 
 public class MainUnitManager : NetworkBehaviour
 {
-    private Dictionary<string, int> countrySpawnIndices = new Dictionary<string, int>();
-
     public static MainUnitManager Instance;
 
-    [Tooltip("Prefab must be in the NetworkManager spawnable prefabs list")]
-    public GameObject unitPrefab;
-    private List<MainUnit> allUnits = new List<MainUnit>();
+    [Header("Unit Prefabs (must be in NetworkManager spawnable prefabs)")]
+    public GameObject landUnitPrefab;
+    public GameObject boatUnitPrefab;
+    public GameObject planeUnitPrefab;
+
+    private readonly List<MainUnit> allUnits = new List<MainUnit>();
+
+    private readonly Dictionary<int, int> spawnUseIndexBySpawnPoint = new Dictionary<int, int>();
+
+    [Header("Spawn Offsets")]
+    [Tooltip("Controls how fast the spiral expands.")]
+    [SerializeField] private float spawnSpacing = 2.0f;
+
+    [Tooltip("Max radius per type. Increase if units still overlap.")]
+    [SerializeField] private float landSpawnRadius = 8.0f;
+    [SerializeField] private float boatSpawnRadius = 10.0f;
+    [SerializeField] private float planeSpawnRadius = 8.0f;
 
     void Awake() => Instance = this;
 
     void Start()
     {
-        if (unitPrefab == null)
-            Debug.LogError("[MainUnitManager] unitPrefab is null!");
-
-        TestRpcMove();
+        if (landUnitPrefab == null) Debug.LogError("[MainUnitManager] landUnitPrefab is null!");
+        if (boatUnitPrefab == null) Debug.LogError("[MainUnitManager] boatUnitPrefab is null!");
+        if (planeUnitPrefab == null) Debug.LogError("[MainUnitManager] planeUnitPrefab is null!");
     }
 
     public List<MainUnit> GetAllUnits() => allUnits;
 
-    #region Unit Spawning (Server Only)
     [Server]
-    public GameObject SpawnUnitsForCountryServer(string countryName, int playerID, Color playerColor, int count)
+    public GameObject SpawnUnitsForCountryServer(
+        string ownerCountryTag,
+        int playerID,
+        Color playerColor,
+        int count,
+        UnitType unitType,
+        string requiredSpawnTileTag
+    )
     {
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        List<Transform> validSpawns = new List<Transform>();
-        foreach (var sp in spawnPoints)
+        List<SpawnPoint> validSpawns = new List<SpawnPoint>();
+
+        bool boatOceanClickFallback = (unitType == UnitType.Boat && string.IsNullOrEmpty(requiredSpawnTileTag));
+        if (boatOceanClickFallback)
+            requiredSpawnTileTag = ownerCountryTag;
+
+        foreach (var spObj in spawnPoints)
         {
-            SpawnPoint spScript = sp.GetComponent<SpawnPoint>();
-            if (spScript != null && spScript.countryName == countryName)
-                validSpawns.Add(sp.transform);
+            SpawnPoint sp = spObj.GetComponent<SpawnPoint>();
+            if (sp == null) continue;
+
+            if (sp.allowedType != unitType) continue;
+
+            bool ownerMatch =
+                !string.IsNullOrEmpty(sp.ownerCountryTag)
+                    ? sp.ownerCountryTag == ownerCountryTag
+                    : sp.countryName == ownerCountryTag;
+
+            bool tileMatch = true;
+            if (!string.IsNullOrEmpty(requiredSpawnTileTag))
+                tileMatch = (sp.spawnTileTag == requiredSpawnTileTag);
+
+            bool allow =
+                (ownerMatch && tileMatch) ||
+                (unitType == UnitType.Boat && tileMatch && boatOceanClickFallback);
+
+            if (!allow) continue;
+
+            validSpawns.Add(sp);
         }
 
         if (validSpawns.Count == 0)
         {
-            Debug.LogWarning($"[MainUnitManager] No spawn points found for country '{countryName}'");
+            Debug.LogWarning(
+                $"[MainUnitManager] No spawn points found. owner='{ownerCountryTag}', type='{unitType}', requiredTile='{requiredSpawnTileTag}'"
+            );
             return null;
         }
 
-        GameObject lastSpawnedUnit = null;
+        GameObject prefab =
+            unitType == UnitType.Boat ? boatUnitPrefab :
+            unitType == UnitType.Plane ? planeUnitPrefab :
+            landUnitPrefab;
+
+        if (prefab == null)
+        {
+            Debug.LogError("[MainUnitManager] Prefab for unitType is null");
+            return null;
+        }
+
+        GameObject lastSpawned = null;
 
         for (int i = 0; i < count; i++)
         {
-            Transform spawn = validSpawns[i % validSpawns.Count];
-            Vector3 offset = GetSpawnOffset(i, count);
+            SpawnPoint sp = validSpawns[i % validSpawns.Count];
+            Transform spawn = sp.transform;
+
+            int spId = sp.gameObject.GetInstanceID();
+            int useIndex = spawnUseIndexBySpawnPoint.TryGetValue(spId, out int v) ? v : 0;
+            spawnUseIndexBySpawnPoint[spId] = useIndex + 1;
+
+            Vector3 offset = GetSpawnOffset(useIndex, unitType);
             Vector3 spawnPos = spawn.position + offset;
 
-            GameObject unitObj = Instantiate(unitPrefab, spawnPos, spawn.rotation);
+            GameObject unitObj = Instantiate(prefab, spawnPos, spawn.rotation);
+
             MainUnit unit = unitObj.GetComponent<MainUnit>();
             if (unit == null)
             {
-                Debug.LogError("[MainUnitManager] unitPrefab missing MainUnit component.");
+                Debug.LogError("[MainUnitManager] Spawned prefab missing MainUnit component.");
                 Destroy(unitObj);
                 continue;
             }
 
             unit.ownerID = playerID;
             unit.playerColor = playerColor;
-            unit.currentCountry = countryName;
+            unit.unitType = unitType;
+
+            string spawnTile = string.IsNullOrEmpty(sp.spawnTileTag) ? ownerCountryTag : sp.spawnTileTag;
+            unit.currentCountry = spawnTile;
 
             NetworkServer.Spawn(unitObj);
             allUnits.Add(unit);
-            unit.RpcInitialize(playerID, playerColor);
 
-            lastSpawnedUnit = unitObj;
+            unit.RpcInitialize(playerID, playerColor, unitType);
+
+            lastSpawned = unitObj;
         }
 
-        RpcUpdateCountryOwnership(countryName, playerColor);
-        return lastSpawnedUnit;
+        RpcUpdateCountryOwnership(ownerCountryTag, playerColor);
+
+        return lastSpawned;
     }
 
-    #endregion
+    [Server]
+    public GameObject SpawnUnitsForCountryServer(string ownerCountryTag, int playerID, Color playerColor, int count, UnitType unitType)
+    {
+        return SpawnUnitsForCountryServer(ownerCountryTag, playerID, playerColor, count, unitType, null);
+    }
 
-    #region Turn Execution (Server Only)
+    [Server]
+    public bool HasSpawnPoint(string ownerCountryTag, UnitType unitType, string requiredSpawnTileTag)
+    {
+        GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
+
+        foreach (var spObj in spawnPoints)
+        {
+            SpawnPoint sp = spObj.GetComponent<SpawnPoint>();
+            if (sp == null) continue;
+            if (sp.allowedType != unitType) continue;
+
+            bool ownerMatch =
+                !string.IsNullOrEmpty(sp.ownerCountryTag)
+                    ? sp.ownerCountryTag == ownerCountryTag
+                    : sp.countryName == ownerCountryTag;
+
+            if (!ownerMatch) continue;
+
+            if (!string.IsNullOrEmpty(requiredSpawnTileTag))
+            {
+                if (sp.spawnTileTag != requiredSpawnTileTag) continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private Vector3 GetSpawnOffset(int index, UnitType unitType)
+    {
+        const float goldenAngle = 2.39996323f;
+
+        float maxR =
+            unitType == UnitType.Boat ? boatSpawnRadius :
+            unitType == UnitType.Plane ? planeSpawnRadius :
+            landSpawnRadius;
+
+        float r = spawnSpacing * Mathf.Sqrt(index);
+        if (r > maxR) r = maxR;
+
+        float a = index * goldenAngle;
+
+        return new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * r;
+    }
+
+
     [Server]
     public void ExecuteTurnServer()
     {
@@ -104,7 +219,7 @@ public class MainUnitManager : NetworkBehaviour
             GameObject countryObj = GameObject.FindWithTag(countryName);
             if (countryObj == null)
             {
-                Debug.LogWarning($"[Server] Country with tag '{countryName}' not found!");
+                Debug.LogWarning($"[Server] Tile with tag '{countryName}' not found!");
                 continue;
             }
 
@@ -117,7 +232,6 @@ public class MainUnitManager : NetworkBehaviour
                 else
                     totalStrength[mover.ownerID] += 1;
             }
-
 
             foreach (MainUnit supporter in allUnits)
             {
@@ -156,10 +270,7 @@ public class MainUnitManager : NetworkBehaviour
             if (isBounce)
             {
                 foreach (MainUnit unit in units)
-                {
                     StartCoroutine(SendRpcWithDelay(unit, unit.transform.position, 0.05f));
-                }
-                Debug.Log($"[Server] Bounce at {countryName}");
             }
             else
             {
@@ -176,18 +287,19 @@ public class MainUnitManager : NetworkBehaviour
                         targetPos = countryComp.centerWorldPos;
 
                     unit.currentCountry = countryName;
-
                     unit.currentOrder = null;
 
                     StartCoroutine(SendRpcWithDelay(unit, targetPos, 0.05f));
                 }
 
-                Debug.Log($"[Server] Player {winnerID} wins {countryName}");
                 if (!isBounce && countryComp != null)
                     countryComp.SetOwner(winnerID);
 
-                Color winnerColor = winningUnits[0].playerColor;
-                RpcUpdateCountryOwnership(countryName, winnerColor);
+                if (winningUnits.Count > 0)
+                {
+                    Color winnerColor = winningUnits[0].playerColor;
+                    RpcUpdateCountryOwnership(countryName, winnerColor);
+                }
             }
         }
 
@@ -195,63 +307,22 @@ public class MainUnitManager : NetworkBehaviour
             player.RpcResetReady();
     }
 
-
-
     private IEnumerator SendRpcWithDelay(MainUnit unit, Vector3 targetPos, float delay)
     {
         yield return new WaitForSeconds(delay);
         unit.RpcMoveTo(targetPos);
     }
-    #endregion
 
-    #region Client RPCs
     [ClientRpc]
     public void RpcUpdateCountryOwnership(string countryTag, Color playerColor)
     {
         GameObject countryObj = GameObject.FindWithTag(countryTag);
-        if (countryObj == null)
-        {
-            Debug.LogWarning($"[ClientRpc] Country with tag '{countryTag}' not found for coloring.");
-            return;
-        }
+        if (countryObj == null) return;
 
         Renderer[] renderers = countryObj.GetComponentsInChildren<Renderer>();
-        if (renderers.Length == 0)
-        {
-            Debug.LogWarning($"[ClientRpc] No renderers found in '{countryTag}' or its children.");
-            return;
-        }
+        if (renderers.Length == 0) return;
 
         foreach (var rend in renderers)
-        {
             rend.material.color = playerColor;
-        }
-
-        Debug.Log($"[ClientRpc] Updated color of {countryTag} to {playerColor}");
     }
-    #endregion
-
-    #region Utility
-    private Vector3 GetSpawnOffset(int index, int total)
-    {
-        if (total <= 1) return Vector3.zero;
-        float angleStep = 360f / total;
-        float angle = index * angleStep * Mathf.Deg2Rad;
-        return new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 2f;
-    }
-
-
-
-    [Server]
-    public void TestRpcMove()
-    {
-        if (allUnits.Count > 0)
-        {
-            allUnits[0].RpcMoveTo(allUnits[0].transform.position + Vector3.forward * 3f);
-            Debug.Log("[Server] Called TestRpcMove on unit");
-        }
-    }
-
-
-    #endregion
 }

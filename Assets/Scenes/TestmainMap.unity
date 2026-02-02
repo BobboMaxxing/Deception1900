@@ -169,15 +169,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
       propertyPath: m_Name
-      value: MapEu.NorthAtlantic2
+      value: NorthAtlantic2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      propertyPath: m_TagString
+      value: NorthAtlantic2
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -185,8 +189,17 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 769523384}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1711319073}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 275035339}
   m_SourcePrefab: {fileID: 100100000, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
 --- !u!4 &10503516 stripped
 Transform:
@@ -212,6 +225,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 2121766367}
@@ -222,6 +237,16 @@ MonoBehaviour:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 21d6b21b1a8f3cd48b7cc77b0262dbd8, type: 3}
   m_PrefabInstance: {fileID: 311157229}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &36123074 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+  m_PrefabInstance: {fileID: 1842938370}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &39398850 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+  m_PrefabInstance: {fileID: 127871957}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &43620112 stripped
 GameObject:
@@ -380,6 +405,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 980580655}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &75177251 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+  m_PrefabInstance: {fileID: 888427582}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &81158662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 81158663}
+  - component: {fileID: 81158664}
+  m_Layer: 6
+  m_Name: EnglishSeaFr
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &81158663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81158662}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 37.7, y: 2.2, z: 74.7}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1875974272}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &81158664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81158662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: France
+  ownerCountryTag: France
+  spawnTileTag: EnglishSea
+  allowedType: 1
 --- !u!1001 &94748185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -430,15 +508,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
       propertyPath: m_Name
-      value: MapEu.NorthAtlantic
+      value: NorthAtlantic
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      propertyPath: m_TagString
+      value: NorthAtlantic
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -446,14 +528,57 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1129977490}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 551436900}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 655121908}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1756440646}
   m_SourcePrefab: {fileID: 100100000, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
 --- !u!4 &94748186 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
   m_PrefabInstance: {fileID: 94748185}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &103787772
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 103787773}
+  m_Layer: 7
+  m_Name: CameraFocusPointMedateraininaSea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &103787773
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103787772}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 59.8, y: 0, z: 19.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 532383557}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &127871957
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -504,15 +629,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
       propertyPath: m_Name
-      value: MapEu.NorthOcean
+      value: NorthOcean
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      propertyPath: m_TagString
+      value: NorthOcean
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -520,8 +649,20 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 348600177}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1878354093}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2141006700}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 617573997}
   m_SourcePrefab: {fileID: 100100000, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
 --- !u!4 &127871958 stripped
 Transform:
@@ -547,6 +688,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1616309165}
   starterSubCountries: []
@@ -708,6 +851,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 475990290}
   - {fileID: 1670754594}
@@ -1213,6 +1358,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Russia3
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1001 &182188880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1544,6 +1692,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5fb479099e98320479ddf040eca87d83, type: 3}
   m_PrefabInstance: {fileID: 1204074291}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &198973300 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+  m_PrefabInstance: {fileID: 1803380672}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &220001007 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 210c552c7b0cbe24184bca467bef7b73, type: 3}
@@ -1651,7 +1804,9 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
-  - {fileID: 2660488871473679611, guid: 22967cc6d023459439f9dc2266811b31, type: 3}
+  - {fileID: 1842898901605351783, guid: fee261efbeb24924aad50c8ef654b99b, type: 3}
+  - {fileID: 855178879507169519, guid: 510ddcd55ab3a9e4fb105780c2d7b95f, type: 3}
+  - {fileID: 3173827503613529280, guid: 4c512d319f04e0d4bb87e9e7a9a2d21d, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
@@ -1667,6 +1822,127 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
+--- !u!1 &235319220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 235319221}
+  - component: {fileID: 235319224}
+  - component: {fileID: 235319223}
+  - component: {fileID: 235319222}
+  m_Layer: 5
+  m_Name: Pass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &235319221
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235319220}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1656147601}
+  m_Father: {fileID: 690804564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 229, y: 47}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &235319222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235319220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 235319223}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &235319223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235319220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &235319224
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235319220}
+  m_CullTransparentMesh: 1
 --- !u!1 &238113967 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b3af07de4bb576f45b070654e56ba541, type: 3}
@@ -1793,6 +2069,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 854585239}
   - {fileID: 137183499}
@@ -1962,6 +2240,11 @@ Transform:
   - {fileID: 231330037}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &250781086 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+  m_PrefabInstance: {fileID: 1875974271}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &256292830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1982,6 +2265,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1859291964}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1208557790}
   - {fileID: 1481998393}
@@ -2122,6 +2407,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 360796718}
   - {fileID: 1987312188}
@@ -2167,6 +2454,40 @@ Transform:
   - {fileID: 127871958}
   m_Father: {fileID: 647504767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &275035338 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+  m_PrefabInstance: {fileID: 10503515}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &275035339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275035338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: NorthAtlantic2
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 1711319073}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 769523384}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 888427584}
+  - {fileID: 1756440646}
+  - {fileID: 1875974273}
+  - {fileID: 129070726}
+  - {fileID: 1616309165}
+  starterSubCountries: []
 --- !u!1 &284046756
 GameObject:
   m_ObjectHideFlags: 0
@@ -2198,6 +2519,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1204074295}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &291010221 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+  m_PrefabInstance: {fileID: 1803380672}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &307893985
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2484,6 +2810,54 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65420ea61e343be43bfae803715d25ae, type: 3}
   m_PrefabInstance: {fileID: 766938153}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &348600176
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 348600177}
+  - component: {fileID: 348600178}
+  m_Layer: 6
+  m_Name: NorthOceanUk
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &348600177
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348600176}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 56.8, y: 2.2, z: 100.6}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 127871958}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &348600178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348600176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Uk
+  ownerCountryTag: Uk
+  spawnTileTag: NorthOcean
+  allowedType: 1
 --- !u!1 &356979969
 GameObject:
   m_ObjectHideFlags: 0
@@ -2540,6 +2914,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1708702372}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1676261464}
   - {fileID: 1987312188}
@@ -2711,6 +3087,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1561824622}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1550156736}
   - {fileID: 1762080732}
@@ -2778,6 +3156,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1214045840}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 256292830}
   - {fileID: 1484275197}
@@ -2803,6 +3183,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2106912905}
   - {fileID: 531523577}
@@ -2834,6 +3216,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1949836923}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1898107558}
   - {fileID: 1467335333}
@@ -2846,6 +3230,54 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 26960d0a5ed50034198300a8109c6523, type: 3}
   m_PrefabInstance: {fileID: 647151934}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &501423909
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 501423910}
+  - component: {fileID: 501423911}
+  m_Layer: 6
+  m_Name: BlackSeaRus
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &501423910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501423909}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 176.9, y: 2.2, z: 57.1}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1309782464}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &501423911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501423909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Russia
+  ownerCountryTag: Russia
+  spawnTileTag: BlackSea
+  allowedType: 1
 --- !u!1 &522494291
 GameObject:
   m_ObjectHideFlags: 0
@@ -3137,6 +3569,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 713817364}
   - {fileID: 1481998393}
@@ -3144,6 +3578,64 @@ MonoBehaviour:
   - {fileID: 474248823}
   - {fileID: 2106912905}
   starterSubCountries: []
+--- !u!4 &532383557 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+  m_PrefabInstance: {fileID: 2065362171}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &541689929 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+  m_PrefabInstance: {fileID: 1309782463}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &551436899
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 551436900}
+  - component: {fileID: 551436901}
+  m_Layer: 6
+  m_Name: NorthAtlanticRus
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &551436900
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551436899}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 58.5, y: 2.2, z: 144}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 94748186}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &551436901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551436899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Russia
+  ownerCountryTag: Russia
+  spawnTileTag: NorthAtlantic
+  allowedType: 1
 --- !u!1 &555666397
 GameObject:
   m_ObjectHideFlags: 0
@@ -3402,7 +3894,11 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  unitPrefab: {fileID: 2660488871473679611, guid: 22967cc6d023459439f9dc2266811b31, type: 3}
+  landUnitPrefab: {fileID: 855178879507169519, guid: 510ddcd55ab3a9e4fb105780c2d7b95f, type: 3}
+  boatUnitPrefab: {fileID: 1842898901605351783, guid: fee261efbeb24924aad50c8ef654b99b, type: 3}
+  planeUnitPrefab: {fileID: 3173827503613529280, guid: 4c512d319f04e0d4bb87e9e7a9a2d21d, type: 3}
+  spawnSpacing: 1.2
+  spawnMaxRadius: 4.5
 --- !u!114 &580381274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3572,6 +4068,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 181118062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &610628730 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+  m_PrefabInstance: {fileID: 1309782463}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &617573996 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d85cfe3d6430417428e0b90b41386370, type: 3}
+  m_PrefabInstance: {fileID: 127871957}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &617573997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617573996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: NorthOcean
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 2141006700}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 348600177}
+  - {fileID: 1878354093}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 1875974273}
+  - {fileID: 1803380674}
+  - {fileID: 1756440646}
+  - {fileID: 1616309165}
+  - {fileID: 1481998393}
+  - {fileID: 783773925}
+  - {fileID: 621459923}
+  - {fileID: 1563805933}
+  starterSubCountries: []
 --- !u!114 &621459923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3591,6 +4130,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1208557790}
   - {fileID: 1481998393}
@@ -3770,6 +4311,127 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b07c450597de8b649afb93a2799f6ed2, type: 3}
   m_PrefabInstance: {fileID: 2032453992}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &645352761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 645352762}
+  - component: {fileID: 645352765}
+  - component: {fileID: 645352764}
+  - component: {fileID: 645352763}
+  m_Layer: 5
+  m_Name: Land
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &645352762
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645352761}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 889628583}
+  m_Father: {fileID: 690804564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 62, y: 47}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &645352763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645352761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 645352764}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &645352764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645352761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &645352765
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645352761}
+  m_CullTransparentMesh: 1
 --- !u!1001 &647151934
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3944,6 +4606,37 @@ Transform:
   - {fileID: 261756703}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &655121907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 655121908}
+  m_Layer: 7
+  m_Name: CameraFocusPointNorthAtlantic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &655121908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655121907}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 66.600044, y: 0, z: 151.10004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 880785901}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &661452364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4117,6 +4810,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1979568275}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &664453184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 664453185}
+  m_Layer: 7
+  m_Name: CameraFocusPointCaspianSea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &664453185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664453184}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 225.4, y: 0, z: 63.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1132271720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &677045065
 GameObject:
   m_ObjectHideFlags: 0
@@ -4222,6 +4946,7 @@ RectTransform:
   - {fileID: 2101728163}
   - {fileID: 602644008}
   - {fileID: 64403109}
+  - {fileID: 690804564}
   m_Father: {fileID: 647504767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4274,6 +4999,79 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Spain
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
+--- !u!1 &678226763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 678226764}
+  m_Layer: 7
+  m_Name: CameraFocusPointBalticOcean
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &678226764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678226763}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 95, y: 0, z: 113.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 291010221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &690804563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 690804564}
+  m_Layer: 5
+  m_Name: BuildStuff
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &690804564
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690804563}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1436063829}
+  - {fileID: 1235333087}
+  - {fileID: 645352762}
+  - {fileID: 235319221}
+  m_Father: {fileID: 677045069}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &694442722
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4403,12 +5201,67 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1818832463}
   - {fileID: 475990290}
   - {fileID: 1676261464}
   - {fileID: 1800594092}
   starterSubCountries: []
+--- !u!1 &705857741
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 705857742}
+  - component: {fileID: 705857743}
+  m_Layer: 6
+  m_Name: BlackSeaTurk
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &705857742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705857741}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 151.3, y: 2.2, z: 45.4}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1309782464}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &705857743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705857741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Turkaye
+  ownerCountryTag: Turkaye
+  spawnTileTag: BlackSea
+  allowedType: 1
+--- !u!1 &709669533 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+  m_PrefabInstance: {fileID: 2065362171}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &713817362 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
@@ -4439,6 +5292,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1191379260}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1349704945}
   - {fileID: 2121766367}
@@ -4697,6 +5552,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3813316845065012053, guid: 65420ea61e343be43bfae803715d25ae, type: 3}
   m_PrefabInstance: {fileID: 766938153}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &769523383
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 769523384}
+  - component: {fileID: 769523385}
+  m_Layer: 6
+  m_Name: NorthAtlantic2Uk
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &769523384
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769523383}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 8.1, y: 2.2, z: 124.1}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 10503516}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &769523385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769523383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Uk
+  ownerCountryTag: Uk
+  spawnTileTag: NorthAtlantic2
+  allowedType: 1
 --- !u!1 &773927254 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6318b5f7b0347de44bf52a10c3c8dc40, type: 3}
@@ -4787,6 +5690,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1978168287}
   - {fileID: 1055308298}
@@ -4960,6 +5865,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Germany
+  ownerCountryTag: Germany
+  spawnTileTag: 
+  allowedType: 0
 --- !u!114 &854585239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4980,6 +5888,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 2004137888}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 990444434}
   - {fileID: 468064820}
@@ -4988,6 +5898,54 @@ MonoBehaviour:
   - {fileID: 1670754594}
   - {fileID: 137183499}
   starterSubCountries: []
+--- !u!1 &856173948
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 856173949}
+  - component: {fileID: 856173950}
+  m_Layer: 6
+  m_Name: MedetarenianSeaItly
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &856173949
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856173948}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 49, y: 2.2, z: 21.399994}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2065362172}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &856173950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856173948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Italy
+  ownerCountryTag: Italy
+  spawnTileTag: MedetarenianSea
+  allowedType: 1
 --- !u!1001 &856477953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5127,6 +6085,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -500575803165824122, guid: d199c7a234bc7ef44875663a0a6d37df, type: 3}
   m_PrefabInstance: {fileID: 856477953}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &880785901 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+  m_PrefabInstance: {fileID: 94748185}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &886615071 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2308118288082286148, guid: b983f24e5ef96e744b63a74267a6cce2, type: 3}
@@ -5209,15 +6172,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
       propertyPath: m_Name
-      value: MapEu.SouthAtlantic
+      value: SouthAtlantic
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      propertyPath: m_TagString
+      value: SouthAtlantic
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -5225,14 +6192,246 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1607224320}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1066087299}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1035194019}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 888427584}
   m_SourcePrefab: {fileID: 100100000, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
 --- !u!4 &888427583 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
   m_PrefabInstance: {fileID: 888427582}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &888427584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75177251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: SouthAtlantic
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 1035194019}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1607224320}
+  - {fileID: 1066087299}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 275035339}
+  - {fileID: 2065362173}
+  - {fileID: 1875974273}
+  - {fileID: 256292830}
+  - {fileID: 129070726}
+  - {fileID: 1616309165}
+  - {fileID: 1550156736}
+  - {fileID: 1979685520}
+  - {fileID: 1762080732}
+  starterSubCountries: []
+--- !u!1 &889628582
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 889628583}
+  - component: {fileID: 889628585}
+  - component: {fileID: 889628584}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &889628583
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889628582}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 645352762}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &889628584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889628582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Land
+
+'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4281479730
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 24
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &889628585
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889628582}
+  m_CullTransparentMesh: 1
+--- !u!1 &895295174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 895295175}
+  - component: {fileID: 895295176}
+  m_Layer: 6
+  m_Name: BalticOceanGer
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &895295175
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895295174}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 98.8, y: 2.2, z: 104.3}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1803380673}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &895295176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895295174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Germany
+  ownerCountryTag: Germany
+  spawnTileTag: BalticOcean
+  allowedType: 1
 --- !u!1 &909470843 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
@@ -5262,6 +6461,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1987312188}
   - {fileID: 402027827}
@@ -5291,6 +6492,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1349801652}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1818832463}
   - {fileID: 1800594092}
@@ -5366,6 +6569,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 182188884}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &968736280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 968736281}
+  m_Layer: 7
+  m_Name: CameraFocusPointMedateraininaSea2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &968736281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968736280}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 143.30005, y: 0, z: -2.2000122}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1664470754}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &980580651
 PrefabInstance:
@@ -5530,6 +6764,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 2121766367}
@@ -5553,6 +6789,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 468064820}
   - {fileID: 1481998393}
@@ -5779,9 +7017,44 @@ MonoBehaviour:
   cancelButton: {fileID: 2101728164}
   confirmMoveButton: {fileID: 602644009}
   cancelMoveButton: {fileID: 64403110}
+  buildLandButton: {fileID: 645352763}
+  buildBoatButton: {fileID: 1436063830}
+  buildPlaneButton: {fileID: 1235333088}
+  buildPassButton: {fileID: 235319222}
   selectedCountryText: {fileID: 1959115761}
   moveStatusText: {fileID: 1530043875}
   playerCamera: {fileID: 1061403096}
+--- !u!1 &1035194018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1035194019}
+  m_Layer: 7
+  m_Name: CameraFocusPointSouthAtlantic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1035194019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035194018}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -4.1, y: 0, z: 48.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1530912795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1045633462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5915,6 +7188,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1766249940}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1978168287}
   - {fileID: 783773925}
@@ -6079,6 +7354,54 @@ MonoBehaviour:
   dragSpeed: 80
   xLimits: {x: -50, y: 180}
   zLimits: {x: -80, y: 80}
+--- !u!1 &1066087298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1066087299}
+  - component: {fileID: 1066087300}
+  m_Layer: 6
+  m_Name: SouthAtlanticFr
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1066087299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066087298}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 15.9, y: 2.2, z: 55.5}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 888427583}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1066087300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066087298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: France
+  ownerCountryTag: France
+  spawnTileTag: SouthAtlantic
+  allowedType: 1
 --- !u!1001 &1077786713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6266,6 +7589,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Russia.Ukrain
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1 &1097806690
 GameObject:
   m_ObjectHideFlags: 0
@@ -6297,6 +7623,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 766938157}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1105528678 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+  m_PrefabInstance: {fileID: 1875974271}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1121582989
 GameObject:
   m_ObjectHideFlags: 0
@@ -6328,6 +7659,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 307893989}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1129977489
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1129977490}
+  - component: {fileID: 1129977491}
+  m_Layer: 6
+  m_Name: NorthAtlanticUk
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1129977490
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129977489}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 60.8, y: 2.2, z: 155.3}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 94748186}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1129977491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129977489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Uk
+  ownerCountryTag: Uk
+  spawnTileTag: NorthAtlantic
+  allowedType: 1
+--- !u!4 &1132271720 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+  m_PrefabInstance: {fileID: 1194075882}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1151664564
 GameObject:
   m_ObjectHideFlags: 0
@@ -6578,6 +7962,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Poland
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1 &1193549188
 GameObject:
   m_ObjectHideFlags: 0
@@ -6659,15 +8046,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
       propertyPath: m_Name
-      value: MapEu.CaspianSea
+      value: CaspianSea
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      propertyPath: m_TagString
+      value: CaspianSea
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -6675,8 +8066,17 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1602845222}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 664453185}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2020575468}
   m_SourcePrefab: {fileID: 100100000, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
 --- !u!4 &1194075883 stripped
 Transform:
@@ -7156,8 +8556,41 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries: []
   starterSubCountries: []
+--- !u!1 &1211352706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1211352707}
+  m_Layer: 7
+  m_Name: CameraFocusPointBlackSea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1211352707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211352706}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 161.8, y: 0, z: 57.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 541689929}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1214045839
 GameObject:
   m_ObjectHideFlags: 0
@@ -7203,6 +8636,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Italy
+  ownerCountryTag: Italy
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1 &1217525963
 GameObject:
   m_ObjectHideFlags: 0
@@ -7234,6 +8670,265 @@ Transform:
   m_Children: []
   m_Father: {fileID: 183611903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1234836187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1234836188}
+  - component: {fileID: 1234836190}
+  - component: {fileID: 1234836189}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1234836188
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234836187}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1436063829}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1234836189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234836187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Boat
+
+'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4281479730
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 24
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1234836190
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234836187}
+  m_CullTransparentMesh: 1
+--- !u!1 &1235333086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1235333087}
+  - component: {fileID: 1235333090}
+  - component: {fileID: 1235333089}
+  - component: {fileID: 1235333088}
+  m_Layer: 5
+  m_Name: Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1235333087
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235333086}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1919014186}
+  m_Father: {fileID: 690804564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -31, y: 82}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1235333088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235333086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1235333089}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1235333089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235333086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1235333090
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235333086}
+  m_CullTransparentMesh: 1
 --- !u!1 &1235417610
 GameObject:
   m_ObjectHideFlags: 0
@@ -7244,7 +8939,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1235417611}
   m_Layer: 7
-  m_Name: CameraFocusPointLith
+  m_Name: CameraFocusPointAl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7265,6 +8960,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 238648242}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1236557169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1236557170}
+  - component: {fileID: 1236557171}
+  m_Layer: 6
+  m_Name: MedateraininaSea2Yug
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1236557170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236557169}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 123.6, y: 2.2, z: 2.9}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1842938371}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1236557171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236557169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Yugoslavia
+  ownerCountryTag: Yugoslavia
+  spawnTileTag: MedateraininaSea2
+  allowedType: 1
 --- !u!1 &1246793406
 GameObject:
   m_ObjectHideFlags: 0
@@ -7477,6 +9220,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 311157233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1264941140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1264941141}
+  - component: {fileID: 1264941142}
+  m_Layer: 6
+  m_Name: MedateraininaSea2Itly
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1264941141
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264941140}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 105, y: 2.2, z: 4.3}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1842938371}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1264941142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264941140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Italy
+  ownerCountryTag: Italy
+  spawnTileTag: MedateraininaSea2
+  allowedType: 1
 --- !u!1 &1273305364 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f203ec0bb1bc7b547b652a8496c93250, type: 3}
@@ -7838,15 +9629,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
       propertyPath: m_Name
-      value: MapEu.BlackSea
+      value: BlackSea
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      propertyPath: m_TagString
+      value: BlackSea
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -7854,14 +9649,57 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 705857742}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 501423910}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1211352707}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1309782465}
   m_SourcePrefab: {fileID: 100100000, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
 --- !u!4 &1309782464 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 97d7176249d72784e972a2e518d45f8e, type: 3}
   m_PrefabInstance: {fileID: 1309782463}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1309782465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610628730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: BlackSea
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 1211352707}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 705857742}
+  - {fileID: 501423910}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 475990290}
+  - {fileID: 2075623173}
+  - {fileID: 2106912905}
+  - {fileID: 1316044725}
+  - {fileID: 1670754594}
+  - {fileID: 1467335333}
+  starterSubCountries: []
 --- !u!1 &1316044724 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0537c0ef2210b3147a4df7df4244273b, type: 3}
@@ -7887,6 +9725,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1092900400}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 19829871}
@@ -7897,6 +9737,11 @@ MonoBehaviour:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 249a0f0da4fd9f840acab3860749cc99, type: 3}
   m_PrefabInstance: {fileID: 1687318988}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1325866825 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
+  m_PrefabInstance: {fileID: 10503515}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1328846730
 PrefabInstance:
@@ -8056,6 +9901,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Russia2
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1 &1348907904
 GameObject:
   m_ObjectHideFlags: 0
@@ -8147,10 +9995,12 @@ MonoBehaviour:
   countryName: Lithuania
   ownerID: -1
   isStarterCountry: 0
-  centerPoint: {fileID: 1235417611}
+  centerPoint: {fileID: 1097806691}
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2121766367}
   - {fileID: 713817364}
@@ -8200,6 +10050,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: SouthArabia
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1 &1380257459
 GameObject:
   m_ObjectHideFlags: 0
@@ -8312,6 +10165,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Iran
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
+--- !u!1 &1413456801
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1413456802}
+  - component: {fileID: 1413456803}
+  m_Layer: 6
+  m_Name: MedetarenianSeaFr
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1413456802
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413456801}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 79.90001, y: 2.2, z: 23.199997}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2065362172}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1413456803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413456801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: France
+  ownerCountryTag: France
+  spawnTileTag: MedetarenianSea
+  allowedType: 1
 --- !u!1 &1427660114
 GameObject:
   m_ObjectHideFlags: 0
@@ -8447,6 +10351,127 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427660114}
+  m_CullTransparentMesh: 1
+--- !u!1 &1436063828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1436063829}
+  - component: {fileID: 1436063832}
+  - component: {fileID: 1436063831}
+  - component: {fileID: 1436063830}
+  m_Layer: 5
+  m_Name: Boat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1436063829
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436063828}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1234836188}
+  m_Father: {fileID: 690804564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -113, y: 46}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1436063830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436063828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1436063831}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1436063831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436063828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1436063832
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436063828}
   m_CullTransparentMesh: 1
 --- !u!4 &1447758956 stripped
 Transform:
@@ -8642,6 +10667,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 1898107558}
@@ -8700,8 +10727,11 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1941948999}
   centerWorldPos: {x: 0, y: 0, z: 0}
-  spawnPoints: []
-  isSupplyCenter: 0
+  spawnPoints:
+  - {fileID: 842307356}
+  isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 713817364}
   - {fileID: 1563805933}
@@ -8767,6 +10797,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 990444434}
   - {fileID: 468064820}
@@ -9079,6 +11111,11 @@ RectTransform:
   m_AnchoredPosition: {x: -429, y: -255}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!4 &1530912795 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: b3d49bfcc6ec7bf4b81c96c370f2b3ca, type: 3}
+  m_PrefabInstance: {fileID: 888427582}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1532244985
 GameObject:
   m_ObjectHideFlags: 0
@@ -9294,6 +11331,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Russia
+  ownerCountryTag: Russia
+  spawnTileTag: 
+  allowedType: 0
+--- !u!1 &1545042148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1545042149}
+  - component: {fileID: 1545042150}
+  m_Layer: 6
+  m_Name: MedateraininaSea2Turk
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1545042149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545042148}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 150.90001, y: 2.2, z: 0.99998474}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1842938371}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1545042150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545042148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Turkaye
+  ownerCountryTag: Turkaye
+  spawnTileTag: MedateraininaSea2
+  allowedType: 1
 --- !u!1001 &1546094800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9458,6 +11546,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 678115669}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 256292830}
   - {fileID: 1979685520}
@@ -9508,6 +11598,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Algeria
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
 --- !u!114 &1563805933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9527,6 +11620,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1055308298}
   - {fileID: 1481998393}
@@ -9770,6 +11865,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 140762715}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1602845221
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1602845222}
+  - component: {fileID: 1602845223}
+  m_Layer: 6
+  m_Name: CaspianSeaRus
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1602845222
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602845221}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 225.2, y: 2.2, z: 63.3}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1194075883}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1602845223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602845221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Russia
+  ownerCountryTag: Russia
+  spawnTileTag: CaspianSea
+  allowedType: 1
 --- !u!1 &1604649723
 GameObject:
   m_ObjectHideFlags: 0
@@ -9801,6 +11944,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 647151938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1607224319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1607224320}
+  - component: {fileID: 1607224321}
+  m_Layer: 6
+  m_Name: SouthAtlanticUk
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1607224320
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607224319}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -2.6, y: 2.2, z: 62.9}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 888427583}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1607224321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607224319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Uk
+  ownerCountryTag: Uk
+  spawnTileTag: SouthAtlantic
+  allowedType: 1
 --- !u!1 &1616309164 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
@@ -9826,6 +12017,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 2035859111}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 129070726}
   starterSubCountries: []
@@ -10342,6 +12535,228 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!1 &1655129661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1655129662}
+  - component: {fileID: 1655129663}
+  m_Layer: 6
+  m_Name: EnglishSeaUk
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1655129662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655129661}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 28.4, y: 2.2, z: 84.3}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1875974272}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1655129663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655129661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Uk
+  ownerCountryTag: Uk
+  spawnTileTag: EnglishSea
+  allowedType: 1
+--- !u!1 &1656147600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1656147601}
+  - component: {fileID: 1656147603}
+  - component: {fileID: 1656147602}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1656147601
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656147600}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 235319221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1656147602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656147600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Pass
+
+'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4281479730
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 24
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1656147603
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656147600}
+  m_CullTransparentMesh: 1
+--- !u!1 &1656551969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1656551970}
+  m_Layer: 7
+  m_Name: CameraFocusPointEnglishSea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1656551970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656551969}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 30.3, y: 0, z: 74}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1105528678}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1664470754 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+  m_PrefabInstance: {fileID: 1842938370}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1670754594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10361,6 +12776,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2106912905}
   - {fileID: 475990290}
@@ -10386,6 +12803,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1800594092}
   - {fileID: 360796718}
@@ -10612,6 +13031,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Egypt2
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
+--- !u!1 &1711319072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1711319073}
+  m_Layer: 7
+  m_Name: CameraFocusPointNorthAtlantic2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1711319073
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1711319072}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 5.100022, y: 0, z: 142.00003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1325866825}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1730688575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10758,6 +13211,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -2203783732876322008, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
   m_PrefabInstance: {fileID: 1730688575}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1756440645 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e32cf7725359f3241a6e30a25e987266, type: 3}
+  m_PrefabInstance: {fileID: 94748185}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1756440646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756440645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: NorthAtlantic
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 655121908}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1129977490}
+  - {fileID: 551436900}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 617573997}
+  - {fileID: 275035339}
+  - {fileID: 1616309165}
+  - {fileID: 783773925}
+  - {fileID: 1978168287}
+  - {fileID: 2075623173}
+  starterSubCountries: []
 --- !u!1 &1762080731 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ca81caf27c9d93b4080faae2fe2dbcdb, type: 3}
@@ -10782,6 +13271,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 402027827}
   - {fileID: 1550156736}
@@ -10831,6 +13322,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Sweden
+  ownerCountryTag: 
+  spawnTileTag: 
+  allowedType: 0
 --- !u!114 &1800594092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10850,6 +13344,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1818832463}
   - {fileID: 940969636}
@@ -10905,15 +13401,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
       propertyPath: m_Name
-      value: MapEu.BalticOcean
+      value: BalticOcean
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      propertyPath: m_TagString
+      value: BalticOcean
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -10921,14 +13421,61 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1891703187}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 895295175}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 678226764}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1803380674}
   m_SourcePrefab: {fileID: 100100000, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
 --- !u!4 &1803380673 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1516dce273a40df4bbc0730d56179de1, type: 3}
   m_PrefabInstance: {fileID: 1803380672}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1803380674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198973300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: BalticOcean
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 678226764}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1891703187}
+  - {fileID: 895295175}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 617573997}
+  - {fileID: 713817364}
+  - {fileID: 1055308298}
+  - {fileID: 1481998393}
+  - {fileID: 1349704945}
+  - {fileID: 2121766367}
+  - {fileID: 990337893}
+  - {fileID: 1978168287}
+  - {fileID: 1563805933}
+  - {fileID: 2075623173}
+  starterSubCountries: []
 --- !u!1001 &1805465903
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11092,6 +13639,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1800594092}
   - {fileID: 940969636}
@@ -11286,15 +13835,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
       propertyPath: m_Name
-      value: MapEu.MedateraininaSea2
+      value: MedateraininaSea2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      propertyPath: m_TagString
+      value: MedateraininaSea2
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -11302,14 +13855,66 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1264941141}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1236557170}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1545042149}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 968736281}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1842938372}
   m_SourcePrefab: {fileID: 100100000, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
 --- !u!4 &1842938371 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1ce3b4d72fa2f924a88d4befa9eadbc5, type: 3}
   m_PrefabInstance: {fileID: 1842938370}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1842938372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36123074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: MedateraininaSea2
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 968736281}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1264941141}
+  - {fileID: 1236557170}
+  - {fileID: 1545042149}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 694442726}
+  - {fileID: 137183499}
+  - {fileID: 854585239}
+  - {fileID: 475990290}
+  - {fileID: 925378339}
+  - {fileID: 1676261464}
+  - {fileID: 238648245}
+  - {fileID: 257499734}
+  - {fileID: 1987312188}
+  - {fileID: 468064820}
+  - {fileID: 360796718}
+  starterSubCountries: []
 --- !u!1 &1859291963
 GameObject:
   m_ObjectHideFlags: 0
@@ -11355,6 +13960,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: France
+  ownerCountryTag: France
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1001 &1864577981
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11544,15 +14152,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
       propertyPath: m_Name
-      value: MapEu.EnglishSea
+      value: EnglishSea
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      propertyPath: m_TagString
+      value: EnglishSea
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -11560,14 +14172,154 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1655129662}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 81158663}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1656551970}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1875974273}
   m_SourcePrefab: {fileID: 100100000, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
 --- !u!4 &1875974272 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c90eebd6849c5a448bf57a8e99cb25d8, type: 3}
   m_PrefabInstance: {fileID: 1875974271}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1875974273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250781086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: EnglishSea
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 1656551970}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1655129662}
+  - {fileID: 81158663}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 617573997}
+  - {fileID: 888427584}
+  - {fileID: 275035339}
+  - {fileID: 256292830}
+  - {fileID: 129070726}
+  - {fileID: 1208557790}
+  - {fileID: 1616309165}
+  starterSubCountries: []
+--- !u!1 &1878354092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1878354093}
+  - component: {fileID: 1878354094}
+  m_Layer: 6
+  m_Name: NorthOceanGer
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1878354093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878354092}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 56.8, y: 2.2, z: 100.6}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 127871958}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1878354094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878354092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Germany
+  ownerCountryTag: Germany
+  spawnTileTag: NorthOcean
+  allowedType: 1
+--- !u!1 &1891703186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1891703187}
+  - component: {fileID: 1891703188}
+  m_Layer: 6
+  m_Name: BalticOceanRus
+  m_TagString: SpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1891703187
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891703186}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 99.5, y: 2.2, z: 102.4}
+  m_LocalScale: {x: 20, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1803380673}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1891703188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891703186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc7483e124f046408c49dab0b4d323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: Russia
+  ownerCountryTag: Russia
+  spawnTileTag: BalticOcean
+  allowedType: 1
 --- !u!1 &1894987114 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4026412669794856765, guid: 1cb83657484284f43b1703642c802a27, type: 3}
@@ -11625,6 +14377,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1405292938}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1903568260}
   - {fileID: 1467335333}
@@ -11655,10 +14409,150 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 1898107558}
   starterSubCountries: []
+--- !u!1 &1919014185
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1919014186}
+  - component: {fileID: 1919014188}
+  - component: {fileID: 1919014187}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1919014186
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919014185}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1235333087}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1919014187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919014185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Plane
+
+'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4281479730
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 24
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1919014188
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919014185}
+  m_CullTransparentMesh: 1
 --- !u!1 &1935546782
 GameObject:
   m_ObjectHideFlags: 0
@@ -12026,6 +14920,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Turkaye
+  ownerCountryTag: Turkaye
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1 &1959115759
 GameObject:
   m_ObjectHideFlags: 0
@@ -12186,6 +15083,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 1055308298}
@@ -12354,6 +15253,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1550156736}
   starterSubCountries: []
@@ -12381,6 +15282,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 360796718}
   - {fileID: 925378339}
@@ -12431,6 +15334,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Yugoslavia
+  ownerCountryTag: Yugoslavia
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1 &2009912101
 GameObject:
   m_ObjectHideFlags: 0
@@ -12462,6 +15368,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1188488214}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2020575467 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e075158d3292b1c4d87bbfa48eb5c65e, type: 3}
+  m_PrefabInstance: {fileID: 1194075882}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2020575468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020575467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: CaspianSea
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 664453185}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1602845222}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 1898107558}
+  - {fileID: 1467335333}
+  - {fileID: 2075623173}
+  - {fileID: 1903568260}
+  starterSubCountries: []
 --- !u!1 &2021159327
 GameObject:
   m_ObjectHideFlags: 0
@@ -12786,6 +15725,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countryName: Uk
+  ownerCountryTag: Uk
+  spawnTileTag: 
+  allowedType: 0
 --- !u!1 &2044017562
 GameObject:
   m_ObjectHideFlags: 0
@@ -12867,15 +15809,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b62f75ee45fabd44688ef90165008356, type: 3}
       propertyPath: m_Name
-      value: MapEu.MedetarenianSea
+      value: MedetarenianSea
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b62f75ee45fabd44688ef90165008356, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      propertyPath: m_TagString
+      value: MedetarenianSea
       objectReference: {fileID: 0}
     - target: {fileID: 2308118288082286148, guid: b62f75ee45fabd44688ef90165008356, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9168144775367499574, guid: b62f75ee45fabd44688ef90165008356, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -12883,14 +15829,58 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1413456802}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 856173949}
+    - targetCorrespondingSourceObject: {fileID: 531258013274435151, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 103787773}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b62f75ee45fabd44688ef90165008356, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2065362173}
   m_SourcePrefab: {fileID: 100100000, guid: b62f75ee45fabd44688ef90165008356, type: 3}
 --- !u!4 &2065362172 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b62f75ee45fabd44688ef90165008356, type: 3}
   m_PrefabInstance: {fileID: 2065362171}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2065362173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709669533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8ee3282a855e40844ba07bb928b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countryName: MedetarenianSea
+  ownerID: -1
+  isStarterCountry: 1
+  centerPoint: {fileID: 103787773}
+  centerWorldPos: {x: 0, y: 0, z: 0}
+  spawnPoints:
+  - {fileID: 1413456802}
+  - {fileID: 856173949}
+  isSupplyCenter: 0
+  isOcean: 1
+  isAirfield: 0
+  adjacentCountries:
+  - {fileID: 402027827}
+  - {fileID: 468064820}
+  - {fileID: 1550156736}
+  - {fileID: 925378339}
+  - {fileID: 256292830}
+  - {fileID: 1842938372}
+  - {fileID: 888427584}
+  starterSubCountries: []
 --- !u!1 &2075623172 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
@@ -12916,6 +15906,8 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1543276036}
   isSupplyCenter: 1
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1978168287}
   - {fileID: 1349704945}
@@ -13113,6 +16105,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 1316044725}
   - {fileID: 713817364}
@@ -13277,6 +16271,8 @@ MonoBehaviour:
   centerWorldPos: {x: 0, y: 0, z: 0}
   spawnPoints: []
   isSupplyCenter: 0
+  isOcean: 0
+  isAirfield: 0
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 1349704945}
@@ -13559,6 +16555,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135598432}
   m_CullTransparentMesh: 1
+--- !u!1 &2141006699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2141006700}
+  m_Layer: 7
+  m_Name: CameraFocusPointNorthOcean
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2141006700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141006699}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 65.70004, y: 0, z: 107.40004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 39398850}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

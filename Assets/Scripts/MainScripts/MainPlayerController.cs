@@ -1,9 +1,13 @@
 ﻿using Mirror;
+#if MIRROR_BOUNCYCASTLE
 using Mirror.BouncyCastle.Asn1.X509;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+#if UNITY_EDITOR
 using UnityEditor.ShaderGraph;
+#endif
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -31,10 +35,14 @@ public class MainPlayerController : NetworkBehaviour
     private Button confirmMoveButton;
     private Button cancelMoveButton;
 
+    private Button buildLandButton;
+    private Button buildBoatButton;
+    private Button buildPlaneButton;
+    private Button buildPassButton;
+
     [Header("Game References")]
     public MainUnitManager unitManager;
     public CameraMovment cameraMovment;
-
 
     private string pendingCountry;
     public bool hasChosenCountry = false;
@@ -46,7 +54,11 @@ public class MainPlayerController : NetworkBehaviour
     public static Dictionary<int, bool> playersReady = new Dictionary<int, bool>();
     public static List<MainPlayerController> allPlayers = new List<MainPlayerController>();
 
-    #region Unity Callbacks
+    private UnitType pendingBuildType = UnitType.Land;
+    private bool buildTypeSelected = false;
+    private bool buildPhaseActiveLocal = false;
+    private int remainingBuildsLocal = 0;
+    private bool waitingBuildResponse = false;
 
     void OnDestroy()
     {
@@ -119,6 +131,7 @@ public class MainPlayerController : NetworkBehaviour
         return hit.collider.GetComponentInParent<MainUnit>()
             ?? hit.collider.GetComponentInChildren<MainUnit>();
     }
+
     private Country GetCountryFromHitRecursive(RaycastHit hit)
     {
         if (hit.collider == null) return null;
@@ -138,10 +151,6 @@ public class MainPlayerController : NetworkBehaviour
         return country;
     }
 
-    #endregion
-
-    #region Country Selection
-
     private Country pendingCountryComp;
 
     void HandleCountrySelection()
@@ -156,16 +165,10 @@ public class MainPlayerController : NetworkBehaviour
         {
             Country countryComp = GetCountryFromHitRecursive(hit);
             if (countryComp == null)
-            {
-                Debug.LogWarning($"Clicked object {hit.collider.name} has no Country component.");
                 return;
-            }
 
             if (!countryComp.CanBeSelected())
-            {
-                Debug.LogWarning($"Country {countryComp.name} cannot be selected. ownerID={countryComp.ownerID}");
                 return;
-            }
 
             pendingCountryComp = countryComp;
             pendingCountry = countryComp.tag;
@@ -173,24 +176,16 @@ public class MainPlayerController : NetworkBehaviour
             selectedCountryText?.SetText("Selected: " + countryComp.name);
             confirmButton?.gameObject.SetActive(true);
             cancelButton?.gameObject.SetActive(true);
-
-            Debug.Log($"[Client] Pending country selection: {countryComp.name}");
         }
     }
 
     public void ConfirmCountryChoice()
     {
         if (pendingCountryComp == null)
-        {
-            Debug.LogWarning("No country is pending selection.");
             return;
-        }
 
         if (!pendingCountryComp.CanBeSelected())
-        {
-            Debug.LogWarning($"Country {pendingCountryComp.name} cannot be selected at confirmation.");
             return;
-        }
 
         List<Country> allCountries = pendingCountryComp.GetAllSelectableCountries();
 
@@ -211,25 +206,13 @@ public class MainPlayerController : NetworkBehaviour
 
         AssignPlayerColorFromCountry();
 
-        int totalUnits = 3;
-        int countryCount = allCountries.Count;
-        int unitsPerCountry = Mathf.FloorToInt((float)totalUnits / countryCount);
-        int remainder = totalUnits % countryCount;
-
-        for (int i = 0; i < allCountries.Count; i++)
+        if (!isServer)
         {
-            int unitsToSpawn = unitsPerCountry + (i < remainder ? 1 : 0);
-
-            if (!isServer)
-            {
-                CmdRequestSpawnUnitsServer(allCountries[i].tag, playerID, playerColor, unitsToSpawn);
-                Debug.Log($"[Client {playerID}] Requesting {unitsToSpawn} units for {allCountries[i].name}");
-            }
-            else
-            {
-                unitManager.SpawnUnitsForCountryServer(allCountries[i].tag, playerID, playerColor, unitsToSpawn);
-                Debug.Log($"[Server] Spawned {unitsToSpawn} units for player {playerID} in {allCountries[i].name}");
-            }
+            CmdStartInitialBuildPhase();
+        }
+        else
+        {
+            MainGameManager.Instance.StartInitialBuildPhaseForPlayer(playerID);
         }
 
         pendingCountryComp = null;
@@ -237,30 +220,28 @@ public class MainPlayerController : NetworkBehaviour
     }
 
     [Command]
+    private void CmdStartInitialBuildPhase()
+    {
+        MainGameManager.Instance.StartInitialBuildPhaseForPlayer(playerID);
+    }
+
+    [Command]
     private void CmdAssignCountryToPlayer(string countryTag, int playerID)
     {
         GameObject countryObj = GameObject.FindWithTag(countryTag);
         if (countryObj == null)
-        {
-            Debug.LogWarning($"[Server] Country {countryTag} not found, cannot assign.");
             return;
-        }
 
         Country countryComp = countryObj.GetComponent<Country>();
         if (countryComp == null)
-        {
-            Debug.LogWarning($"[Server] {countryTag} has no Country component.");
             return;
-        }
 
         if (countryComp.ownerID == -1)
         {
             countryComp.SetOwner(playerID);
             RpcUpdateCountryOwnership(countryTag, playerID);
-            Debug.Log($"[Server] Assigned {countryTag} to player {playerID}");
         }
     }
-
 
     [ClientRpc]
     private void RpcUpdateCountryOwnership(string countryTag, int playerID)
@@ -271,10 +252,7 @@ public class MainPlayerController : NetworkBehaviour
         Country countryComp = countryObj.GetComponent<Country>();
         if (countryComp != null)
             countryComp.SetOwner(playerID);
-
     }
-
-
 
     private Country FindCountryByTagRecursive(string tag)
     {
@@ -292,37 +270,6 @@ public class MainPlayerController : NetworkBehaviour
 
         return null;
     }
-
-
-
-    [Command]
-    private void CmdRequestSpawnUnitsServer(string countryName, int playerID, Color color, int count)
-    {
-        if (MainUnitManager.Instance == null)
-        {
-            Debug.LogError("[CmdRequestSpawnUnitsServer] UnitManager instance not found!");
-            return;
-        }
-
-        Debug.Log($"[Server] Spawning units for Player {playerID} in {countryName}");
-        MainUnitManager.Instance.SpawnUnitsForCountryServer(countryName, playerID, color, count);
-    }
-
-    [Command]
-    private void CmdRequestSpawnUnits(string country, int playerID, Color color, int count)
-    {
-        unitManager?.SpawnUnitsForCountryServer(country, playerID, color, count);
-        TargetSetupLocalUnits(connectionToClient, playerID);
-    }
-
-    [TargetRpc]
-    private void TargetSetupLocalUnits(NetworkConnection target, int playerID)
-    {
-        foreach (var unit in unitManager.GetAllUnits())
-            if (unit.ownerID == playerID)
-                unit.SetupLocalVisuals();
-    }
-
 
     public void CancelCountryChoice()
     {
@@ -363,11 +310,8 @@ public class MainPlayerController : NetworkBehaviour
                 break;
             default:
                 playerColor = Color.gray;
-                Debug.LogWarning($"No color assigned for country tag {chosenCountry}");
                 break;
         }
-
-        Debug.Log($"[Player {playerID}] Assigned color {playerColor} for country tag {chosenCountry}");
     }
 
     void HandleCountryHover()
@@ -413,114 +357,166 @@ public class MainPlayerController : NetworkBehaviour
         }
     }
 
-    #endregion
-
-    #region Unit Orders
-
-
-
-
 
     void HandleUnitSelection()
     {
         if (!Input.GetMouseButtonDown(0)) return;
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit)) return;
 
-        MainUnit clickedUnit = GetUnitFromHit(hit);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 9999f);
+        if (hits == null || hits.Length == 0) return;
 
-        if (clickedUnit != null && clickedUnit.ownerID == playerID)
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        MainUnit hitUnit = null;
+        for (int i = 0; i < hits.Length; i++)
         {
-            selectedUnit = clickedUnit;
+            hitUnit = GetUnitFromHit(hits[i]);
+            if (hitUnit != null) break;
+        }
+
+        if (hitUnit != null && hitUnit.ownerID == playerID)
+        {
+            selectedUnit = hitUnit;
             ShowMoveButtons(true);
-            Debug.Log($"[Client] Selected unit: {clickedUnit.name}");
             return;
         }
 
-        if (selectedUnit != null)
+        Country hitTile = null;
+        for (int i = 0; i < hits.Length; i++)
         {
-            bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            hitTile = GetCountryFromHitRecursive(hits[i]);
+            if (hitTile != null) break;
+        }
 
-            if (isShiftHeld)
+        if (selectedUnit == null) return;
+
+        if (hitTile == null)
+        {
+            selectedUnit = null;
+            ShowMoveButtons(false);
+            return;
+        }
+
+        bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+        if (isShiftHeld)
+        {
+            MainUnit targetUnit = null;
+            for (int i = 0; i < hits.Length; i++)
             {
-                MainUnit targetUnit = hit.collider.GetComponent<MainUnit>();
-                string targetCountry = null;
+                targetUnit = GetUnitFromHit(hits[i]);
+                if (targetUnit != null) break;
+            }
 
-                if (targetUnit != null)
-                {
-                    targetCountry = targetUnit.currentOrder != null
-                        ? targetUnit.currentOrder.targetCountry
-                        : targetUnit.currentCountry;
+            string targetCountry = null;
 
-                    Debug.Log($"[Client] Support order: {selectedUnit.name} supports {targetUnit.name} -> {targetCountry}");
-                    CmdSupportUnit(selectedUnit.netId, targetUnit.netId, targetCountry);
-                }
-                else
-                {
-                    Country country = GetCountryFromHitRecursive(hit);
+            if (targetUnit != null)
+            {
+                targetCountry = targetUnit.currentOrder != null
+                    ? targetUnit.currentOrder.targetCountry
+                    : targetUnit.currentCountry;
 
-                    if (country != null)
-                    {
-                        targetCountry = country.tag;
-
-                        MainUnit movingUnit = FindUnitTargetingCountry(targetCountry, playerID);
-                        if (movingUnit != null)
-                        {
-                            Debug.Log($"[Client] Support order: {selectedUnit.name} supports {movingUnit.name} -> {targetCountry}");
-                            CmdSupportUnit(selectedUnit.netId, movingUnit.netId, targetCountry);
-                        }
-                        else
-                        {
-                            Debug.LogWarning($"[Client] No friendly unit found moving into {targetCountry} to support.");
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("[Client] No valid unit or country to support at target click.");
-                    }
-                }
+                CmdSupportUnit(selectedUnit.netId, targetUnit.netId, targetCountry);
             }
             else
             {
-                Country targetCountryComp = GetCountryFromHit(hit);
-                Country fromCountryComp = FindCountryByTagRecursive(selectedUnit.currentCountry);
+                targetCountry = hitTile.tag;
 
-                if (targetCountryComp == null || fromCountryComp == null)
+                MainUnit movingUnit = FindUnitTargetingCountry(targetCountry, playerID);
+                if (movingUnit != null)
                 {
-                    Debug.LogWarning("Missing Country component, cannot move.");
-                    selectedUnit = null;
-                    ShowMoveButtons(false);
-                    return;
+                    CmdSupportUnit(selectedUnit.netId, movingUnit.netId, targetCountry);
                 }
-
-                if (!fromCountryComp.adjacentCountries.Contains(targetCountryComp))
-                {
-                    Debug.Log($"[Client] Illegal move: {fromCountryComp.name} -> {targetCountryComp.name}. Not adjacent.");
-                    selectedUnit = null;
-                    ShowMoveButtons(false);
-                    return;
-                }
-                Vector3 targetPos = targetCountryComp.centerWorldPos;
-
-                selectedUnit.ShowLocalMoveLine(targetPos);
-
-                CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag, targetPos);
-                Debug.Log($"[Client] Move order: {selectedUnit.name} -> {targetCountryComp.name}");
             }
 
             selectedUnit = null;
             ShowMoveButtons(false);
+            return;
         }
+
+        Country targetCountryComp = hitTile;
+        Country fromCountryComp = FindCountryByTagRecursive(selectedUnit.currentCountry);
+
+        if (selectedUnit.unitType == UnitType.Boat && !targetCountryComp.isOcean)
+        {
+            moveStatusText?.SetText("Boats can only move on oceans.");
+            selectedUnit = null;
+            ShowMoveButtons(false);
+            return;
+        }
+
+        if (targetCountryComp == null || fromCountryComp == null)
+        {
+            selectedUnit = null;
+            ShowMoveButtons(false);
+            return;
+        }
+
+        bool direct = fromCountryComp.adjacentCountries.Contains(targetCountryComp);
+        bool bridge = CanLandBridgeMove(selectedUnit, fromCountryComp, targetCountryComp);
+
+        if (!direct && !bridge)
+        {
+            moveStatusText?.SetText("Illegal move.");
+            selectedUnit = null;
+            ShowMoveButtons(false);
+            return;
+        }
+
+        Vector3 targetPos = targetCountryComp.centerWorldPos;
+        selectedUnit.ShowLocalMoveLine(targetPos);
+
+        CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag, targetPos);
+
+        selectedUnit = null;
+        ShowMoveButtons(false);
     }
 
+    private bool HasFriendlyBoatOnOcean(string oceanTag, int ownerId)
+    {
+        foreach (var u in MainUnitManager.Instance.GetAllUnits())
+        {
+            if (u == null) continue;
+            if (u.ownerID != ownerId) continue;
+            if (u.unitType != UnitType.Boat) continue;
+            if (u.currentCountry != oceanTag) continue;
+            return true;
+        }
+        return false;
+    }
+
+    private bool CanLandBridgeMove(MainUnit unit, Country from, Country to)
+    {
+        if (unit == null || from == null || to == null) return false;
+
+        if (unit.unitType != UnitType.Land) return false;
+
+        if (to.isOcean) return false;
+
+        foreach (var ocean in from.adjacentCountries)
+        {
+            if (ocean == null) continue;
+            if (!ocean.isOcean) continue;
+
+            string oceanTag = ocean.gameObject.tag;
+
+            if (!HasFriendlyBoatOnOcean(oceanTag, unit.ownerID))
+                continue;
+
+            if (to.adjacentCountries.Contains(ocean))
+                return true;
+        }
+
+        return false;
+    }
 
 
     public void ConfirmMoves()
     {
         if (!isLocalPlayer) return;
-
-        Debug.Log($"[ConfirmMoves] called | isLocalPlayer={isLocalPlayer} | netId={netId}");
 
         ShowMoveButtons(false);
         moveStatusText?.SetText("Waiting for other players...");
@@ -537,6 +533,7 @@ public class MainPlayerController : NetworkBehaviour
 
         CmdCancelReady();
     }
+
     [Command]
     private void CmdMoveUnit(uint unitNetId, string targetCountryTag, Vector3 targetPos)
     {
@@ -547,6 +544,9 @@ public class MainPlayerController : NetworkBehaviour
         Country fromCountry = FindCountryByTagRecursive(unit.currentCountry);
         Country toCountry = FindCountryByTagRecursive(targetCountryTag);
 
+        if (unit.unitType == UnitType.Boat && toCountry != null && !toCountry.isOcean)
+            return;
+
         if (fromCountry == null || toCountry == null) return;
 
         unit.currentOrder = new PlayerUnitOrder
@@ -555,8 +555,6 @@ public class MainPlayerController : NetworkBehaviour
             targetCountry = targetCountryTag,
             targetPosition = targetPos
         };
-
-        Debug.Log($"[Server] CmdMoveUnit set currentOrder for {unit.name} from {unit.currentCountry} -> {targetCountryTag}");
     }
 
     [Command]
@@ -576,8 +574,6 @@ public class MainPlayerController : NetworkBehaviour
             supportedUnit = supported,
             targetCountry = supportTargetCountry
         };
-
-        Debug.Log($"[Server] Player {playerID}: {supporter.name} SUPPORT {supported.name} -> {supportTargetCountry}");
     }
 
     private MainUnit FindUnitTargetingCountry(string targetCountry, int ownerId)
@@ -598,8 +594,6 @@ public class MainPlayerController : NetworkBehaviour
     [Command]
     private void CmdConfirmMoves()
     {
-        Debug.Log($"[SERVER] CmdConfirmMoves received from netId={netId}, playerID={playerID}");
-
         if (unitManager == null)
             unitManager = MainUnitManager.Instance;
 
@@ -608,29 +602,15 @@ public class MainPlayerController : NetworkBehaviour
 
         playersReady[playerID] = true;
 
-        Debug.Log("[SERVER] Updated playersReady:");
-        foreach (var kv in playersReady)
-            Debug.Log($"  Player {kv.Key} ready={kv.Value}");
-
-        Debug.Log("[SERVER] allPlayers list:");
-        foreach (var p in allPlayers)
-            if (p != null) Debug.Log($"  Player netId={p.netId}, playerID={p.playerID}");
-
         RpcUpdateReadyUI();
 
         if (AreAllPlayersReady())
         {
-            Debug.Log("[SERVER] All players ready — executing turn");
-
             unitManager.ExecuteTurnServer();
             MainGameManager.Instance?.NextTurnServer();
 
             foreach (var p in allPlayers)
                 p.RpcResetReady();
-        }
-        else
-        {
-            Debug.Log("[SERVER] Not all players ready yet");
         }
     }
 
@@ -656,18 +636,15 @@ public class MainPlayerController : NetworkBehaviour
     [ClientRpc]
     public void RpcUpdateReadyUI()
     {
-        foreach (var kv in MainPlayerController.playersReady)
-        {
-        }
-
         UpdateReadyUI();
 
         if (isLocalPlayer && playersReady.TryGetValue(playerID, out bool ready))
             isReady = ready;
     }
+
     private void UpdateReadyUI()
     {
-        if (moveStatusText == null) return; 
+        if (moveStatusText == null) return;
         int readyCount = 0;
         foreach (var kv in playersReady)
             if (kv.Value) readyCount++;
@@ -699,68 +676,240 @@ public class MainPlayerController : NetworkBehaviour
         confirmMoveButton = confirmMoveButtonRef;
         cancelMoveButton = cancelMoveButtonRef;
     }
-    #endregion
 
-    #region NewUnitSpawning
+    public void SetupBuildUI(Button landButtonRef, Button boatButtonRef, Button planeButtonRef, Button passButtonRef)
+    {
+        buildLandButton = landButtonRef;
+        buildBoatButton = boatButtonRef;
+        buildPlaneButton = planeButtonRef;
+        buildPassButton = passButtonRef;
+
+        if (buildLandButton != null) buildLandButton.gameObject.SetActive(false);
+        if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
+        if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(false);
+
+        if (buildPassButton != null)
+        {
+            buildPassButton.gameObject.SetActive(false);
+            buildPassButton.onClick.RemoveAllListeners();
+            buildPassButton.onClick.AddListener(PassBuildPhase);
+        }
+    }
+
+    public void SelectBuildLand()
+    {
+        pendingBuildType = UnitType.Land;
+        buildTypeSelected = true;
+        if (buildPhaseActiveLocal) moveStatusText?.SetText("Land selected. Click an owned tile to build.");
+    }
+
+    public void SelectBuildBoat()
+    {
+        pendingBuildType = UnitType.Boat;
+        buildTypeSelected = true;
+        if (buildPhaseActiveLocal) moveStatusText?.SetText("Boat selected. Click an ocean tile to build.");
+    }
+
+    public void SelectBuildPlane()
+    {
+        pendingBuildType = UnitType.Plane;
+        buildTypeSelected = true;
+        if (buildPhaseActiveLocal) moveStatusText?.SetText("Plane selected. Click an owned tile to build.");
+    }
+
+    public void PassBuildPhase()
+    {
+        if (!isLocalPlayer) return;
+        if (!buildPhaseActiveLocal) return;
+
+        buildPhaseActiveLocal = false;
+        canIssueOrders = true;
+
+        if (buildLandButton != null) buildLandButton.gameObject.SetActive(false);
+        if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
+        if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(false);
+        if (buildPassButton != null) buildPassButton.gameObject.SetActive(false);
+
+        StopAllCoroutines();
+        moveStatusText?.SetText("Build phase passed.");
+
+        CmdPassBuildPhase(); 
+    }
 
     [TargetRpc]
     public void TargetStartBuildPhase(NetworkConnection target, int buildCount)
     {
-        Debug.Log($"[Client] TargetStartBuildPhase received. Build count: {buildCount}");
         StartBuildPhase(buildCount);
-        Debug.Log($"[Client] TargetStartBuildPhase running on object with playerID={playerID}, isLocalPlayer={isLocalPlayer}, connectionToServer={connectionToServer != null}");
-
     }
+
     public void StartBuildPhase(int buildCount)
     {
-        moveStatusText?.SetText($"You gained {buildCount} new supply center(s)! Click owned supply centers to build.");
+        buildPhaseActiveLocal = true;
         canIssueOrders = false;
+        buildTypeSelected = false;
+        waitingBuildResponse = false;
+        remainingBuildsLocal = buildCount;
+
+        if (buildLandButton != null) buildLandButton.gameObject.SetActive(true);
+        if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(true);
+        if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(true);
+        if (buildPassButton != null) buildPassButton.gameObject.SetActive(true);
+
+        if (remainingBuildsLocal <= 0)
+        {
+            moveStatusText?.SetText("No build points. Press Pass to continue.");
+            StopAllCoroutines();
+            return;
+        }
+
+        moveStatusText?.SetText($"Build points: {remainingBuildsLocal}. Pick Land/Boat/Plane, then click an owned tile.");
 
         StopAllCoroutines();
-        StartCoroutine(HandleBuildSelection(buildCount));
+        StartCoroutine(HandleBuildSelection());
     }
 
-    private bool isProcessingClick = false;
-
-    private IEnumerator HandleBuildSelection(int remainingBuilds)
+    private IEnumerator HandleBuildSelection()
     {
-        Debug.Log($"[Client {playerID}] Starting HandleBuildSelection with {remainingBuilds} builds. isLocalPlayer={isLocalPlayer}");
-
-        while (remainingBuilds > 0)
+        while (buildPhaseActiveLocal && remainingBuildsLocal > 0)
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit))
+                if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
                 {
-                    Country clicked = GetCountryFromHitRecursive(hit);
+                    yield return null;
+                    continue;
+                }
 
-                    Debug.Log("Build raycast hit");
+                if (waitingBuildResponse)
+                {
+                    yield return null;
+                    continue;
+                }
 
-                    if (clicked != null && clicked.isSupplyCenter)
+                if (!buildTypeSelected)
+                {
+                    moveStatusText?.SetText("Pick Land/Boat/Plane first.");
+                    yield return null;
+                    continue;
+                }
+
+                Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity);
+                if (hits == null || hits.Length == 0)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+                RaycastHit hit = hits[0];
+                MainUnit clickedUnit = null;
+
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    MainUnit u = GetUnitFromHit(hits[i]);
+                    if (u != null)
                     {
-                        Debug.Log($"[Client {playerID}] clicked {clicked.name}, sending build request (ownerID={clicked.ownerID})");
-                        RequestBuild(clicked.gameObject.tag);
-                        remainingBuilds--;
-                    }
-                    else
-                    {
-                        Debug.Log("Clicked object not a supply center or missing Country component.");
+                        clickedUnit = u;
+                        hit = hits[i];
+                        break;
                     }
                 }
+
+                if (clickedUnit == null)
+                {
+                    hit = hits[0];
+                }
+
+                System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+                Country clicked = null;
+
+                if (pendingBuildType == UnitType.Boat)
+                {
+                    for (int i = 0; i < hits.Length; i++)
+                    {
+                        Country c = GetCountryFromHitRecursive(hits[i]);
+                        if (c != null && c.isOcean)
+                        {
+                            clicked = c;
+                            break;
+                        }
+                    }
+
+                    if (clicked == null)
+                    {
+                        moveStatusText?.SetText("Boat: Click an ocean tile.");
+                        yield return null;
+                        continue;
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < hits.Length; i++)
+                    {
+                        Country c = GetCountryFromHitRecursive(hits[i]);
+                        if (c != null && c.ownerID == playerID && !c.isOcean)
+                        {
+                            clicked = c;
+                            break;
+                        }
+                    }
+
+                    if (clicked == null)
+                    {
+                        yield return null;
+                        continue;
+                    }
+                }
+
+                waitingBuildResponse = true;
+                CmdRequestBuildAt(clicked.gameObject.tag, playerColor, pendingBuildType);
+                moveStatusText?.SetText("Requesting build...");
             }
+
             yield return null;
         }
+    }
 
+    [TargetRpc]
+    public void TargetBuildResult(NetworkConnection target, bool success, int remainingCredits, string message)
+    {
 
-        BuildPhaseFinishedLocal();
-        if (isLocalPlayer)
+        waitingBuildResponse = false;
+
+        if (moveStatusText != null && !string.IsNullOrEmpty(message))
+            moveStatusText.SetText(message);
+
+        if (!success)
+            return;
+
+        remainingBuildsLocal = remainingCredits;
+        buildTypeSelected = false;
+
+        if (remainingBuildsLocal <= 0)
+        {
+            BuildPhaseFinishedLocal();
             CmdFinishBuildPhase();
+        }
+        else
+        {
+            if (moveStatusText != null)
+                moveStatusText.SetText($"Build points left: {remainingBuildsLocal}. Pick unit type again.");
+        }
     }
 
     private void BuildPhaseFinishedLocal()
     {
+        buildPhaseActiveLocal = false;
         canIssueOrders = true;
+
+        if (buildLandButton != null) buildLandButton.gameObject.SetActive(false);
+        if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
+        if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(false);
+        if (buildPassButton != null) buildPassButton.gameObject.SetActive(false);
+
         moveStatusText?.SetText("Build phase complete.");
     }
 
@@ -769,19 +918,20 @@ public class MainPlayerController : NetworkBehaviour
         if (!isLocalPlayer) return;
 
         if (string.IsNullOrEmpty(countryTag) || countryTag == "Untagged")
-        {
-            Debug.LogError("[Client] Tried to build with INVALID country tag");
             return;
-        }
 
-        CmdRequestBuildAt(countryTag, playerColor);
+        CmdRequestBuildAt(countryTag, playerColor, pendingBuildType);
     }
 
     [Command]
-    private void CmdRequestBuildAt(string countryTag, Color color)
+    private void CmdRequestBuildAt(string countryTag, Color color, UnitType unitType)
     {
-        MainGameManager.Instance.ServerTrySpawnUnit(playerID, countryTag, color, connectionToClient);
-        Debug.Log($"[Server] Player {playerID} building unit at {countryTag} with color {color}");
+        MainGameManager.Instance.ServerTrySpawnUnit(playerID, countryTag, color, unitType, connectionToClient);
+    }
+    [Command]
+    private void CmdPassBuildPhase()
+    {
+        MainGameManager.Instance.ServerPassBuildPhase(playerID);
     }
 
     [Command]
@@ -789,5 +939,4 @@ public class MainPlayerController : NetworkBehaviour
     {
         MainGameManager.Instance.FinishBuildPhaseForPlayer(playerID);
     }
-    #endregion
 }

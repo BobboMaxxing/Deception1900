@@ -2,5 +2,8 @@ using UnityEngine;
 
 public class SpawnPoint : MonoBehaviour
 {
-    public string countryName; // assign this in the inspector
+    public string countryName;
+    public string ownerCountryTag;
+    public string spawnTileTag;
+    public UnitType allowedType = UnitType.Land;
 }

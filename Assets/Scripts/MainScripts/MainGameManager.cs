@@ -26,11 +26,10 @@ public class MainGameManager : NetworkBehaviour
     {
         return playersBuilding.Contains(playerId);
     }
+
     void Awake() => Instance = this;
     void Start() => UpdateSeasonUI();
 
-
-    #region Turn & Season Management
     [Server]
     public void NextTurnServer()
     {
@@ -60,9 +59,7 @@ public class MainGameManager : NetworkBehaviour
         if (seasonText != null) seasonText.text = $"Season: {currentSeason}";
         if (yearText != null) yearText.text = $"Year: {currentYear}";
     }
-    #endregion
 
-    #region Win Condition
     [Server]
     public void CheckWinConditionServer()
     {
@@ -111,9 +108,7 @@ public class MainGameManager : NetworkBehaviour
             winText.gameObject.SetActive(true);
         }
     }
-    #endregion
 
-    #region Build Phase
     [Server]
     private void CheckSupplyChangesAndGrantBuilds()
     {
@@ -128,10 +123,14 @@ public class MainGameManager : NetworkBehaviour
                 currentSupplyCounts[c.ownerID]++;
             }
 
-        foreach (var kvp in currentSupplyCounts)
+        HashSet<int> playerIds = new HashSet<int>();
+        foreach (var p in MainPlayerController.allPlayers)
+            if (p != null)
+                playerIds.Add(p.playerID);
+
+        foreach (var playerId in playerIds)
         {
-            int playerId = kvp.Key;
-            int currentCount = kvp.Value;
+            int currentCount = currentSupplyCounts.ContainsKey(playerId) ? currentSupplyCounts[playerId] : 0;
             int previousCount = lastSupplyCounts.ContainsKey(playerId) ? lastSupplyCounts[playerId] : 0;
             int gained = currentCount - previousCount;
 
@@ -140,13 +139,24 @@ public class MainGameManager : NetworkBehaviour
                 if (!buildCredits.ContainsKey(playerId))
                     buildCredits[playerId] = 0;
                 buildCredits[playerId] += gained;
-
-                Debug.Log($"[Server] Player {playerId} gained {gained} supply centers. Build credits: {buildCredits[playerId]}");
-                StartBuildPhaseForPlayer(playerId);
             }
         }
 
         lastSupplyCounts = currentSupplyCounts;
+
+        foreach (var playerId in playerIds)
+            StartBuildPhaseForPlayer(playerId);
+    }
+
+    [Server]
+    public void StartInitialBuildPhaseForPlayer(int playerId)
+    {
+        if (!buildCredits.ContainsKey(playerId))
+            buildCredits[playerId] = 0;
+
+        buildCredits[playerId] += 3;
+
+        StartBuildPhaseForPlayer(playerId);
     }
 
     [Server]
@@ -164,72 +174,124 @@ public class MainGameManager : NetworkBehaviour
         MainPlayerController player = FindPlayerById(playerId);
         if (player != null && player.connectionToClient != null)
         {
-            Debug.Log($"[Server] Sending build phase start to Player {playerId} ({buildCount} builds).");
             player.TargetStartBuildPhase(player.connectionToClient, buildCount);
         }
-        else
-        {
-            Debug.LogError($"[Server] Cannot prompt build for player {playerId} — connection is null or player missing.");
-        }
     }
 
-    [Server]
-    public void ConsumeBuildCredit(int playerId)
-    {
-        if (!buildCredits.ContainsKey(playerId)) return;
-
-        buildCredits[playerId]--;
-        if (buildCredits[playerId] <= 0)
-        {
-            buildCredits.Remove(playerId);
-            FinishBuildPhaseForPlayer(playerId);
-            Debug.Log($"[Server] Player {playerId} finished all builds.");
-        }
-    }
     [TargetRpc]
     public void TargetSetupLocalUnit(NetworkConnection target, GameObject unitObj, string countryName)
     {
         unitObj?.GetComponent<MainUnit>()?.SetupLocalVisuals();
-
     }
 
     [Server]
-    public void ServerTrySpawnUnit(int playerId, string countryTag, Color playerColor, NetworkConnection requester)
+    public void ServerTrySpawnUnit(int playerId, string clickedTag, Color playerColor, UnitType unitType, NetworkConnection requester)
     {
-        if (!buildCredits.ContainsKey(playerId) || buildCredits[playerId] <= 0)
+        MainPlayerController player = FindPlayerById(playerId);
+        int creditsNow = buildCredits.ContainsKey(playerId) ? buildCredits[playerId] : 0;
+
+        if (player == null || requester == null)
+            return;
+
+        if (creditsNow <= 0)
         {
-            Debug.LogWarning($"[Server] Player {playerId} tried to build but has no build credits!");
+            player.TargetBuildResult(requester, false, creditsNow, "No build points.");
             return;
         }
 
-        GameObject countryObj = GameObject.FindGameObjectWithTag(countryTag);
-        if (countryObj == null)
+        GameObject clickedObj = GameObject.FindGameObjectWithTag(clickedTag);
+        if (clickedObj == null)
         {
-            Debug.LogWarning($"[Server] Country with tag {countryTag} not found!");
+            player.TargetBuildResult(requester, false, creditsNow, "Tile not found (tag mismatch).");
             return;
         }
 
-        Country c = countryObj.GetComponent<Country>();
-        if (c == null)
+        Country clickedCountry = clickedObj.GetComponent<Country>();
+        if (clickedCountry == null)
         {
-            Debug.LogWarning($"[Server] Country {countryTag} has no Country component");
+            player.TargetBuildResult(requester, false, creditsNow, "Tile has no Country component.");
             return;
         }
 
-        if (c.ownerID != playerId)
+        string ownerCountryTag = clickedTag;
+        string requiredSpawnTileTag = null;
+
+        if (unitType == UnitType.Boat && clickedCountry.isOcean)
         {
-            Debug.LogWarning($"[Server] Player {playerId} does not own country {countryTag}");
+            bool found = false;
+
+            foreach (var adj in clickedCountry.adjacentCountries)
+            {
+                if (adj == null) continue;
+                if (adj.ownerID != playerId) continue;
+
+                string candidateOwnerTag = adj.gameObject.tag;
+                if (!MainUnitManager.Instance.HasSpawnPoint(candidateOwnerTag, UnitType.Boat, clickedTag))
+                    continue;
+
+                ownerCountryTag = candidateOwnerTag;
+                requiredSpawnTileTag = clickedTag;
+                found = true;
+                break;
+            }
+
+            if (!found)
+            {
+                player.TargetBuildResult(requester, false, creditsNow, "No valid boat spawnpoint for that ocean from your coasts.");
+                return;
+            }
+        }
+        else
+        {
+            if (clickedCountry.ownerID != playerId)
+            {
+                player.TargetBuildResult(requester, false, creditsNow, "You do not own that tile.");
+                return;
+            }
+        }
+
+        if (unitType == UnitType.Plane)
+        {
+            if (!clickedCountry.isAirfield)
+            {
+                player.TargetBuildResult(requester, false, creditsNow, "Plane requires an airfield tile.");
+                return;
+            }
+
+            Country[] allCountries = GameObject.FindObjectsOfType<Country>();
+            int totalCenters = 0;
+            int ownedCenters = 0;
+
+            foreach (var c in allCountries)
+            {
+                if (!c.isSupplyCenter) continue;
+                totalCenters++;
+                if (c.ownerID == playerId) ownedCenters++;
+            }
+
+            int required = Mathf.CeilToInt(totalCenters / 3f);
+            if (ownedCenters < required)
+            {
+                player.TargetBuildResult(requester, false, creditsNow, "Need at least 1/3 of supply centers to build planes.");
+                return;
+            }
+        }
+
+        GameObject unitObj = MainUnitManager.Instance.SpawnUnitsForCountryServer(ownerCountryTag, playerId, playerColor, 1, unitType, requiredSpawnTileTag);
+        if (unitObj == null)
+        {
+            player.TargetBuildResult(requester, false, creditsNow, "No valid spawn point for that unit type on that tile.");
             return;
         }
 
-        GameObject unitObj = MainUnitManager.Instance.SpawnUnitsForCountryServer(c.countryName, playerId, playerColor, 1);
+        buildCredits[playerId] = creditsNow - 1;
+        int creditsAfter = buildCredits[playerId];
 
-        buildCredits[playerId]--;
-        Debug.Log($"[Server] Player {playerId} spawned unit at {countryTag}. Remaining credits: {buildCredits[playerId]}");
+        TargetSetupLocalUnit(requester, unitObj, ownerCountryTag);
 
-        TargetSetupLocalUnit(requester, unitObj, c.countryName);
+        player.TargetBuildResult(requester, true, creditsAfter, "Built.");
 
-        if (buildCredits[playerId] <= 0)
+        if (creditsAfter <= 0)
             FinishBuildPhaseForPlayer(playerId);
     }
 
@@ -237,21 +299,24 @@ public class MainGameManager : NetworkBehaviour
     public void FinishBuildPhaseForPlayer(int playerId)
     {
         playersBuilding.Remove(playerId);
-        Debug.Log($"[Server] Player {playerId} finished building.");
 
         if (playersBuilding.Count == 0)
         {
-            Debug.Log("[Server] All players finished building. Turn continues.");
             foreach (var player in MainPlayerController.allPlayers)
                 player.RpcResetReady();
         }
+    }
+
+    [Server]
+    public void ServerPassBuildPhase(int playerId)
+    {
+        FinishBuildPhaseForPlayer(playerId);
     }
 
     public bool HasBuildCredits(int playerId)
     {
         return buildCredits.ContainsKey(playerId) && buildCredits[playerId] > 0;
     }
-    #endregion
 
     private MainPlayerController FindPlayerById(int playerId)
     {

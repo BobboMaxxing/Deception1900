@@ -18,6 +18,12 @@ public class Country : MonoBehaviour
 
     [Header("Supply System")]
     public bool isSupplyCenter = false;
+    
+    [Header("Tile Type")]
+    public bool isOcean = false;
+
+    [Header("Airfields")]
+    public bool isAirfield = false;
 
     [Header("Adjacency List (drag neighboring countries here)")]
     public List<Country> adjacentCountries = new List<Country>();
@@ -30,6 +36,15 @@ public class Country : MonoBehaviour
     public bool IsAdjacentTo(Country target)
     {
         return adjacentCountries.Contains(target);
+    }
+    public bool IsCoastal()
+    {
+        for (int i = 0; i < adjacentCountries.Count; i++)
+        {
+            Country n = adjacentCountries[i];
+            if (n != null && n.isOcean) return true;
+        }
+        return false;
     }
 
 

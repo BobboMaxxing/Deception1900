@@ -64,6 +64,16 @@ TagManager:
   - Uk
   - Syria
   - Lybia
+  - CaspianSea
+  - BlackSea
+  - BalticOcean
+  - EnglishSea
+  - MedateraininaSea2
+  - MedetarenianSea
+  - NorthAtlantic
+  - NorthAtlantic2
+  - SouthAtlantic
+  - NorthOcean
   layers:
   - Default
   - TransparentFX
