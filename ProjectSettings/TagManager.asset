@@ -62,11 +62,13 @@ TagManager:
   - Poland
   - Albania
   - Uk
+  - Syria
+  - Lybia
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ocean
   - Water
   - UI
   - country

@@ -62,7 +62,9 @@ public class CameraMovment : MonoBehaviour
 
     void FocusOnCountry(Transform countryTransform)
     {
-        Country country = countryTransform.GetComponent<Country>();
+        Country country = countryTransform.GetComponentInParent<Country>();
+        if (country == null)
+            country = countryTransform.GetComponentInChildren<Country>();
 
         if (country == null)
         {

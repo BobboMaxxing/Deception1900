@@ -84,26 +84,28 @@ public class MainPlayerController : NetworkBehaviour
 
     void Update()
     {
-        if (MainGameManager.Instance != null && MainGameManager.Instance.IsPlayerBuilding(playerID))
-        {
-            canIssueOrders = false;
-            return;
-        }
-
-        if (!hasChosenCountry && isLocalPlayer) HandleCountrySelection();
-        if (canIssueOrders && isLocalPlayer) HandleUnitSelection();
+        if (!isLocalPlayer) return;
 
         if (MainGameManager.Instance != null && MainGameManager.Instance.IsPlayerBuilding(playerID))
         {
             canIssueOrders = false;
-            return;
-        }
-
-        if (isLocalPlayer)
             HandleCountryHover();
+            if (!hasChosenCountry) HandleCountrySelection();
+            return;
+        }
 
-        if (!hasChosenCountry && isLocalPlayer) HandleCountrySelection();
-        if (canIssueOrders && isLocalPlayer) HandleUnitSelection();
+        canIssueOrders = true;
+
+        HandleCountryHover();
+
+        if (!hasChosenCountry)
+        {
+            HandleCountrySelection();
+            return;
+        }
+
+        if (canIssueOrders)
+            HandleUnitSelection();
     }
 
     private Country GetCountryFromHit(RaycastHit hit)
@@ -456,7 +458,7 @@ public class MainPlayerController : NetworkBehaviour
                 }
                 else
                 {
-                    Country country = GetCountryFromHit(hit);
+                    Country country = GetCountryFromHitRecursive(hit);
 
                     if (country != null)
                     {

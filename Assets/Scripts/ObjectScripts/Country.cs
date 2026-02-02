@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public class Country : MonoBehaviour
@@ -73,7 +74,7 @@ public class Country : MonoBehaviour
             }
         }
 
-        if (MainGameManager.Instance != null)
+        if (NetworkServer.active && MainGameManager.Instance != null)
         {
             MainGameManager.Instance.CheckWinConditionServer();
         }
