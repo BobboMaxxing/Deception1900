@@ -2034,6 +2034,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
       insertIndex: -1
       addedObject: {fileID: 238648245}
+    - targetCorrespondingSourceObject: {fileID: -5974652200663596714, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1716615256}
   m_SourcePrefab: {fileID: 100100000, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
 --- !u!4 &238648242 stripped
 Transform:
@@ -2372,6 +2375,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c139dcdb0abb055409b7d61b374596c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 257499734}
+    - targetCorrespondingSourceObject: {fileID: 952065005294942378, guid: c139dcdb0abb055409b7d61b374596c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1759739692}
   m_SourcePrefab: {fileID: 100100000, guid: c139dcdb0abb055409b7d61b374596c5, type: 3}
 --- !u!4 &257499731 stripped
 Transform:
@@ -2919,6 +2925,7 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 1676261464}
   - {fileID: 1987312188}
+  - {fileID: 257499734}
   starterSubCountries: []
 --- !u!1001 &386051264
 PrefabInstance:
@@ -3224,6 +3231,7 @@ MonoBehaviour:
   - {fileID: 1670754594}
   - {fileID: 137183499}
   - {fileID: 1818832463}
+  - {fileID: 694442726}
   starterSubCountries: []
 --- !u!1 &497491991 stripped
 GameObject:
@@ -5158,6 +5166,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 183c35e4793c42a48a0e3baf49c7a5e4, type: 3}
+      propertyPath: m_TagString
+      value: Syria
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -5168,6 +5180,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 183c35e4793c42a48a0e3baf49c7a5e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 694442726}
+    - targetCorrespondingSourceObject: {fileID: -8059918709318545970, guid: 183c35e4793c42a48a0e3baf49c7a5e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1328467728}
   m_SourcePrefab: {fileID: 100100000, guid: 183c35e4793c42a48a0e3baf49c7a5e4, type: 3}
 --- !u!4 &694442723 stripped
 Transform:
@@ -9745,6 +9760,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 531258013274435151, guid: 7e4edccb922b5b640823d96f7b87c665, type: 3}
   m_PrefabInstance: {fileID: 10503515}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1328467725 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8059918709318545970, guid: 183c35e4793c42a48a0e3baf49c7a5e4, type: 3}
+  m_PrefabInstance: {fileID: 694442722}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1328467728
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328467725}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4163127274495036772, guid: 183c35e4793c42a48a0e3baf49c7a5e4, type: 3}
 --- !u!1001 &1328846730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12810,6 +12852,7 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 1800594092}
   - {fileID: 360796718}
+  - {fileID: 694442726}
   starterSubCountries: []
 --- !u!1001 &1687318988
 PrefabInstance:
@@ -13067,6 +13110,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1325866825}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1716615253 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5974652200663596714, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+  m_PrefabInstance: {fileID: 238648241}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1716615256
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716615253}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4937370791113266462, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
 --- !u!1001 &1730688575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13249,6 +13319,33 @@ MonoBehaviour:
   - {fileID: 1978168287}
   - {fileID: 2075623173}
   starterSubCountries: []
+--- !u!1 &1759739689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 952065005294942378, guid: c139dcdb0abb055409b7d61b374596c5, type: 3}
+  m_PrefabInstance: {fileID: 257499730}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1759739692
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759739689}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8729964291764787844, guid: c139dcdb0abb055409b7d61b374596c5, type: 3}
 --- !u!1 &1762080731 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ca81caf27c9d93b4080faae2fe2dbcdb, type: 3}
@@ -13352,6 +13449,7 @@ MonoBehaviour:
   - {fileID: 1818832463}
   - {fileID: 940969636}
   - {fileID: 1676261464}
+  - {fileID: 694442726}
   starterSubCountries: []
 --- !u!1001 &1803380672
 PrefabInstance:
@@ -13648,6 +13746,7 @@ MonoBehaviour:
   - {fileID: 940969636}
   - {fileID: 475990290}
   - {fileID: 1898107558}
+  - {fileID: 694442726}
   starterSubCountries: []
 --- !u!1 &1841665271
 GameObject:
@@ -15290,6 +15389,7 @@ MonoBehaviour:
   - {fileID: 360796718}
   - {fileID: 925378339}
   - {fileID: 402027827}
+  - {fileID: 257499734}
   starterSubCountries: []
 --- !u!1 &2004137887
 GameObject:
