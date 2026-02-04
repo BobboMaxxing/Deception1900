@@ -477,8 +477,10 @@ public class MainPlayerController : NetworkBehaviour
 
     private bool HasFriendlyBoatOnOcean(string oceanTag, int ownerId)
     {
-        foreach (var u in MainUnitManager.Instance.GetAllUnits())
+        MainUnit[] units = Object.FindObjectsOfType<MainUnit>();
+        for (int i = 0; i < units.Length; i++)
         {
+            MainUnit u = units[i];
             if (u == null) continue;
             if (u.ownerID != ownerId) continue;
             if (u.unitType != UnitType.Boat) continue;
@@ -538,16 +540,30 @@ public class MainPlayerController : NetworkBehaviour
     private void CmdMoveUnit(uint unitNetId, string targetCountryTag, Vector3 targetPos)
     {
         if (!NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity)) return;
+
         MainUnit unit = identity.GetComponent<MainUnit>();
         if (unit == null || unit.ownerID != playerID) return;
 
         Country fromCountry = FindCountryByTagRecursive(unit.currentCountry);
         Country toCountry = FindCountryByTagRecursive(targetCountryTag);
 
-        if (unit.unitType == UnitType.Boat && toCountry != null && !toCountry.isOcean)
-            return;
-
         if (fromCountry == null || toCountry == null) return;
+
+        bool direct = fromCountry.adjacentCountries.Contains(toCountry);
+
+        if (unit.unitType == UnitType.Boat)
+        {
+            if (!toCountry.isOcean) return;
+            if (!direct) return;
+        }
+        else
+        {
+            if (toCountry.isOcean) return;
+
+            bool bridge = CanLandBridgeMoveServer(unit.ownerID, fromCountry, toCountry);
+
+            if (!direct && !bridge) return;
+        }
 
         unit.currentOrder = new PlayerUnitOrder
         {
@@ -589,6 +605,41 @@ public class MainPlayerController : NetworkBehaviour
             }
         }
         return null;
+    }
+
+    private bool CanLandBridgeMoveServer(int ownerId, Country from, Country to)
+    {
+        if (from == null || to == null) return false;
+        if (to.isOcean) return false;
+
+        for (int i = 0; i < from.adjacentCountries.Count; i++)
+        {
+            Country ocean = from.adjacentCountries[i];
+            if (ocean == null) continue;
+            if (!ocean.isOcean) continue;
+
+            if (!HasFriendlyBoatOnOceanServer(ocean.gameObject.tag, ownerId)) continue;
+
+            if (to.adjacentCountries.Contains(ocean))
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool HasFriendlyBoatOnOceanServer(string oceanTag, int ownerId)
+    {
+        List<MainUnit> units = MainUnitManager.Instance.GetAllUnits();
+        for (int i = 0; i < units.Count; i++)
+        {
+            MainUnit u = units[i];
+            if (u == null) continue;
+            if (u.ownerID != ownerId) continue;
+            if (u.unitType != UnitType.Boat) continue;
+            if (u.currentCountry != oceanTag) continue;
+            return true;
+        }
+        return false;
     }
 
     [Command]
@@ -913,15 +964,6 @@ public class MainPlayerController : NetworkBehaviour
         moveStatusText?.SetText("Build phase complete.");
     }
 
-    private void RequestBuild(string countryTag)
-    {
-        if (!isLocalPlayer) return;
-
-        if (string.IsNullOrEmpty(countryTag) || countryTag == "Untagged")
-            return;
-
-        CmdRequestBuildAt(countryTag, playerColor, pendingBuildType);
-    }
 
     [Command]
     private void CmdRequestBuildAt(string countryTag, Color color, UnitType unitType)

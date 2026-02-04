@@ -286,13 +286,15 @@ public class MainUnitManager : NetworkBehaviour
                     StartCoroutine(SendRpcWithDelay(unit, targetPos, 0.05f));
                 }
 
-                if (!isBounce && countryComp != null)
+                if (countryComp != null && !countryComp.isOcean)
+                {
                     countryComp.SetOwner(winnerID);
 
-                if (winningUnits.Count > 0)
-                {
-                    Color winnerColor = winningUnits[0].playerColor;
-                    RpcUpdateCountryOwnership(countryName, winnerColor);
+                    if (winningUnits.Count > 0)
+                    {
+                        Color winnerColor = winningUnits[0].playerColor;
+                        RpcUpdateCountryOwnership(countryName, winnerColor);
+                    }
                 }
             }
         }
