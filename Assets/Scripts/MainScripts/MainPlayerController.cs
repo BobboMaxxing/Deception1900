@@ -493,26 +493,52 @@ public class MainPlayerController : NetworkBehaviour
     private bool CanLandBridgeMove(MainUnit unit, Country from, Country to)
     {
         if (unit == null || from == null || to == null) return false;
-
         if (unit.unitType != UnitType.Land) return false;
-
+        if (from.isOcean) return false;
         if (to.isOcean) return false;
 
-        foreach (var ocean in from.adjacentCountries)
+        for (int i = 0; i < from.adjacentCountries.Count; i++)
         {
+            Country ocean = from.adjacentCountries[i];
             if (ocean == null) continue;
             if (!ocean.isOcean) continue;
 
-            string oceanTag = ocean.gameObject.tag;
+            bool toTouchesSameOcean = false;
+            for (int j = 0; j < to.adjacentCountries.Count; j++)
+            {
+                Country toAdj = to.adjacentCountries[j];
+                if (toAdj == null) continue;
+                if (!toAdj.isOcean) continue;
 
-            if (!HasFriendlyBoatOnOcean(oceanTag, unit.ownerID))
-                continue;
+                if (toAdj.gameObject.tag == ocean.gameObject.tag)
+                {
+                    toTouchesSameOcean = true;
+                    break;
+                }
+            }
 
-            if (to.adjacentCountries.Contains(ocean))
+            if (!toTouchesSameOcean) continue;
+
+            if (HasFriendlyBoatOnOcean(ocean.gameObject.tag, unit.ownerID))
                 return true;
         }
 
         return false;
+    }
+
+    private HashSet<string> GetAdjacentOceanTags(Country tile)
+    {
+        HashSet<string> result = new HashSet<string>();
+        if (tile == null || tile.adjacentCountries == null) return result;
+
+        foreach (var adj in tile.adjacentCountries)
+        {
+            if (adj == null) continue;
+            if (!adj.isOcean) continue;
+            result.Add(adj.gameObject.tag);
+        }
+
+        return result;
     }
 
 
@@ -610,6 +636,7 @@ public class MainPlayerController : NetworkBehaviour
     private bool CanLandBridgeMoveServer(int ownerId, Country from, Country to)
     {
         if (from == null || to == null) return false;
+        if (from.isOcean) return false;
         if (to.isOcean) return false;
 
         for (int i = 0; i < from.adjacentCountries.Count; i++)
@@ -618,9 +645,23 @@ public class MainPlayerController : NetworkBehaviour
             if (ocean == null) continue;
             if (!ocean.isOcean) continue;
 
-            if (!HasFriendlyBoatOnOceanServer(ocean.gameObject.tag, ownerId)) continue;
+            bool toTouchesSameOcean = false;
+            for (int j = 0; j < to.adjacentCountries.Count; j++)
+            {
+                Country toAdj = to.adjacentCountries[j];
+                if (toAdj == null) continue;
+                if (!toAdj.isOcean) continue;
 
-            if (to.adjacentCountries.Contains(ocean))
+                if (toAdj.gameObject.tag == ocean.gameObject.tag)
+                {
+                    toTouchesSameOcean = true;
+                    break;
+                }
+            }
+
+            if (!toTouchesSameOcean) continue;
+
+            if (HasFriendlyBoatOnOceanServer(ocean.gameObject.tag, ownerId))
                 return true;
         }
 
@@ -629,8 +670,8 @@ public class MainPlayerController : NetworkBehaviour
 
     private bool HasFriendlyBoatOnOceanServer(string oceanTag, int ownerId)
     {
-        List<MainUnit> units = MainUnitManager.Instance.GetAllUnits();
-        for (int i = 0; i < units.Count; i++)
+        MainUnit[] units = Object.FindObjectsOfType<MainUnit>();
+        for (int i = 0; i < units.Length; i++)
         {
             MainUnit u = units[i];
             if (u == null) continue;
@@ -641,6 +682,7 @@ public class MainPlayerController : NetworkBehaviour
         }
         return false;
     }
+
 
     [Command]
     private void CmdConfirmMoves()

@@ -854,6 +854,9 @@ MonoBehaviour:
   isAirfield: 0
   adjacentCountries:
   - {fileID: 1616309165}
+  - {fileID: 888427584}
+  - {fileID: 1875974273}
+  - {fileID: 275035339}
   starterSubCountries: []
 --- !u!1001 &131792658
 PrefabInstance:
@@ -1019,6 +1022,7 @@ MonoBehaviour:
   - {fileID: 475990290}
   - {fileID: 1670754594}
   - {fileID: 854585239}
+  - {fileID: 1842938372}
   starterSubCountries: []
 --- !u!1001 &138228283
 PrefabInstance:
@@ -1676,7 +1680,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8686623521465530875, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: m_TagString
-      value: Uk
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: db9bcfacc7e87974bb8ee0da9183510b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2272,6 +2276,7 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 854585239}
   - {fileID: 137183499}
+  - {fileID: 1842938372}
   starterSubCountries: []
 --- !u!1 &239379016
 GameObject:
@@ -2471,6 +2476,10 @@ MonoBehaviour:
   - {fileID: 1484275197}
   - {fileID: 468064820}
   - {fileID: 1550156736}
+  - {fileID: 2065362173}
+  - {fileID: 888427584}
+  - {fileID: 1875974273}
+  - {fileID: 617573997}
   starterSubCountries: []
 --- !u!1001 &257499730
 PrefabInstance:
@@ -2613,6 +2622,7 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 360796718}
   - {fileID: 1987312188}
+  - {fileID: 1842938372}
   starterSubCountries: []
 --- !u!1 &261756702
 GameObject:
@@ -3121,6 +3131,7 @@ MonoBehaviour:
   - {fileID: 1676261464}
   - {fileID: 1987312188}
   - {fileID: 257499734}
+  - {fileID: 1842938372}
   starterSubCountries: []
 --- !u!1001 &386051264
 PrefabInstance:
@@ -3296,6 +3307,7 @@ MonoBehaviour:
   - {fileID: 1762080732}
   - {fileID: 925378339}
   - {fileID: 1987312188}
+  - {fileID: 2065362173}
   starterSubCountries: []
 --- !u!1 &446048601 stripped
 GameObject:
@@ -3392,6 +3404,8 @@ MonoBehaviour:
   - {fileID: 1484275197}
   - {fileID: 854585239}
   - {fileID: 990444434}
+  - {fileID: 1842938372}
+  - {fileID: 2065362173}
   starterSubCountries: []
 --- !u!114 &474248823
 MonoBehaviour:
@@ -3454,6 +3468,8 @@ MonoBehaviour:
   - {fileID: 137183499}
   - {fileID: 1818832463}
   - {fileID: 694442726}
+  - {fileID: 1309782465}
+  - {fileID: 1842938372}
   starterSubCountries: []
 --- !u!1 &497491991 stripped
 GameObject:
@@ -4433,6 +4449,7 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 1208557790}
   - {fileID: 1481998393}
+  - {fileID: 617573997}
   starterSubCountries: []
 --- !u!1001 &628074943
 PrefabInstance:
@@ -5514,6 +5531,7 @@ MonoBehaviour:
   - {fileID: 475990290}
   - {fileID: 1676261464}
   - {fileID: 1800594092}
+  - {fileID: 1842938372}
   starterSubCountries: []
 --- !u!1 &705857741
 GameObject:
@@ -5608,6 +5626,7 @@ MonoBehaviour:
   - {fileID: 2106912905}
   - {fileID: 531523577}
   - {fileID: 1481998393}
+  - {fileID: 1803380674}
   starterSubCountries: []
 --- !u!1 &718729680
 GameObject:
@@ -6001,6 +6020,9 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 1978168287}
   - {fileID: 1055308298}
+  - {fileID: 617573997}
+  - {fileID: 1803380674}
+  - {fileID: 1756440646}
   starterSubCountries: []
 --- !u!1 &789661117
 GameObject:
@@ -6172,7 +6194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countryName: Germany
   ownerCountryTag: Germany
-  spawnTileTag: 
+  spawnTileTag: Germany
   allowedType: 0
 --- !u!114 &854585239
 MonoBehaviour:
@@ -6203,6 +6225,7 @@ MonoBehaviour:
   - {fileID: 2106912905}
   - {fileID: 1670754594}
   - {fileID: 137183499}
+  - {fileID: 1842938372}
   starterSubCountries: []
 --- !u!1 &856173948
 GameObject:
@@ -6780,6 +6803,8 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 1987312188}
   - {fileID: 402027827}
+  - {fileID: 1842938372}
+  - {fileID: 2065362173}
   starterSubCountries: []
 --- !u!1 &940969635 stripped
 GameObject:
@@ -7088,6 +7113,7 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 2121766367}
+  - {fileID: 1803380674}
   starterSubCountries: []
 --- !u!114 &990444434
 MonoBehaviour:
@@ -7513,6 +7539,7 @@ MonoBehaviour:
   - {fileID: 1978168287}
   - {fileID: 783773925}
   - {fileID: 1563805933}
+  - {fileID: 1803380674}
   starterSubCountries: []
 --- !u!1 &1056173603 stripped
 GameObject:
@@ -8934,7 +8961,13 @@ MonoBehaviour:
   isSupplyCenter: 0
   isOcean: 0
   isAirfield: 0
-  adjacentCountries: []
+  adjacentCountries:
+  - {fileID: 1875974273}
+  - {fileID: 256292830}
+  - {fileID: 621459923}
+  - {fileID: 1481998393}
+  - {fileID: 1875974273}
+  - {fileID: 617573997}
   starterSubCountries: []
 --- !u!1 &1211352706
 GameObject:
@@ -10111,6 +10144,7 @@ MonoBehaviour:
   - {fileID: 19829871}
   - {fileID: 713817364}
   - {fileID: 2106912905}
+  - {fileID: 1309782465}
   starterSubCountries: []
 --- !u!1 &1317167681 stripped
 GameObject:
@@ -10225,7 +10259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8307184145222944406, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
       propertyPath: m_TagString
-      value: Russia
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cb412442bfc7570418359ba1d970e2c7, type: 3}
       propertyPath: m_Name
@@ -10459,6 +10493,7 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 2121766367}
   - {fileID: 713817364}
+  - {fileID: 1803380674}
   starterSubCountries: []
 --- !u!1 &1349801651
 GameObject:
@@ -11128,6 +11163,8 @@ MonoBehaviour:
   - {fileID: 2075623173}
   - {fileID: 1898107558}
   - {fileID: 475990290}
+  - {fileID: 1309782465}
+  - {fileID: 2020575468}
   starterSubCountries: []
 --- !u!1 &1476317394
 GameObject:
@@ -11196,6 +11233,8 @@ MonoBehaviour:
   - {fileID: 1484275197}
   - {fileID: 990444434}
   - {fileID: 531523577}
+  - {fileID: 617573997}
+  - {fileID: 1803380674}
   starterSubCountries: []
 --- !u!1 &1482672265
 GameObject:
@@ -12029,6 +12068,8 @@ MonoBehaviour:
   - {fileID: 256292830}
   - {fileID: 1979685520}
   - {fileID: 1762080732}
+  - {fileID: 2065362173}
+  - {fileID: 888427584}
   starterSubCountries: []
 --- !u!1 &1561824621
 GameObject:
@@ -12102,6 +12143,8 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 1055308298}
   - {fileID: 1481998393}
+  - {fileID: 617573997}
+  - {fileID: 1803380674}
   starterSubCountries: []
 --- !u!1 &1563942525
 GameObject:
@@ -12525,6 +12568,11 @@ MonoBehaviour:
   isAirfield: 0
   adjacentCountries:
   - {fileID: 129070726}
+  - {fileID: 888427584}
+  - {fileID: 1875974273}
+  - {fileID: 275035339}
+  - {fileID: 1756440646}
+  - {fileID: 617573997}
   starterSubCountries: []
 --- !u!1001 &1617537849
 PrefabInstance:
@@ -13309,6 +13357,7 @@ MonoBehaviour:
   - {fileID: 475990290}
   - {fileID: 137183499}
   - {fileID: 854585239}
+  - {fileID: 1309782465}
   starterSubCountries: []
 --- !u!114 &1676261464
 MonoBehaviour:
@@ -13335,6 +13384,7 @@ MonoBehaviour:
   - {fileID: 1800594092}
   - {fileID: 360796718}
   - {fileID: 694442726}
+  - {fileID: 1842938372}
   starterSubCountries: []
 --- !u!1001 &1687318988
 PrefabInstance:
@@ -13697,7 +13747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 683439938719794688, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
       propertyPath: m_TagString
-      value: France
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 811080d699176904aa70c7f9cc2b1c24, type: 3}
       propertyPath: m_Name
@@ -13857,6 +13907,8 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 402027827}
   - {fileID: 1550156736}
+  - {fileID: 2065362173}
+  - {fileID: 888427584}
   starterSubCountries: []
 --- !u!1 &1766249939
 GameObject:
@@ -15003,6 +15055,7 @@ MonoBehaviour:
   - {fileID: 1467335333}
   - {fileID: 475990290}
   - {fileID: 1818832463}
+  - {fileID: 2020575468}
   starterSubCountries: []
 --- !u!1 &1903568259 stripped
 GameObject:
@@ -15033,6 +15086,7 @@ MonoBehaviour:
   adjacentCountries:
   - {fileID: 2075623173}
   - {fileID: 1898107558}
+  - {fileID: 2020575468}
   starterSubCountries: []
 --- !u!1 &1919014185
 GameObject:
@@ -15587,6 +15641,8 @@ MonoBehaviour:
   - {fileID: 2075623173}
   - {fileID: 1055308298}
   - {fileID: 783773925}
+  - {fileID: 1803380674}
+  - {fileID: 1756440646}
   starterSubCountries: []
 --- !u!1001 &1979568271
 PrefabInstance:
@@ -15755,6 +15811,7 @@ MonoBehaviour:
   isAirfield: 0
   adjacentCountries:
   - {fileID: 1550156736}
+  - {fileID: 888427584}
   starterSubCountries: []
 --- !u!1 &1987312187 stripped
 GameObject:
@@ -15787,6 +15844,7 @@ MonoBehaviour:
   - {fileID: 925378339}
   - {fileID: 402027827}
   - {fileID: 257499734}
+  - {fileID: 1842938372}
   starterSubCountries: []
 --- !u!1 &2004137887
 GameObject:
@@ -16418,6 +16476,9 @@ MonoBehaviour:
   - {fileID: 1903568260}
   - {fileID: 1467335333}
   - {fileID: 19829871}
+  - {fileID: 1309782465}
+  - {fileID: 2020575468}
+  - {fileID: 1756440646}
   starterSubCountries: []
 --- !u!1 &2076531863
 GameObject:
@@ -16615,6 +16676,7 @@ MonoBehaviour:
   - {fileID: 474248823}
   - {fileID: 854585239}
   - {fileID: 1670754594}
+  - {fileID: 1309782465}
   starterSubCountries: []
 --- !u!1 &2110924632
 GameObject:
@@ -16780,6 +16842,7 @@ MonoBehaviour:
   - {fileID: 1349704945}
   - {fileID: 713817364}
   - {fileID: 19829871}
+  - {fileID: 1803380674}
   starterSubCountries: []
 --- !u!1 &2135311676
 GameObject:
