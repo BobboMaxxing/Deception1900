@@ -19,11 +19,20 @@ public class MainUnitManager : NetworkBehaviour
     [Header("Spawn Offsets")]
     [Tooltip("Controls how fast the spiral expands.")]
     [SerializeField] private float spawnSpacing = 2.0f;
+    [SerializeField] private float spawnSpacingMultiplier = 2f;
+
+    [Header("Tile Packing (units on same country)")]
+    [SerializeField] private float packDelay = 0.18f;
+    [SerializeField] private float packSpacing = 4.0f;
+    [SerializeField] private float packLandRadius = 12.0f;
+    [SerializeField] private float packBoatRadius = 8.0f;
+    [SerializeField] private float packPlaneRadius = 7.0f;
 
     [Tooltip("Max radius per type. Increase if units still overlap.")]
-    [SerializeField] private float landSpawnRadius = 15.0f;
-    [SerializeField] private float boatSpawnRadius = 10.0f;
+    [SerializeField] private float landSpawnRadius = 30.0f;
+    [SerializeField] private float boatSpawnRadius = 20.0f;
     [SerializeField] private float planeSpawnRadius = 8.0f;
+
 
     void Awake() => Instance = this;
 
@@ -179,12 +188,90 @@ public class MainUnitManager : NetworkBehaviour
             unitType == UnitType.Plane ? planeSpawnRadius :
             landSpawnRadius;
 
-        float r = spawnSpacing * Mathf.Sqrt(index);
+        float spacing = spawnSpacing * Mathf.Max(0.01f, spawnSpacingMultiplier);
+
+        float r = spacing * Mathf.Sqrt(index);
         if (r > maxR) r = maxR;
 
         float a = index * goldenAngle;
 
         return new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * r;
+    }
+
+    private Vector3 GetPackOffset(int index, UnitType unitType)
+    {
+        const float goldenAngle = 2.39996323f;
+
+        float maxR =
+            unitType == UnitType.Boat ? packBoatRadius :
+            unitType == UnitType.Plane ? packPlaneRadius :
+            packLandRadius;
+
+        float r = packSpacing * Mathf.Sqrt(index);
+        if (r > maxR) r = maxR;
+
+        float a = index * goldenAngle;
+
+        return new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * r;
+    }
+
+    private IEnumerator ApplyPackedPositions(Dictionary<MainUnit, Vector3> positions, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        foreach (var kv in positions)
+        {
+            MainUnit u = kv.Key;
+            if (u == null) continue;
+            u.RpcMoveTo(kv.Value);
+        }
+    }
+
+    private Dictionary<MainUnit, Vector3> BuildPackedPositions(Dictionary<MainUnit, string> finalTile)
+    {
+        Dictionary<string, List<MainUnit>> byTile = new Dictionary<string, List<MainUnit>>();
+
+        for (int i = 0; i < allUnits.Count; i++)
+        {
+            MainUnit u = allUnits[i];
+            if (u == null) continue;
+
+            if (!finalTile.TryGetValue(u, out string t)) t = u.currentCountry;
+            if (string.IsNullOrEmpty(t)) continue;
+
+            if (!byTile.TryGetValue(t, out var list))
+            {
+                list = new List<MainUnit>();
+                byTile[t] = list;
+            }
+            list.Add(u);
+        }
+
+        Dictionary<MainUnit, Vector3> result = new Dictionary<MainUnit, Vector3>();
+
+        foreach (var kv in byTile)
+        {
+            string tileTag = kv.Key;
+            List<MainUnit> units = kv.Value;
+
+            Country c = FindCountryByTag(tileTag);
+            if (c == null) continue;
+
+            units.Sort((a, b) => a.netId.CompareTo(b.netId));
+
+            Vector3 center = c.centerWorldPos;
+
+            for (int i = 0; i < units.Count; i++)
+            {
+                MainUnit u = units[i];
+                if (u == null) continue;
+
+                Vector3 pos = center + GetPackOffset(i, u.unitType);
+                result[u] = pos;
+            }
+        }
+
+        return result;
     }
 
 
@@ -520,6 +607,9 @@ public class MainUnitManager : NetworkBehaviour
             r.unit.currentCountry = r.toTag;
             StartCoroutine(SendRpcWithDelay(r.unit, r.toPos, 0.05f));
         }
+
+        Dictionary<MainUnit, Vector3> packedPositions = BuildPackedPositions(finalTile);
+        StartCoroutine(ApplyPackedPositions(packedPositions, packDelay));
 
         for (int i = 0; i < toDestroy.Count; i++)
         {
