@@ -191,117 +191,410 @@ public class MainUnitManager : NetworkBehaviour
     [Server]
     public void ExecuteTurnServer()
     {
-        Dictionary<string, List<MainUnit>> unitsByTarget = new Dictionary<string, List<MainUnit>>();
+        List<MainUnit> movers = new List<MainUnit>();
+        List<MainUnit> supporters = new List<MainUnit>();
 
-        foreach (var unit in allUnits)
+        for (int i = 0; i < allUnits.Count; i++)
         {
-            if (unit.currentOrder == null) continue;
+            MainUnit u = allUnits[i];
+            if (u == null) continue;
+            if (u.currentOrder == null) continue;
 
-            string targetCountry = unit.currentOrder.targetCountry;
-
-            if (!unitsByTarget.ContainsKey(targetCountry))
-                unitsByTarget[targetCountry] = new List<MainUnit>();
-
-            unitsByTarget[targetCountry].Add(unit);
+            if (u.currentOrder.orderType == UnitOrderType.Move) movers.Add(u);
+            else if (u.currentOrder.orderType == UnitOrderType.Support) supporters.Add(u);
         }
 
-        foreach (var kvp in unitsByTarget)
+        Dictionary<string, List<MainUnit>> attackersByTarget = new Dictionary<string, List<MainUnit>>();
+        for (int i = 0; i < movers.Count; i++)
         {
-            string countryName = kvp.Key;
-            List<MainUnit> units = kvp.Value;
+            MainUnit m = movers[i];
+            if (m == null) continue;
 
-            GameObject countryObj = GameObject.FindWithTag(countryName);
-            if (countryObj == null)
+            string t = m.currentOrder.targetCountry;
+            if (string.IsNullOrEmpty(t)) continue;
+
+            if (!attackersByTarget.TryGetValue(t, out var list))
             {
-                Debug.LogWarning($"[Server] Tile with tag '{countryName}' not found!");
-                continue;
+                list = new List<MainUnit>();
+                attackersByTarget[t] = list;
             }
+            list.Add(m);
+        }
 
-            Dictionary<int, int> totalStrength = new Dictionary<int, int>();
+        HashSet<MainUnit> cutSupports = new HashSet<MainUnit>();
+        for (int i = 0; i < supporters.Count; i++)
+        {
+            MainUnit s = supporters[i];
+            if (s == null) continue;
 
-            foreach (MainUnit mover in units)
+            string tile = s.currentCountry;
+            if (string.IsNullOrEmpty(tile)) continue;
+
+            if (attackersByTarget.TryGetValue(tile, out var attackersHere))
             {
-                if (!totalStrength.ContainsKey(mover.ownerID))
-                    totalStrength[mover.ownerID] = 1;
-                else
-                    totalStrength[mover.ownerID] += 1;
-            }
-
-            foreach (MainUnit supporter in allUnits)
-            {
-                if (supporter.currentOrder == null) continue;
-                if (supporter.currentOrder.orderType != UnitOrderType.Support) continue;
-                if (supporter.currentOrder.targetCountry != countryName) continue;
-
-                MainUnit supported = supporter.currentOrder.supportedUnit;
-                if (supported == null || supported.currentOrder == null) continue;
-                if (supported.currentOrder.targetCountry != countryName) continue;
-
-                int supportedOwner = supported.ownerID;
-                if (!totalStrength.ContainsKey(supportedOwner))
-                    totalStrength[supportedOwner] = 0;
-                totalStrength[supportedOwner] += 1;
-            }
-
-            int maxStrength = 0;
-            int winnerID = -1;
-            bool isBounce = false;
-
-            foreach (var kv in totalStrength)
-            {
-                if (kv.Value > maxStrength)
+                for (int k = 0; k < attackersHere.Count; k++)
                 {
-                    maxStrength = kv.Value;
-                    winnerID = kv.Key;
-                    isBounce = false;
-                }
-                else if (kv.Value == maxStrength)
-                {
-                    isBounce = true;
-                }
-            }
-
-            if (isBounce)
-            {
-                foreach (MainUnit unit in units)
-                    StartCoroutine(SendRpcWithDelay(unit, unit.transform.position, 0.05f));
-            }
-            else
-            {
-                Country countryComp = countryObj.GetComponent<Country>();
-                List<MainUnit> winningUnits = units.FindAll(u => u.ownerID == winnerID);
-
-                foreach (MainUnit unit in winningUnits)
-                {
-                    if (unit.currentOrder == null) continue;
-                    if (unit.currentOrder.orderType == UnitOrderType.Support) continue;
-
-                    Vector3 targetPos = unit.currentOrder.targetPosition;
-                    if (targetPos == Vector3.zero && countryComp != null)
-                        targetPos = countryComp.centerWorldPos;
-
-                    unit.currentCountry = countryName;
-                    unit.currentOrder = null;
-
-                    StartCoroutine(SendRpcWithDelay(unit, targetPos, 0.05f));
-                }
-
-                if (countryComp != null && !countryComp.isOcean)
-                {
-                    countryComp.SetOwner(winnerID);
-
-                    if (winningUnits.Count > 0)
+                    MainUnit a = attackersHere[k];
+                    if (a == null) continue;
+                    if (a.ownerID != s.ownerID)
                     {
-                        Color winnerColor = winningUnits[0].playerColor;
-                        RpcUpdateCountryOwnership(countryName, winnerColor);
+                        cutSupports.Add(s);
+                        break;
                     }
                 }
             }
         }
 
-        foreach (var player in MainPlayerController.allPlayers)
-            player.RpcResetReady();
+        Dictionary<MainUnit, int> supportPowerOnUnit = new Dictionary<MainUnit, int>();
+        for (int i = 0; i < supporters.Count; i++)
+        {
+            MainUnit s = supporters[i];
+            if (s == null) continue;
+            if (cutSupports.Contains(s)) continue;
+
+            if (s.currentOrder == null) continue;
+            if (s.currentOrder.orderType != UnitOrderType.Support) continue;
+
+            MainUnit supported = s.currentOrder.supportedUnit;
+            if (supported == null) continue;
+
+            string supportedDest =
+                (supported.currentOrder != null && supported.currentOrder.orderType == UnitOrderType.Move)
+                    ? supported.currentOrder.targetCountry
+                    : supported.currentCountry;
+
+            if (string.IsNullOrEmpty(supportedDest)) continue;
+            if (s.currentOrder.targetCountry != supportedDest) continue;
+
+            if (!supportPowerOnUnit.ContainsKey(supported))
+                supportPowerOnUnit[supported] = 0;
+            supportPowerOnUnit[supported] += 1;
+        }
+
+        Dictionary<MainUnit, Vector3> startPos = new Dictionary<MainUnit, Vector3>();
+        for (int i = 0; i < allUnits.Count; i++)
+        {
+            MainUnit u = allUnits[i];
+            if (u == null) continue;
+            startPos[u] = u.transform.position;
+        }
+
+        List<(MainUnit unit, string toTag, Vector3 toPos)> winners = new List<(MainUnit, string, Vector3)>();
+        List<(MainUnit unit, Vector3 intoPos, Vector3 backPos)> bouncers = new List<(MainUnit, Vector3, Vector3)>();
+        List<(MainUnit unit, string battleTag)> dislodged = new List<(MainUnit, string)>();
+
+        Dictionary<MainUnit, string> finalTile = new Dictionary<MainUnit, string>();
+        for (int i = 0; i < allUnits.Count; i++)
+        {
+            MainUnit u = allUnits[i];
+            if (u == null) continue;
+            finalTile[u] = u.currentCountry;
+        }
+
+        foreach (var kvp in attackersByTarget)
+        {
+            string battleTag = kvp.Key;
+            List<MainUnit> attackers = kvp.Value;
+
+            Country battleCountry = FindCountryByTag(battleTag);
+            if (battleCountry == null)
+            {
+                for (int i = 0; i < attackers.Count; i++)
+                {
+                    MainUnit a = attackers[i];
+                    if (a != null) a.currentOrder = null;
+                }
+                continue;
+            }
+
+            List<MainUnit> defendersAll = GetUnitsOnTile(battleTag);
+            List<MainUnit> defenders = new List<MainUnit>();
+            for (int i = 0; i < defendersAll.Count; i++)
+            {
+                MainUnit d = defendersAll[i];
+                if (d == null) continue;
+
+                if (d.currentOrder != null && d.currentOrder.orderType == UnitOrderType.Move)
+                {
+                    string dt = d.currentOrder.targetCountry;
+                    if (!string.IsNullOrEmpty(dt) && dt != battleTag) continue;
+                }
+
+                defenders.Add(d);
+            }
+
+            HashSet<int> involvedOwners = new HashSet<int>();
+            for (int i = 0; i < attackers.Count; i++)
+                if (attackers[i] != null) involvedOwners.Add(attackers[i].ownerID);
+            for (int i = 0; i < defenders.Count; i++)
+                if (defenders[i] != null) involvedOwners.Add(defenders[i].ownerID);
+
+            Vector3 battlePos = battleCountry.centerWorldPos;
+
+            if (involvedOwners.Count <= 1)
+            {
+                for (int i = 0; i < attackers.Count; i++)
+                {
+                    MainUnit a = attackers[i];
+                    if (a == null) continue;
+
+                    winners.Add((a, battleTag, battlePos));
+                    finalTile[a] = battleTag;
+                    a.currentOrder = null;
+                }
+                continue;
+            }
+
+            Dictionary<int, int> atkStrength = new Dictionary<int, int>();
+            Dictionary<int, List<MainUnit>> atkUnitsByOwner = new Dictionary<int, List<MainUnit>>();
+
+            for (int i = 0; i < attackers.Count; i++)
+            {
+                MainUnit a = attackers[i];
+                if (a == null) continue;
+
+                int owner = a.ownerID;
+
+                if (!atkStrength.ContainsKey(owner)) atkStrength[owner] = 0;
+                atkStrength[owner] += 1;
+
+                if (supportPowerOnUnit.TryGetValue(a, out int sup))
+                    atkStrength[owner] += sup;
+
+                if (!atkUnitsByOwner.TryGetValue(owner, out var list))
+                {
+                    list = new List<MainUnit>();
+                    atkUnitsByOwner[owner] = list;
+                }
+                list.Add(a);
+            }
+
+            Dictionary<int, int> defStrength = new Dictionary<int, int>();
+            for (int i = 0; i < defenders.Count; i++)
+            {
+                MainUnit d = defenders[i];
+                if (d == null) continue;
+
+                int owner = d.ownerID;
+                if (!defStrength.ContainsKey(owner)) defStrength[owner] = 0;
+                defStrength[owner] += 1;
+
+                if (supportPowerOnUnit.TryGetValue(d, out int ds))
+                    defStrength[owner] += ds;
+            }
+
+            int bestAtkOwner = -1;
+            int bestAtk = -1;
+            bool atkTie = false;
+
+            foreach (var s in atkStrength)
+            {
+                if (s.Value > bestAtk)
+                {
+                    bestAtk = s.Value;
+                    bestAtkOwner = s.Key;
+                    atkTie = false;
+                }
+                else if (s.Value == bestAtk)
+                {
+                    atkTie = true;
+                }
+            }
+
+            int bestDef = 0;
+            foreach (var s in defStrength)
+                if (s.Value > bestDef) bestDef = s.Value;
+
+            if (atkTie || bestAtk <= bestDef)
+            {
+                for (int i = 0; i < attackers.Count; i++)
+                {
+                    MainUnit a = attackers[i];
+                    if (a == null) continue;
+                    bouncers.Add((a, battlePos, startPos[a]));
+                    a.currentOrder = null;
+                }
+                continue;
+            }
+
+            MainUnit winningMover = atkUnitsByOwner[bestAtkOwner][0];
+
+            winners.Add((winningMover, battleTag, battlePos));
+            finalTile[winningMover] = battleTag;
+            winningMover.currentOrder = null;
+
+            for (int i = 0; i < attackers.Count; i++)
+            {
+                MainUnit a = attackers[i];
+                if (a == null) continue;
+                if (a == winningMover) continue;
+
+                bouncers.Add((a, battlePos, startPos[a]));
+                a.currentOrder = null;
+            }
+
+            for (int i = 0; i < defenders.Count; i++)
+            {
+                MainUnit d = defenders[i];
+                if (d == null) continue;
+                if (d.ownerID == bestAtkOwner) continue;
+
+                dislodged.Add((d, battleTag));
+                finalTile[d] = null;
+                d.currentOrder = null;
+            }
+        }
+
+        HashSet<string> occupiedFinal = new HashSet<string>();
+        for (int i = 0; i < allUnits.Count; i++)
+        {
+            MainUnit u = allUnits[i];
+            if (u == null) continue;
+            if (finalTile.TryGetValue(u, out var t) && !string.IsNullOrEmpty(t))
+                occupiedFinal.Add(t);
+        }
+
+        List<(MainUnit unit, string toTag, Vector3 toPos)> retreats = new List<(MainUnit, string, Vector3)>();
+        List<MainUnit> toDestroy = new List<MainUnit>();
+
+        for (int i = 0; i < dislodged.Count; i++)
+        {
+            MainUnit def = dislodged[i].unit;
+            string battleTag = dislodged[i].battleTag;
+            if (def == null) continue;
+
+            Country battleCountry = FindCountryByTag(battleTag);
+            if (battleCountry == null)
+            {
+                toDestroy.Add(def);
+                continue;
+            }
+
+            string retreatTag = PickRetreatTile(def, battleCountry, occupiedFinal);
+            if (string.IsNullOrEmpty(retreatTag))
+            {
+                toDestroy.Add(def);
+                continue;
+            }
+
+            Country retreatCountry = FindCountryByTag(retreatTag);
+            if (retreatCountry == null)
+            {
+                toDestroy.Add(def);
+                continue;
+            }
+
+            occupiedFinal.Add(retreatTag);
+            finalTile[def] = retreatTag;
+            retreats.Add((def, retreatTag, retreatCountry.centerWorldPos));
+        }
+
+        for (int i = 0; i < bouncers.Count; i++)
+        {
+            var b = bouncers[i];
+            if (b.unit == null) continue;
+            StartCoroutine(BounceUnit(b.unit, b.intoPos, b.backPos, 0.08f));
+        }
+
+        for (int i = 0; i < winners.Count; i++)
+        {
+            var w = winners[i];
+            if (w.unit == null) continue;
+
+            w.unit.currentCountry = w.toTag;
+            StartCoroutine(SendRpcWithDelay(w.unit, w.toPos, 0.05f));
+
+            Country c = FindCountryByTag(w.toTag);
+            if (c != null && !c.isOcean)
+            {
+                c.SetOwner(w.unit.ownerID);
+                RpcUpdateCountryOwnership(w.toTag, w.unit.playerColor);
+            }
+        }
+
+        for (int i = 0; i < retreats.Count; i++)
+        {
+            var r = retreats[i];
+            if (r.unit == null) continue;
+
+            r.unit.currentCountry = r.toTag;
+            StartCoroutine(SendRpcWithDelay(r.unit, r.toPos, 0.05f));
+        }
+
+        for (int i = 0; i < toDestroy.Count; i++)
+        {
+            MainUnit u = toDestroy[i];
+            if (u == null) continue;
+            allUnits.Remove(u);
+            NetworkServer.Destroy(u.gameObject);
+        }
+
+        for (int i = 0; i < allUnits.Count; i++)
+        {
+            MainUnit u = allUnits[i];
+            if (u == null) continue;
+            if (u.currentOrder != null) u.currentOrder = null;
+        }
+
+        for (int i = 0; i < MainPlayerController.allPlayers.Count; i++)
+            MainPlayerController.allPlayers[i]?.RpcResetReady();
     }
+
+    private Country FindCountryByTag(string tag)
+    {
+        if (string.IsNullOrEmpty(tag)) return null;
+        GameObject obj = GameObject.FindWithTag(tag);
+        if (obj == null) return null;
+        return obj.GetComponent<Country>() ?? obj.GetComponentInChildren<Country>() ?? obj.GetComponentInParent<Country>();
+    }
+
+    private List<MainUnit> GetUnitsOnTile(string tileTag)
+    {
+        List<MainUnit> list = new List<MainUnit>();
+        for (int i = 0; i < allUnits.Count; i++)
+        {
+            MainUnit u = allUnits[i];
+            if (u == null) continue;
+            if (u.currentCountry == tileTag) list.Add(u);
+        }
+        return list;
+    }
+
+    private string PickRetreatTile(MainUnit unit, Country fromCountry, HashSet<string> occupiedFinal)
+    {
+        if (unit == null || fromCountry == null) return null;
+
+        List<Country> owned = new List<Country>();
+        List<Country> unowned = new List<Country>();
+
+        for (int i = 0; i < fromCountry.adjacentCountries.Count; i++)
+        {
+            Country n = fromCountry.adjacentCountries[i];
+            if (n == null) continue;
+
+            if (unit.unitType == UnitType.Land && n.isOcean) continue;
+            if (unit.unitType == UnitType.Boat && !n.isOcean) continue;
+
+            string t = n.gameObject.tag;
+            if (occupiedFinal.Contains(t)) continue;
+
+            if (n.ownerID == unit.ownerID) owned.Add(n);
+            else if (n.ownerID == -1) unowned.Add(n);
+        }
+
+        if (owned.Count > 0) return owned[0].gameObject.tag;
+        if (unowned.Count > 0) return unowned[0].gameObject.tag;
+        return null;
+    }
+
+    private IEnumerator BounceUnit(MainUnit unit, Vector3 intoPos, Vector3 backPos, float delayBetween)
+    {
+        if (unit == null) yield break;
+        unit.RpcMoveTo(intoPos);
+        yield return new WaitForSeconds(delayBetween);
+        unit.RpcMoveTo(backPos);
+    }
+
 
     private IEnumerator SendRpcWithDelay(MainUnit unit, Vector3 targetPos, float delay)
     {

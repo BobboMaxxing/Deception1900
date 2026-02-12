@@ -411,25 +411,42 @@ public class MainPlayerController : NetworkBehaviour
                 if (targetUnit != null) break;
             }
 
-            string targetCountry = null;
+            string supportTargetTag = null;
 
             if (targetUnit != null)
             {
-                targetCountry = targetUnit.currentOrder != null
-                    ? targetUnit.currentOrder.targetCountry
-                    : targetUnit.currentCountry;
+                if (targetUnit.currentOrder != null && targetUnit.currentOrder.orderType == UnitOrderType.Move)
+                    supportTargetTag = targetUnit.currentOrder.targetCountry;
+                else
+                    supportTargetTag = targetUnit.currentCountry;
 
-                CmdSupportUnit(selectedUnit.netId, targetUnit.netId, targetCountry);
+                if (!CanSupportTo(selectedUnit, supportTargetTag))
+                {
+                    moveStatusText?.SetText("Illegal support (must be adjacent).");
+                    selectedUnit = null;
+                    ShowMoveButtons(false);
+                    return;
+                }
+
+                CmdSupportUnit(selectedUnit.netId, targetUnit.netId, supportTargetTag);
             }
             else
             {
-                targetCountry = hitTile.tag;
+                supportTargetTag = hitTile.tag;
 
-                MainUnit movingUnit = FindUnitTargetingCountry(targetCountry, playerID);
-                if (movingUnit != null)
+                if (!CanSupportTo(selectedUnit, supportTargetTag))
                 {
-                    CmdSupportUnit(selectedUnit.netId, movingUnit.netId, targetCountry);
+                    moveStatusText?.SetText("Illegal support (must be adjacent).");
+                    selectedUnit = null;
+                    ShowMoveButtons(false);
+                    return;
                 }
+
+                MainUnit movingUnit = FindUnitTargetingCountry(supportTargetTag, playerID);
+                if (movingUnit != null)
+                    CmdSupportUnit(selectedUnit.netId, movingUnit.netId, supportTargetTag);
+                else
+                    moveStatusText?.SetText("No friendly move to support.");
             }
 
             selectedUnit = null;
@@ -597,6 +614,22 @@ public class MainPlayerController : NetworkBehaviour
             targetCountry = targetCountryTag,
             targetPosition = targetPos
         };
+    }
+
+    private bool CanSupportTo(MainUnit supporter, string targetTileTag)
+    {
+        if (supporter == null) return false;
+        if (string.IsNullOrEmpty(targetTileTag)) return false;
+
+        Country from = FindCountryByTagRecursive(supporter.currentCountry);
+        Country to = FindCountryByTagRecursive(targetTileTag);
+
+        if (from == null || to == null) return false;
+
+        if (!from.adjacentCountries.Contains(to)) return false;
+
+        if (supporter.unitType == UnitType.Boat) return to.isOcean;
+        return !to.isOcean;
     }
 
     [Command]

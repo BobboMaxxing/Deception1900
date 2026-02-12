@@ -9542,7 +9542,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3139767633578801239, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
       propertyPath: m_TagString
-      value: Germany
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
