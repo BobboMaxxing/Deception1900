@@ -1056,4 +1056,10 @@ public class MainPlayerController : NetworkBehaviour
     {
         MainGameManager.Instance.FinishBuildPhaseForPlayer(playerID);
     }
+
+    [Command]
+    public void CmdRequestSaveLatest()
+    {
+        SaveSystem.SaveLatestServer();
+    }
 }

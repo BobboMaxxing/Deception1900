@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainUnitManager : NetworkBehaviour
+public partial class MainUnitManager : NetworkBehaviour
 {
     public static MainUnitManager Instance;
 
