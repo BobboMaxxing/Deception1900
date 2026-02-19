@@ -365,10 +365,62 @@ public class MainPlayerController : NetworkBehaviour
 
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
-        RaycastHit[] hits = Physics.RaycastAll(ray, 9999f);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 9999f, ~0, QueryTriggerInteraction.Collide);
         if (hits == null || hits.Length == 0) return;
 
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+        if (selectedUnit != null && isShiftHeld)
+        {
+            MainUnit targetUnit = null;
+
+            for (int i = 0; i < hits.Length; i++)
+            {
+                MainUnit u = GetUnitFromHit(hits[i]);
+                if (u == null) continue;
+                if (u == selectedUnit) continue;
+                targetUnit = u;
+                break;
+            }
+
+            if (targetUnit == null)
+            {
+                moveStatusText?.SetText("Support: Click another unit to support.");
+                selectedUnit = null;
+                ShowMoveButtons(false);
+                return;
+            }
+
+            string supportTarget =
+                (targetUnit.currentOrder != null && targetUnit.currentOrder.orderType == UnitOrderType.Move)
+                    ? targetUnit.currentOrder.targetCountry
+                    : targetUnit.currentCountry;
+
+            if (string.IsNullOrEmpty(supportTarget))
+            {
+                moveStatusText?.SetText("Support failed: target has no tile.");
+                selectedUnit = null;
+                ShowMoveButtons(false);
+                return;
+            }
+
+            if (!CanSupportTo(selectedUnit, supportTarget))
+            {
+                moveStatusText?.SetText("Illegal support (must be adjacent).");
+                selectedUnit = null;
+                ShowMoveButtons(false);
+                return;
+            }
+
+            CmdSupportUnit(selectedUnit.netId, targetUnit.netId, supportTarget);
+
+            moveStatusText?.SetText("Support queued.");
+            selectedUnit = null;
+            ShowMoveButtons(false);
+            return;
+        }
 
         MainUnit hitUnit = null;
         for (int i = 0; i < hits.Length; i++)
@@ -395,60 +447,6 @@ public class MainPlayerController : NetworkBehaviour
 
         if (hitTile == null)
         {
-            selectedUnit = null;
-            ShowMoveButtons(false);
-            return;
-        }
-
-        bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-
-        if (isShiftHeld)
-        {
-            MainUnit targetUnit = null;
-            for (int i = 0; i < hits.Length; i++)
-            {
-                targetUnit = GetUnitFromHit(hits[i]);
-                if (targetUnit != null) break;
-            }
-
-            string supportTargetTag = null;
-
-            if (targetUnit != null)
-            {
-                if (targetUnit.currentOrder != null && targetUnit.currentOrder.orderType == UnitOrderType.Move)
-                    supportTargetTag = targetUnit.currentOrder.targetCountry;
-                else
-                    supportTargetTag = targetUnit.currentCountry;
-
-                if (!CanSupportTo(selectedUnit, supportTargetTag))
-                {
-                    moveStatusText?.SetText("Illegal support (must be adjacent).");
-                    selectedUnit = null;
-                    ShowMoveButtons(false);
-                    return;
-                }
-
-                CmdSupportUnit(selectedUnit.netId, targetUnit.netId, supportTargetTag);
-            }
-            else
-            {
-                supportTargetTag = hitTile.tag;
-
-                if (!CanSupportTo(selectedUnit, supportTargetTag))
-                {
-                    moveStatusText?.SetText("Illegal support (must be adjacent).");
-                    selectedUnit = null;
-                    ShowMoveButtons(false);
-                    return;
-                }
-
-                MainUnit movingUnit = FindUnitTargetingCountry(supportTargetTag, playerID);
-                if (movingUnit != null)
-                    CmdSupportUnit(selectedUnit.netId, movingUnit.netId, supportTargetTag);
-                else
-                    moveStatusText?.SetText("No friendly move to support.");
-            }
-
             selectedUnit = null;
             ShowMoveButtons(false);
             return;
@@ -641,7 +639,11 @@ public class MainPlayerController : NetworkBehaviour
         MainUnit supporter = supId.GetComponent<MainUnit>();
         MainUnit supported = targetId.GetComponent<MainUnit>();
         if (supporter == null || supported == null) return;
+
         if (supporter.ownerID != playerID) return;
+
+        if (string.IsNullOrEmpty(supportTargetCountry)) return;
+        if (!CanSupportToServer(supporter, supportTargetCountry)) return;
 
         supporter.currentOrder = new PlayerUnitOrder
         {
@@ -651,20 +653,21 @@ public class MainPlayerController : NetworkBehaviour
         };
     }
 
-    private MainUnit FindUnitTargetingCountry(string targetCountry, int ownerId)
+    private bool CanSupportToServer(MainUnit supporter, string targetTileTag)
     {
-        foreach (MainUnit unit in MainUnitManager.Instance.GetAllUnits())
-        {
-            if (unit.ownerID == ownerId &&
-                unit.currentOrder != null &&
-                unit.currentOrder.orderType == UnitOrderType.Move &&
-                unit.currentOrder.targetCountry == targetCountry)
-            {
-                return unit;
-            }
-        }
-        return null;
+        if (supporter == null) return false;
+        if (string.IsNullOrEmpty(targetTileTag)) return false;
+
+        Country from = FindCountryByTagRecursive(supporter.currentCountry);
+        Country to = FindCountryByTagRecursive(targetTileTag);
+
+        if (from == null || to == null) return false;
+        if (!from.adjacentCountries.Contains(to)) return false;
+
+        if (supporter.unitType == UnitType.Boat) return to.isOcean;
+        return !to.isOcean;
     }
+
 
     private bool CanLandBridgeMoveServer(int ownerId, Country from, Country to)
     {
