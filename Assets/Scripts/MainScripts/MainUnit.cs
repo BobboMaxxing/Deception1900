@@ -105,6 +105,11 @@ public class MainUnit : NetworkBehaviour
             lineRenderer.positionCount = 0;
     }
 
+    public void ClearLocalMoveLine()
+    {
+        if (lineRenderer != null)
+            lineRenderer.positionCount = 0;
+    }
 
     public void SetupLocalVisuals()
     {

@@ -92,6 +92,7 @@ public class MainPlayerController : NetworkBehaviour
         setup?.Setup(this);
 
         UpdateReadyUI();
+        UpdateOrderButtonsUI();
     }
 
     void Update()
@@ -103,6 +104,7 @@ public class MainPlayerController : NetworkBehaviour
             canIssueOrders = false;
             HandleCountryHover();
             if (!hasChosenCountry) HandleCountrySelection();
+            UpdateOrderButtonsUI();
             return;
         }
 
@@ -113,18 +115,14 @@ public class MainPlayerController : NetworkBehaviour
         if (!hasChosenCountry)
         {
             HandleCountrySelection();
+            UpdateOrderButtonsUI();
             return;
         }
 
-        if (canIssueOrders)
-            HandleUnitSelection();
+        HandleUnitSelection();
+        UpdateOrderButtonsUI();
     }
 
-    private Country GetCountryFromHit(RaycastHit hit)
-    {
-        return hit.collider.GetComponentInParent<Country>()
-            ?? hit.collider.GetComponentInChildren<Country>();
-    }
 
     private MainUnit GetUnitFromHit(RaycastHit hit)
     {
@@ -414,6 +412,7 @@ public class MainPlayerController : NetworkBehaviour
                 return;
             }
 
+            CancelReadyIfNeeded();
             CmdSupportUnit(selectedUnit.netId, targetUnit.netId, supportTarget);
 
             moveStatusText?.SetText("Support queued.");
@@ -431,6 +430,10 @@ public class MainPlayerController : NetworkBehaviour
 
         if (hitUnit != null && hitUnit.ownerID == playerID)
         {
+            if (hitUnit.currentOrder != null)
+                CancelReadyIfNeeded();
+            ClearOrderLocal(hitUnit);
+
             selectedUnit = hitUnit;
             ShowMoveButtons(true);
             return;
@@ -484,6 +487,7 @@ public class MainPlayerController : NetworkBehaviour
         Vector3 targetPos = targetCountryComp.centerWorldPos;
         selectedUnit.ShowLocalMoveLine(targetPos);
 
+        CancelReadyIfNeeded();
         CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag, targetPos);
 
         selectedUnit = null;
@@ -504,6 +508,7 @@ public class MainPlayerController : NetworkBehaviour
         }
         return false;
     }
+
 
     private bool CanLandBridgeMove(MainUnit unit, Country from, Country to)
     {
@@ -541,29 +546,12 @@ public class MainPlayerController : NetworkBehaviour
         return false;
     }
 
-    private HashSet<string> GetAdjacentOceanTags(Country tile)
-    {
-        HashSet<string> result = new HashSet<string>();
-        if (tile == null || tile.adjacentCountries == null) return result;
-
-        foreach (var adj in tile.adjacentCountries)
-        {
-            if (adj == null) continue;
-            if (!adj.isOcean) continue;
-            result.Add(adj.gameObject.tag);
-        }
-
-        return result;
-    }
-
 
     public void ConfirmMoves()
     {
         if (!isLocalPlayer) return;
 
-        ShowMoveButtons(false);
         moveStatusText?.SetText("Waiting for other players...");
-
         CmdConfirmMoves();
     }
 
@@ -571,9 +559,7 @@ public class MainPlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
-        ShowMoveButtons(false);
-        moveStatusText?.SetText("Moves canceled — plan again.");
-
+        moveStatusText?.SetText("Ready canceled.");
         CmdCancelReady();
     }
 
@@ -652,7 +638,14 @@ public class MainPlayerController : NetworkBehaviour
             targetCountry = supportTargetCountry
         };
     }
+    private void CancelReadyIfNeeded()
+    {
+        if (!isLocalPlayer) return;
+        if (!hasChosenCountry) return;
+        if (!isReady) return;
 
+        CmdCancelReady();
+    }
     private bool CanSupportToServer(MainUnit supporter, string targetTileTag)
     {
         if (supporter == null) return false;
@@ -668,6 +661,27 @@ public class MainPlayerController : NetworkBehaviour
         return !to.isOcean;
     }
 
+    private void ClearOrderLocal(MainUnit unit)
+    {
+        if (unit == null) return;
+
+        if (unit.currentOrder != null)
+            CmdClearUnitOrder(unit.netId);
+
+        unit.ClearLocalMoveLine();
+    }
+
+    [Command]
+    private void CmdClearUnitOrder(uint unitNetId)
+    {
+        if (!NetworkServer.spawned.TryGetValue(unitNetId, out NetworkIdentity identity)) return;
+
+        MainUnit unit = identity.GetComponent<MainUnit>();
+        if (unit == null) return;
+        if (unit.ownerID != playerID) return;
+
+        unit.currentOrder = null;
+    }
 
     private bool CanLandBridgeMoveServer(int ownerId, Country from, Country to)
     {
@@ -769,6 +783,8 @@ public class MainPlayerController : NetworkBehaviour
 
         if (isLocalPlayer && playersReady.TryGetValue(playerID, out bool ready))
             isReady = ready;
+
+        UpdateOrderButtonsUI();
     }
 
     private void UpdateReadyUI()
@@ -787,6 +803,7 @@ public class MainPlayerController : NetworkBehaviour
         if (playersReady.ContainsKey(playerID))
             playersReady[playerID] = false;
         UpdateReadyUI();
+        UpdateOrderButtonsUI();
     }
 
     void ShowMoveButtons(bool state)
@@ -824,6 +841,22 @@ public class MainPlayerController : NetworkBehaviour
             buildPassButton.onClick.AddListener(PassBuildPhase);
         }
     }
+
+    private void UpdateOrderButtonsUI()
+    {
+        if (confirmMoveButton != null)
+        {
+            confirmMoveButton.gameObject.SetActive(hasChosenCountry);
+            confirmMoveButton.interactable = hasChosenCountry && !isReady;
+        }
+
+        if (cancelMoveButton != null)
+        {
+            cancelMoveButton.gameObject.SetActive(hasChosenCountry && isReady);
+            cancelMoveButton.interactable = hasChosenCountry && isReady;
+        }
+    }
+
 
     public void SelectBuildLand()
     {
