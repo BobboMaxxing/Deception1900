@@ -27,6 +27,8 @@ public class MainUnit : NetworkBehaviour
         lineRenderer.startColor = Color.green;
         lineRenderer.endColor = Color.green;
         lineRenderer.enabled = false;
+        if (selectionHighlight != null)
+            selectionHighlight.SetActive(false);
     }
     public override void OnStartClient()
     {
@@ -131,6 +133,13 @@ public class MainUnit : NetworkBehaviour
         if (lineRenderer != null) lineRenderer.enabled = false;
     }
 
+    [SerializeField] private GameObject selectionHighlight;
+
+    public void SetSelectedVisual(bool state)
+    {
+        if (selectionHighlight != null)
+            selectionHighlight.SetActive(state);
+    }
     private void SetColor(Color c)
     {
         Color darker = c * 0.5f;
@@ -139,6 +148,9 @@ public class MainUnit : NetworkBehaviour
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
         foreach (Renderer rend in renderers)
         {
+            if (selectionHighlight != null && rend.gameObject == selectionHighlight)
+                continue;
+
             rend.material.color = darker;
         }
     }

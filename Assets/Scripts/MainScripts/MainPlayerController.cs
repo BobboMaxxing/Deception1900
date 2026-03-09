@@ -386,7 +386,7 @@ public class MainPlayerController : NetworkBehaviour
             if (targetUnit == null)
             {
                 moveStatusText?.SetText("Support: Click another unit to support.");
-                selectedUnit = null;
+                ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
             }
@@ -399,7 +399,7 @@ public class MainPlayerController : NetworkBehaviour
             if (string.IsNullOrEmpty(supportTarget))
             {
                 moveStatusText?.SetText("Support failed: target has no tile.");
-                selectedUnit = null;
+                ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
             }
@@ -407,7 +407,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!CanSupportTo(selectedUnit, supportTarget))
             {
                 moveStatusText?.SetText("Illegal support (must be adjacent).");
-                selectedUnit = null;
+                ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
             }
@@ -416,7 +416,7 @@ public class MainPlayerController : NetworkBehaviour
             CmdSupportUnit(selectedUnit.netId, targetUnit.netId, supportTarget);
 
             moveStatusText?.SetText("Support queued.");
-            selectedUnit = null;
+            ClearSelectedUnit();
             ShowMoveButtons(false);
             return;
         }
@@ -434,7 +434,7 @@ public class MainPlayerController : NetworkBehaviour
                 CancelReadyIfNeeded();
             ClearOrderLocal(hitUnit);
 
-            selectedUnit = hitUnit;
+            SetSelectedUnit(hitUnit);
             ShowMoveButtons(true);
             return;
         }
@@ -450,7 +450,7 @@ public class MainPlayerController : NetworkBehaviour
 
         if (hitTile == null)
         {
-            selectedUnit = null;
+            ClearSelectedUnit();
             ShowMoveButtons(false);
             return;
         }
@@ -460,7 +460,7 @@ public class MainPlayerController : NetworkBehaviour
 
         if (targetCountryComp == null || fromCountryComp == null)
         {
-            selectedUnit = null;
+            ClearSelectedUnit();
             ShowMoveButtons(false);
             return;
         }
@@ -470,7 +470,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!targetCountryComp.isOcean)
             {
                 moveStatusText?.SetText("Boats can only move on oceans.");
-                selectedUnit = null;
+                ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
             }
@@ -479,7 +479,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!boatDirect)
             {
                 moveStatusText?.SetText("Illegal move.");
-                selectedUnit = null;
+                ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
             }
@@ -489,7 +489,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!CanPlaneReach(fromCountryComp, targetCountryComp))
             {
                 moveStatusText?.SetText("Planes can only move between reachable airfields.");
-                selectedUnit = null;
+                ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
             }
@@ -502,7 +502,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!direct && !bridge)
             {
                 moveStatusText?.SetText("Illegal move.");
-                selectedUnit = null;
+                ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
             }
@@ -514,7 +514,7 @@ public class MainPlayerController : NetworkBehaviour
         CancelReadyIfNeeded();
         CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag, targetPos);
 
-        selectedUnit = null;
+        ClearSelectedUnit();
         ShowMoveButtons(false);
     }
 
@@ -570,6 +570,24 @@ public class MainPlayerController : NetworkBehaviour
         return false;
     }
 
+    private void SetSelectedUnit(MainUnit unit)
+    {
+        if (selectedUnit != null)
+            selectedUnit.SetSelectedVisual(false);
+
+        selectedUnit = unit;
+
+        if (selectedUnit != null)
+            selectedUnit.SetSelectedVisual(true);
+    }
+
+    private void ClearSelectedUnit()
+    {
+        if (selectedUnit != null)
+            selectedUnit.SetSelectedVisual(false);
+
+        selectedUnit = null;
+    }
 
     public void ConfirmMoves()
     {
