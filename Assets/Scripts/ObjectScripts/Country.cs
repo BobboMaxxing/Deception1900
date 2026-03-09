@@ -27,6 +27,9 @@ public class Country : MonoBehaviour
 
     [Header("Adjacency List (drag neighboring countries here)")]
     public List<Country> adjacentCountries = new List<Country>();
+    
+    [Header("Plane Adjacency List")]
+    public List<Country> planeAdjacentCountries = new List<Country>();
 
     [Header("Starter Sub-Countries (only matters if isStarterCountry = true)")]
     public List<Country> starterSubCountries = new List<Country>();

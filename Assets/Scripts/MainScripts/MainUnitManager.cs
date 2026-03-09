@@ -280,6 +280,7 @@ public partial class MainUnitManager : NetworkBehaviour
     {
         List<MainUnit> movers = new List<MainUnit>();
         List<MainUnit> supporters = new List<MainUnit>();
+        List<MainUnit> planeMovers = new List<MainUnit>();
 
         for (int i = 0; i < allUnits.Count; i++)
         {
@@ -287,8 +288,15 @@ public partial class MainUnitManager : NetworkBehaviour
             if (u == null) continue;
             if (u.currentOrder == null) continue;
 
-            if (u.currentOrder.orderType == UnitOrderType.Move) movers.Add(u);
-            else if (u.currentOrder.orderType == UnitOrderType.Support) supporters.Add(u);
+            if (u.currentOrder.orderType == UnitOrderType.Move)
+            {
+                if (u.unitType == UnitType.Plane) planeMovers.Add(u);
+                else movers.Add(u);
+            }
+            else if (u.currentOrder.orderType == UnitOrderType.Support)
+            {
+                supporters.Add(u);
+            }
         }
 
         Dictionary<string, List<MainUnit>> attackersByTarget = new Dictionary<string, List<MainUnit>>();
@@ -608,6 +616,34 @@ public partial class MainUnitManager : NetworkBehaviour
             StartCoroutine(SendRpcWithDelay(r.unit, r.toPos, 0.05f));
         }
 
+        for (int i = 0; i < planeMovers.Count; i++)
+        {
+            MainUnit plane = planeMovers[i];
+            if (plane == null) continue;
+            if (plane.currentOrder == null) continue;
+
+            string targetTag = plane.currentOrder.targetCountry;
+            if (string.IsNullOrEmpty(targetTag))
+            {
+                plane.currentOrder = null;
+                continue;
+            }
+
+            Country fromCountry = FindCountryByTag(plane.currentCountry);
+            Country toCountry = FindCountryByTag(targetTag);
+
+            if (!CanPlaneReach(fromCountry, toCountry))
+            {
+                plane.currentOrder = null;
+                continue;
+            }
+
+            plane.currentCountry = targetTag;
+            finalTile[plane] = targetTag;
+            StartCoroutine(SendRpcWithDelay(plane, toCountry.centerWorldPos, 0.05f));
+            plane.currentOrder = null;
+        }
+
         Dictionary<MainUnit, Vector3> packedPositions = BuildPackedPositions(finalTile);
         StartCoroutine(ApplyPackedPositions(packedPositions, packDelay));
 
@@ -630,6 +666,16 @@ public partial class MainUnitManager : NetworkBehaviour
             MainPlayerController.allPlayers[i]?.RpcResetReady();
     }
 
+    private bool CanPlaneReach(Country from, Country to)
+    {
+        if (from == null || to == null) return false;
+        if (!from.isAirfield || !to.isAirfield) return false;
+
+        if (from.adjacentCountries.Contains(to)) return true;
+        if (from.planeAdjacentCountries.Contains(to)) return true;
+
+        return false;
+    }
     private Country FindCountryByTag(string tag)
     {
         if (string.IsNullOrEmpty(tag)) return null;

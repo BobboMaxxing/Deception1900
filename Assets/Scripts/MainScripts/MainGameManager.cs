@@ -269,10 +269,10 @@ public class MainGameManager : NetworkBehaviour
                 if (c.ownerID == playerId) ownedCenters++;
             }
 
-            int required = Mathf.CeilToInt(totalCenters / 3f);
+            int required = Mathf.CeilToInt(totalCenters * 0.3f);
             if (ownedCenters < required)
             {
-                player.TargetBuildResult(requester, false, creditsNow, "Need at least 1/3 of supply centers to build planes.");
+                player.TargetBuildResult(requester, false, creditsNow, "Need at least 30% of supply centers to build planes.");
                 return;
             }
         }

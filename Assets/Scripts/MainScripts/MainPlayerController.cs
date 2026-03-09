@@ -458,14 +458,6 @@ public class MainPlayerController : NetworkBehaviour
         Country targetCountryComp = hitTile;
         Country fromCountryComp = FindCountryByTagRecursive(selectedUnit.currentCountry);
 
-        if (selectedUnit.unitType == UnitType.Boat && !targetCountryComp.isOcean)
-        {
-            moveStatusText?.SetText("Boats can only move on oceans.");
-            selectedUnit = null;
-            ShowMoveButtons(false);
-            return;
-        }
-
         if (targetCountryComp == null || fromCountryComp == null)
         {
             selectedUnit = null;
@@ -473,15 +465,47 @@ public class MainPlayerController : NetworkBehaviour
             return;
         }
 
-        bool direct = fromCountryComp.adjacentCountries.Contains(targetCountryComp);
-        bool bridge = CanLandBridgeMove(selectedUnit, fromCountryComp, targetCountryComp);
-
-        if (!direct && !bridge)
+        if (selectedUnit.unitType == UnitType.Boat)
         {
-            moveStatusText?.SetText("Illegal move.");
-            selectedUnit = null;
-            ShowMoveButtons(false);
-            return;
+            if (!targetCountryComp.isOcean)
+            {
+                moveStatusText?.SetText("Boats can only move on oceans.");
+                selectedUnit = null;
+                ShowMoveButtons(false);
+                return;
+            }
+
+            bool boatDirect = fromCountryComp.adjacentCountries.Contains(targetCountryComp);
+            if (!boatDirect)
+            {
+                moveStatusText?.SetText("Illegal move.");
+                selectedUnit = null;
+                ShowMoveButtons(false);
+                return;
+            }
+        }
+        else if (selectedUnit.unitType == UnitType.Plane)
+        {
+            if (!CanPlaneReach(fromCountryComp, targetCountryComp))
+            {
+                moveStatusText?.SetText("Planes can only move between reachable airfields.");
+                selectedUnit = null;
+                ShowMoveButtons(false);
+                return;
+            }
+        }
+        else
+        {
+            bool direct = fromCountryComp.adjacentCountries.Contains(targetCountryComp);
+            bool bridge = CanLandBridgeMove(selectedUnit, fromCountryComp, targetCountryComp);
+
+            if (!direct && !bridge)
+            {
+                moveStatusText?.SetText("Illegal move.");
+                selectedUnit = null;
+                ShowMoveButtons(false);
+                return;
+            }
         }
 
         Vector3 targetPos = targetCountryComp.centerWorldPos;
@@ -583,6 +607,10 @@ public class MainPlayerController : NetworkBehaviour
             if (!toCountry.isOcean) return;
             if (!direct) return;
         }
+        else if (unit.unitType == UnitType.Plane)
+        {
+            if (!CanPlaneReachServer(fromCountry, toCountry)) return;
+        }
         else
         {
             if (toCountry.isOcean) return;
@@ -609,6 +637,12 @@ public class MainPlayerController : NetworkBehaviour
         Country to = FindCountryByTagRecursive(targetTileTag);
 
         if (from == null || to == null) return false;
+
+        if (supporter.unitType == UnitType.Plane)
+        {
+            if (!from.isAirfield) return false;
+            return from.adjacentCountries.Contains(to) || from.planeAdjacentCountries.Contains(to);
+        }
 
         if (!from.adjacentCountries.Contains(to)) return false;
 
@@ -655,6 +689,13 @@ public class MainPlayerController : NetworkBehaviour
         Country to = FindCountryByTagRecursive(targetTileTag);
 
         if (from == null || to == null) return false;
+
+        if (supporter.unitType == UnitType.Plane)
+        {
+            if (!from.isAirfield) return false;
+            return from.adjacentCountries.Contains(to) || from.planeAdjacentCountries.Contains(to);
+        }
+
         if (!from.adjacentCountries.Contains(to)) return false;
 
         if (supporter.unitType == UnitType.Boat) return to.isOcean;
@@ -682,7 +723,27 @@ public class MainPlayerController : NetworkBehaviour
 
         unit.currentOrder = null;
     }
+    private bool CanPlaneReach(Country from, Country to)
+    {
+        if (from == null || to == null) return false;
+        if (!from.isAirfield || !to.isAirfield) return false;
 
+        if (from.adjacentCountries.Contains(to)) return true;
+        if (from.planeAdjacentCountries.Contains(to)) return true;
+
+        return false;
+    }
+
+    private bool CanPlaneReachServer(Country from, Country to)
+    {
+        if (from == null || to == null) return false;
+        if (!from.isAirfield || !to.isAirfield) return false;
+
+        if (from.adjacentCountries.Contains(to)) return true;
+        if (from.planeAdjacentCountries.Contains(to)) return true;
+
+        return false;
+    }
     private bool CanLandBridgeMoveServer(int ownerId, Country from, Country to)
     {
         if (from == null || to == null) return false;
