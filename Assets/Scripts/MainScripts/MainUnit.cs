@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(Renderer), typeof(LineRenderer))]
 public class MainUnit : NetworkBehaviour
@@ -16,6 +17,8 @@ public class MainUnit : NetworkBehaviour
     private LineRenderer lineRenderer;
     private Coroutine moveCoroutine;
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private TMP_Text supportCountText;
+    private int localIncomingSupportCount;
 
     void Awake()
     {
@@ -29,7 +32,13 @@ public class MainUnit : NetworkBehaviour
         lineRenderer.enabled = false;
         if (selectionHighlight != null)
             selectionHighlight.SetActive(false);
+        if (supportCountText != null)
+        {
+            supportCountText.gameObject.SetActive(false);
+            supportCountText.text = "";
+        }
     }
+
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -154,7 +163,28 @@ public class MainUnit : NetworkBehaviour
             rend.material.color = darker;
         }
     }
+    public void SetLocalIncomingSupportCount(int count)
+    {
+        localIncomingSupportCount = count;
 
+        if (supportCountText == null) return;
+
+        if (localIncomingSupportCount > 0)
+        {
+            supportCountText.gameObject.SetActive(true);
+            supportCountText.text = $"+{localIncomingSupportCount}";
+        }
+        else
+        {
+            supportCountText.gameObject.SetActive(false);
+            supportCountText.text = "";
+        }
+    }
+
+    public void ClearLocalIncomingSupportCount()
+    {
+        SetLocalIncomingSupportCount(0);
+    }
 
     #endregion
 }

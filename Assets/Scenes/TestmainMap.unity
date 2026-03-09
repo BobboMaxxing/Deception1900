@@ -2423,6 +2423,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5974652200663596714, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -5974652200663596714, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_TagString
+      value: Albania
+      objectReference: {fileID: 0}
     - target: {fileID: -4692735651470230587, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -2449,6 +2457,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
       propertyPath: m_Name
+      value: Albania
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3122504026352eb4582f05a4f6ae4655, type: 3}
+      propertyPath: m_TagString
       value: Albania
       objectReference: {fileID: 0}
     m_RemovedComponents: []

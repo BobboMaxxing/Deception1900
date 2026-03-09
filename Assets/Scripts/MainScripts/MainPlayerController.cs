@@ -60,6 +60,8 @@ public class MainPlayerController : NetworkBehaviour
     private int remainingBuildsLocal = 0;
     private bool waitingBuildResponse = false;
 
+    private Dictionary<MainUnit, int> localSupportCounts = new Dictionary<MainUnit, int>();
+
     void OnDestroy()
     {
         if (allPlayers.Contains(this)) allPlayers.Remove(this);
@@ -513,6 +515,7 @@ public class MainPlayerController : NetworkBehaviour
 
         CancelReadyIfNeeded();
         CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag, targetPos);
+        StartCoroutine(RebuildLocalSupportVisualsNextFrame());
 
         ClearSelectedUnit();
         ShowMoveButtons(false);
@@ -644,6 +647,7 @@ public class MainPlayerController : NetworkBehaviour
             targetCountry = targetCountryTag,
             targetPosition = targetPos
         };
+        StartCoroutine(RebuildLocalSupportVisualsNextFrame());
     }
 
     private bool CanSupportTo(MainUnit supporter, string targetTileTag)
@@ -664,15 +668,20 @@ public class MainPlayerController : NetworkBehaviour
 
         if (!from.adjacentCountries.Contains(to)) return false;
 
-        if (supporter.unitType == UnitType.Boat) return to.isOcean;
+        if (supporter.unitType == UnitType.Boat)
+            return true;
+
         return !to.isOcean;
     }
 
     [Command]
     private void CmdSupportUnit(uint supporterNetId, uint supportedNetId, string supportTargetCountry)
     {
+
+        StartCoroutine(RebuildLocalSupportVisualsNextFrame());
         if (!NetworkServer.spawned.TryGetValue(supporterNetId, out NetworkIdentity supId)) return;
         if (!NetworkServer.spawned.TryGetValue(supportedNetId, out NetworkIdentity targetId)) return;
+
 
         MainUnit supporter = supId.GetComponent<MainUnit>();
         MainUnit supported = targetId.GetComponent<MainUnit>();
@@ -690,6 +699,56 @@ public class MainPlayerController : NetworkBehaviour
             targetCountry = supportTargetCountry
         };
     }
+    private IEnumerator RebuildLocalSupportVisualsNextFrame()
+    {
+        yield return null;
+        RebuildLocalSupportVisuals();
+    }
+    private void RebuildLocalSupportVisuals()
+    {
+        foreach (var kv in localSupportCounts)
+        {
+            if (kv.Key != null)
+                kv.Key.ClearLocalIncomingSupportCount();
+        }
+
+        localSupportCounts.Clear();
+
+        MainUnit[] allUnits = Object.FindObjectsOfType<MainUnit>();
+        for (int i = 0; i < allUnits.Length; i++)
+        {
+            MainUnit unit = allUnits[i];
+            if (unit == null) continue;
+            if (unit.ownerID != playerID) continue;
+            if (unit.currentOrder == null) continue;
+            if (unit.currentOrder.orderType != UnitOrderType.Support) continue;
+            if (unit.currentOrder.supportedUnit == null) continue;
+
+            MainUnit supported = unit.currentOrder.supportedUnit;
+            if (!localSupportCounts.ContainsKey(supported))
+                localSupportCounts[supported] = 0;
+
+            localSupportCounts[supported]++;
+        }
+
+        foreach (var kv in localSupportCounts)
+        {
+            if (kv.Key != null)
+                kv.Key.SetLocalIncomingSupportCount(kv.Value);
+        }
+    }
+
+    private void ClearAllLocalSupportVisuals()
+    {
+        foreach (var kv in localSupportCounts)
+        {
+            if (kv.Key != null)
+                kv.Key.ClearLocalIncomingSupportCount();
+        }
+
+        localSupportCounts.Clear();
+    }
+
     private void CancelReadyIfNeeded()
     {
         if (!isLocalPlayer) return;
@@ -716,7 +775,9 @@ public class MainPlayerController : NetworkBehaviour
 
         if (!from.adjacentCountries.Contains(to)) return false;
 
-        if (supporter.unitType == UnitType.Boat) return to.isOcean;
+        if (supporter.unitType == UnitType.Boat)
+            return true;
+
         return !to.isOcean;
     }
 
@@ -728,6 +789,7 @@ public class MainPlayerController : NetworkBehaviour
             CmdClearUnitOrder(unit.netId);
 
         unit.ClearLocalMoveLine();
+        StartCoroutine(RebuildLocalSupportVisualsNextFrame());
     }
 
     [Command]
@@ -879,6 +941,7 @@ public class MainPlayerController : NetworkBehaviour
     public void RpcResetReady()
     {
         isReady = false;
+        ClearAllLocalSupportVisuals();
         if (playersReady.ContainsKey(playerID))
             playersReady[playerID] = false;
         UpdateReadyUI();
