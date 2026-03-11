@@ -61,9 +61,14 @@ public class MainPlayerController : NetworkBehaviour
     private bool waitingBuildResponse = false;
 
     private Dictionary<MainUnit, int> localSupportCounts = new Dictionary<MainUnit, int>();
+    private List<PulsingHighlighter> activeBuildHighlighters = new List<PulsingHighlighter>();
+    private List<Country> activeBuildHighlightCountries = new List<Country>();
 
     void OnDestroy()
     {
+        ClearBuildHighlights();
+        ClearHoverHighlight();
+
         if (allPlayers.Contains(this)) allPlayers.Remove(this);
     }
 
@@ -285,33 +290,15 @@ public class MainPlayerController : NetworkBehaviour
         if (string.IsNullOrEmpty(chosenCountry))
             return;
 
-        switch (chosenCountry)
+        Country chosenCountryComp = FindCountryByTagRecursive(chosenCountry);
+
+        if (chosenCountryComp == null)
         {
-            case "Germany":
-                playerColor = Color.black;
-                break;
-            case "France":
-                playerColor = Color.blue;
-                break;
-            case "Italy":
-                playerColor = Color.green;
-                break;
-            case "Russia":
-                playerColor = Color.cyan;
-                break;
-            case "Uk":
-                playerColor = Color.yellow;
-                break;
-            case "Yugoslavia":
-                playerColor = Color.magenta;
-                break;
-            case "Turkaye":
-                playerColor = Color.red;
-                break;
-            default:
-                playerColor = Color.gray;
-                break;
+            playerColor = Color.gray;
+            return;
         }
+
+        playerColor = chosenCountryComp.countryColor;
     }
 
     void HandleCountryHover()
@@ -357,6 +344,132 @@ public class MainPlayerController : NetworkBehaviour
         }
     }
 
+    private Renderer GetCountryHighlightRenderer(Country country)
+    {
+        if (country == null) return null;
+        return country.GetComponentInChildren<Renderer>();
+    }
+
+    private void ClearBuildHighlights()
+    {
+        for (int i = 0; i < activeBuildHighlighters.Count; i++)
+        {
+            if (activeBuildHighlighters[i] != null)
+                activeBuildHighlighters[i].StopPulse();
+        }
+
+        activeBuildHighlighters.Clear();
+        activeBuildHighlightCountries.Clear();
+    }
+
+    private void AddBuildHighlight(Country country)
+    {
+        if (country == null) return;
+        if (activeBuildHighlightCountries.Contains(country)) return;
+
+        Renderer rend = GetCountryHighlightRenderer(country);
+        if (rend == null) return;
+
+        PulsingHighlighter highlighter =
+            rend.GetComponent<PulsingHighlighter>() ??
+            rend.gameObject.AddComponent<PulsingHighlighter>();
+
+        highlighter.StartPulse();
+
+        activeBuildHighlighters.Add(highlighter);
+        activeBuildHighlightCountries.Add(country);
+    }
+
+    private bool CanBuildLandOn(Country country)
+    {
+        if (country == null) return false;
+        if (country.ownerID != playerID) return false;
+        if (country.isOcean) return false;
+        if (MainUnitManager.Instance == null) return false;
+
+        return MainUnitManager.Instance.HasSpawnPoint(country.tag, UnitType.Land, null);
+    }
+
+    private bool PlayerMeetsPlaneBuildRequirement()
+    {
+        Country[] allCountries = Object.FindObjectsOfType<Country>();
+
+        int totalCenters = 0;
+        int ownedCenters = 0;
+
+        for (int i = 0; i < allCountries.Length; i++)
+        {
+            Country c = allCountries[i];
+            if (c == null) continue;
+            if (!c.isSupplyCenter) continue;
+
+            totalCenters++;
+            if (c.ownerID == playerID)
+                ownedCenters++;
+        }
+
+        int required = Mathf.CeilToInt(totalCenters * 0.3f);
+        return ownedCenters >= required;
+    }
+
+    private bool CanBuildPlaneOn(Country country)
+    {
+        if (country == null) return false;
+        if (country.ownerID != playerID) return false;
+        if (country.isOcean) return false;
+        if (!country.isAirfield) return false;
+        if (!PlayerMeetsPlaneBuildRequirement()) return false;
+        if (MainUnitManager.Instance == null) return false;
+
+        return MainUnitManager.Instance.HasSpawnPoint(country.tag, UnitType.Plane, null);
+    }
+
+    private bool CanBuildBoatOn(Country oceanCountry)
+    {
+        if (oceanCountry == null) return false;
+        if (!oceanCountry.isOcean) return false;
+        if (MainUnitManager.Instance == null) return false;
+
+        for (int i = 0; i < oceanCountry.adjacentCountries.Count; i++)
+        {
+            Country adj = oceanCountry.adjacentCountries[i];
+            if (adj == null) continue;
+            if (adj.ownerID != playerID) continue;
+
+            if (MainUnitManager.Instance.HasSpawnPoint(adj.tag, UnitType.Boat, oceanCountry.tag))
+                return true;
+        }
+
+        return false;
+    }
+
+    private void RefreshBuildHighlights()
+    {
+        ClearBuildHighlights();
+
+        if (!buildPhaseActiveLocal) return;
+        if (!buildTypeSelected) return;
+
+        Country[] allCountries = Object.FindObjectsOfType<Country>();
+
+        for (int i = 0; i < allCountries.Length; i++)
+        {
+            Country country = allCountries[i];
+            if (country == null) continue;
+
+            bool valid = false;
+
+            if (pendingBuildType == UnitType.Land)
+                valid = CanBuildLandOn(country);
+            else if (pendingBuildType == UnitType.Boat)
+                valid = CanBuildBoatOn(country);
+            else if (pendingBuildType == UnitType.Plane)
+                valid = CanBuildPlaneOn(country);
+
+            if (valid)
+                AddBuildHighlight(country);
+        }
+    }
 
     void HandleUnitSelection()
     {
@@ -1004,21 +1117,31 @@ public class MainPlayerController : NetworkBehaviour
     {
         pendingBuildType = UnitType.Land;
         buildTypeSelected = true;
-        if (buildPhaseActiveLocal) moveStatusText?.SetText("Land selected. Click an owned tile to build.");
+        RefreshBuildHighlights();
+        if (buildPhaseActiveLocal) moveStatusText?.SetText("Land selected. Click a pulsing owned tile to build.");
     }
 
     public void SelectBuildBoat()
     {
         pendingBuildType = UnitType.Boat;
         buildTypeSelected = true;
-        if (buildPhaseActiveLocal) moveStatusText?.SetText("Boat selected. Click an ocean tile to build.");
+        RefreshBuildHighlights();
+        if (buildPhaseActiveLocal) moveStatusText?.SetText("Boat selected. Click a pulsing ocean tile to build.");
     }
 
     public void SelectBuildPlane()
     {
         pendingBuildType = UnitType.Plane;
         buildTypeSelected = true;
-        if (buildPhaseActiveLocal) moveStatusText?.SetText("Plane selected. Click an owned tile to build.");
+        RefreshBuildHighlights();
+
+        if (buildPhaseActiveLocal)
+        {
+            if (PlayerMeetsPlaneBuildRequirement())
+                moveStatusText?.SetText("Plane selected. Click a pulsing airfield tile to build.");
+            else
+                moveStatusText?.SetText("Plane selected, but you do not control enough supply centers.");
+        }
     }
 
     public void PassBuildPhase()
@@ -1035,6 +1158,7 @@ public class MainPlayerController : NetworkBehaviour
         if (buildPassButton != null) buildPassButton.gameObject.SetActive(false);
 
         StopAllCoroutines();
+        ClearBuildHighlights();
         moveStatusText?.SetText("Build phase passed.");
 
         CmdPassBuildPhase(); 
@@ -1053,6 +1177,7 @@ public class MainPlayerController : NetworkBehaviour
         buildTypeSelected = false;
         waitingBuildResponse = false;
         remainingBuildsLocal = buildCount;
+        ClearBuildHighlights();
 
         if (buildLandButton != null) buildLandButton.gameObject.SetActive(true);
         if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(true);
@@ -1187,10 +1312,14 @@ public class MainPlayerController : NetworkBehaviour
             moveStatusText.SetText(message);
 
         if (!success)
+        {
+            RefreshBuildHighlights();
             return;
+        }
 
         remainingBuildsLocal = remainingCredits;
         buildTypeSelected = false;
+        ClearBuildHighlights();
 
         if (remainingBuildsLocal <= 0)
         {
@@ -1215,6 +1344,7 @@ public class MainPlayerController : NetworkBehaviour
         if (buildPassButton != null) buildPassButton.gameObject.SetActive(false);
 
         moveStatusText?.SetText("Build phase complete.");
+        ClearBuildHighlights();
     }
 
 

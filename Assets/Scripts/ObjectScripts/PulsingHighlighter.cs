@@ -3,12 +3,15 @@
 public class PulsingHighlighter : MonoBehaviour
 {
     [Header("Pulse Settings")]
-    public float pulseSpeed = 5f;
-    public float pulseStrength = 0.4f;
+    public float pulseSpeed = 2.5f;
+    public float pulseStrength = 0.5f;
+    public Color pulseColor = Color.white;
+
     private Renderer rend;
     private Material runtimeMat;
-    private Color _originalColor; 
+    private Color baseColor;
     private bool isActive;
+    private int pulseRequests;
 
     void Awake()
     {
@@ -21,34 +24,48 @@ public class PulsingHighlighter : MonoBehaviour
         }
 
         runtimeMat = rend.material;
-        _originalColor = runtimeMat.color;
+        baseColor = runtimeMat.color;
     }
 
     void Update()
     {
         if (!isActive) return;
+        if (runtimeMat == null) return;
 
         float pulse = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
-
-        float intensity = 1f + pulseStrength * pulse;
-
-        runtimeMat.color = _originalColor * intensity;
+        float t = Mathf.SmoothStep(0f, 1f, pulse);
+        runtimeMat.color = Color.Lerp(baseColor, Color.white, t * pulseStrength);
     }
 
     public void StartPulse()
     {
-        if (runtimeMat != null)
-        {
-            _originalColor = runtimeMat.color;
-        }
+        if (runtimeMat == null) return;
+
+        if (pulseRequests == 0)
+            baseColor = runtimeMat.color;
+
+        pulseRequests++;
         isActive = true;
     }
 
     public void StopPulse()
     {
-        isActive = false;
+        if (runtimeMat == null) return;
 
-        if (runtimeMat != null)
-            runtimeMat.color = _originalColor;
+        pulseRequests = Mathf.Max(0, pulseRequests - 1);
+
+        if (pulseRequests > 0)
+            return;
+
+        isActive = false;
+        runtimeMat.color = baseColor;
+    }
+
+    public void ForceSetBaseColor(Color color)
+    {
+        baseColor = color;
+
+        if (!isActive && runtimeMat != null)
+            runtimeMat.color = baseColor;
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Country : MonoBehaviour
 {
     public string countryName;
+    public Color countryColor = Color.white;
     public int ownerID = -1;
     public bool isStarterCountry = true;
 
