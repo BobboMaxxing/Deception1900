@@ -18,7 +18,13 @@ public class MainUnit : NetworkBehaviour
 
     private LineRenderer lineRenderer;
     private Coroutine moveCoroutine;
+
     [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float boatMoveDuration = 0.6f;
+    [SerializeField] private float defaultMoveDuration = 0.5f;
+    [SerializeField] private float boatCurveStrength = 0.22f;
+
+
     [SerializeField] private TMP_Text supportCountText;
     private int localIncomingSupportCount;
 
@@ -86,7 +92,11 @@ public class MainUnit : NetworkBehaviour
         else
             StopMoveParticles();
 
-        moveCoroutine = StartCoroutine(MoveToPositionXZ(target));
+        if (unitType == UnitType.Boat)
+            moveCoroutine = StartCoroutine(MoveBoatCurvedXZ(target));
+        else
+            moveCoroutine = StartCoroutine(MoveToPositionXZ(target));
+
         ClearMoveLine();
     }
 
@@ -98,15 +108,76 @@ public class MainUnit : NetworkBehaviour
         target.y = start.y;
 
         float time = 0f;
-        float duration = 0.5f;
+        float duration = defaultMoveDuration;
 
         while (time < duration)
         {
             time += Time.deltaTime;
-            float t = time / duration;
+            float t = Mathf.Clamp01(time / duration);
 
             Vector3 currentPos = transform.position;
             Vector3 nextPos = Vector3.Lerp(start, target, t);
+            nextPos.y = start.y;
+
+            Vector3 moveDir = nextPos - currentPos;
+            moveDir.y = 0f;
+
+            if (moveDir.sqrMagnitude > 0.0001f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDir.normalized);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
+            }
+
+            transform.position = nextPos;
+            yield return null;
+        }
+
+        transform.position = new Vector3(target.x, start.y, target.z);
+        StopMoveParticles();
+        moveCoroutine = null;
+    }
+
+    private Vector3 GetQuadraticBezierPoint(Vector3 a, Vector3 b, Vector3 c, float t)
+    {
+        float u = 1f - t;
+        return (u * u * a) + (2f * u * t * b) + (t * t * c);
+    }
+    private IEnumerator MoveBoatCurvedXZ(Vector3 target)
+    {
+        Vector3 start = transform.position;
+        target.y = start.y;
+
+        Vector3 flatDir = target - start;
+        flatDir.y = 0f;
+
+        float distance = flatDir.magnitude;
+
+        if (distance <= 0.01f)
+        {
+            transform.position = target;
+            StopMoveParticles();
+            moveCoroutine = null;
+            yield break;
+        }
+
+        Vector3 dir = flatDir.normalized;
+        Vector3 side = Vector3.Cross(Vector3.up, dir).normalized;
+
+        float sign = Random.value < 0.5f ? -1f : 1f;
+        Vector3 mid = (start + target) * 0.5f;
+        Vector3 control = mid + side * (distance * boatCurveStrength * sign);
+        control.y = start.y;
+
+        float time = 0f;
+        float duration = boatMoveDuration;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = Mathf.Clamp01(time / duration);
+
+            Vector3 currentPos = transform.position;
+            Vector3 nextPos = GetQuadraticBezierPoint(start, control, target, t);
             nextPos.y = start.y;
 
             Vector3 moveDir = nextPos - currentPos;
@@ -251,7 +322,7 @@ public class MainUnit : NetworkBehaviour
         else
             PlayParticleList(landMoveParticles);
     }
-
+        
     private void StopMoveParticles()
     {
         StopParticleList(landMoveParticles);
