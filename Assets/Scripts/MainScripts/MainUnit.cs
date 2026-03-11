@@ -1,7 +1,8 @@
 ﻿using Mirror;
 using System.Collections;
-using UnityEngine;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 
 [RequireComponent(typeof(Renderer), typeof(LineRenderer))]
 public class MainUnit : NetworkBehaviour
@@ -11,17 +12,24 @@ public class MainUnit : NetworkBehaviour
     [SyncVar] public string currentCountry;
     [SyncVar] public Color playerColor;
     [SyncVar] public UnitType unitType;
+    [SerializeField] private Renderer[] colorRenderers;
 
     [HideInInspector] public PlayerUnitOrder currentOrder;
 
     private LineRenderer lineRenderer;
     private Coroutine moveCoroutine;
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private TMP_Text supportCountText;
     private int localIncomingSupportCount;
 
+    [SerializeField] private float particleMoveThreshold = 0.75f;
+    [SerializeField] private List<ParticleSystem> landMoveParticles = new List<ParticleSystem>();
+    [SerializeField] private List<ParticleSystem> boatMoveParticles = new List<ParticleSystem>();
+    [SerializeField] private List<ParticleSystem> planeMoveParticles = new List<ParticleSystem>();
+
     void Awake()
     {
+        StopMoveParticles();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
         lineRenderer.startWidth = 0.1f;
@@ -60,23 +68,33 @@ public class MainUnit : NetworkBehaviour
     [ClientRpc]
     public void RpcMoveTo(Vector3 target)
     {
-
         if (!enabled || !gameObject.activeSelf)
         {
             Debug.LogWarning("Cannot move: component disabled or object inactive.");
             return;
         }
 
-        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+        Vector3 current = transform.position;
+        Vector3 flatTarget = new Vector3(target.x, current.y, target.z);
+        float moveDistance = Vector3.Distance(current, flatTarget);
+
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+
+        if (moveDistance >= particleMoveThreshold)
+            PlayMoveParticles();
+        else
+            StopMoveParticles();
+
         moveCoroutine = StartCoroutine(MoveToPositionXZ(target));
         ClearMoveLine();
     }
 
+    [SerializeField] private float turnSpeed = 12f;
+
     private IEnumerator MoveToPositionXZ(Vector3 target)
     {
         Vector3 start = transform.position;
-
-        // Lock Y for movement only
         target.y = start.y;
 
         float time = 0f;
@@ -87,14 +105,26 @@ public class MainUnit : NetworkBehaviour
             time += Time.deltaTime;
             float t = time / duration;
 
-            Vector3 pos = Vector3.Lerp(start, target, t);
-            pos.y = start.y; // hard guarantee
+            Vector3 currentPos = transform.position;
+            Vector3 nextPos = Vector3.Lerp(start, target, t);
+            nextPos.y = start.y;
 
-            transform.position = pos;
+            Vector3 moveDir = nextPos - currentPos;
+            moveDir.y = 0f;
+
+            if (moveDir.sqrMagnitude > 0.0001f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDir.normalized);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
+            }
+
+            transform.position = nextPos;
             yield return null;
         }
 
         transform.position = new Vector3(target.x, start.y, target.z);
+        StopMoveParticles();
+        moveCoroutine = null;
     }
     #endregion
 
@@ -140,6 +170,7 @@ public class MainUnit : NetworkBehaviour
         }
 
         if (lineRenderer != null) lineRenderer.enabled = false;
+        StopMoveParticles();
     }
 
     [SerializeField] private GameObject selectionHighlight;
@@ -151,16 +182,15 @@ public class MainUnit : NetworkBehaviour
     }
     private void SetColor(Color c)
     {
-        Color darker = c * 0.5f;
-        darker.a = c.a;
+        Color lighter = Color.Lerp(c, Color.white, 0.35f);
+        lighter.a = c.a;
 
-        Renderer[] renderers = GetComponentsInChildren<Renderer>();
-        foreach (Renderer rend in renderers)
+        if (colorRenderers == null) return;
+
+        for (int i = 0; i < colorRenderers.Length; i++)
         {
-            if (selectionHighlight != null && rend.gameObject == selectionHighlight)
-                continue;
-
-            rend.material.color = darker;
+            if (colorRenderers[i] == null) continue;
+            colorRenderers[i].material.color = lighter;
         }
     }
     public void SetLocalIncomingSupportCount(int count)
@@ -184,6 +214,49 @@ public class MainUnit : NetworkBehaviour
     public void ClearLocalIncomingSupportCount()
     {
         SetLocalIncomingSupportCount(0);
+    }
+
+    #endregion
+    #region Particle Effects
+    private void PlayParticleList(List<ParticleSystem> particles)
+    {
+        if (particles == null) return;
+
+        for (int i = 0; i < particles.Count; i++)
+        {
+            if (particles[i] != null)
+                particles[i].Play();
+        }
+    }
+
+    private void StopParticleList(List<ParticleSystem> particles)
+    {
+        if (particles == null) return;
+
+        for (int i = 0; i < particles.Count; i++)
+        {
+            if (particles[i] != null)
+                particles[i].Stop();
+        }
+    }
+
+    private void PlayMoveParticles()
+    {
+        StopMoveParticles();
+
+        if (unitType == UnitType.Plane)
+            PlayParticleList(planeMoveParticles);
+        else if (unitType == UnitType.Boat)
+            PlayParticleList(boatMoveParticles);
+        else
+            PlayParticleList(landMoveParticles);
+    }
+
+    private void StopMoveParticles()
+    {
+        StopParticleList(landMoveParticles);
+        StopParticleList(boatMoveParticles);
+        StopParticleList(planeMoveParticles);
     }
 
     #endregion
