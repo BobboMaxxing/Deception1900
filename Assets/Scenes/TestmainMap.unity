@@ -7164,9 +7164,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8275789790238500374, guid: 39f4f609546fdb0438fbebe4cd03d5e4, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8275789790238500374, guid: 39f4f609546fdb0438fbebe4cd03d5e4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1df0301994ec16d448eb0169da115ffd, type: 2}
+    - target: {fileID: -8275789790238500374, guid: 39f4f609546fdb0438fbebe4cd03d5e4, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1d79d3b1fa7f2904c8a618dfd00b5550, type: 2}
     - target: {fileID: 919132149155446097, guid: 39f4f609546fdb0438fbebe4cd03d5e4, type: 3}
       propertyPath: m_Name
       value: MapEu.FullMapWithOceans
@@ -11719,9 +11727,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1881676700281434765, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1881676700281434765, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 375db09a2444e924c90b118ce3632420, type: 2}
+    - target: {fileID: -1881676700281434765, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7be3bf4a9a4a87f4e932d466265ed8ce, type: 2}
     - target: {fileID: 919132149155446097, guid: 574d9a716b963dd46838f4725d9c8ea5, type: 3}
       propertyPath: m_Name
       value: Germany
@@ -17653,6 +17669,7 @@ MonoBehaviour:
   - {fileID: 1987312188}
   - {fileID: 468064820}
   - {fileID: 360796718}
+  - {fileID: 2065362173}
   planeAdjacentCountries: []
   starterSubCountries: []
 --- !u!1 &1855193813 stripped
