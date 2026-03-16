@@ -4,6 +4,7 @@ public class CameraMovment : MonoBehaviour
 {
     [Header("Objects")]
     [SerializeField] Transform defaultPosition;
+    [SerializeField] Transform buildTablePosition;
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] LayerMask countryLayer;
     [SerializeField] Vector3 focusOffset = new Vector3(20f, 20f, 0f);
@@ -17,6 +18,7 @@ public class CameraMovment : MonoBehaviour
     Vector3 targetPosition;
     Quaternion targetRotation;
     bool isFocusing = false;
+    bool allowFocusClick = true;
 
     void Start()
     {
@@ -37,7 +39,7 @@ public class CameraMovment : MonoBehaviour
         {
             ResetCamera();
         }
-        else if (Input.GetMouseButtonDown(0))
+        else if (allowFocusClick && Input.GetMouseButtonDown(0))
         {
             CheckCountryClick();
         }
@@ -86,6 +88,21 @@ public class CameraMovment : MonoBehaviour
         targetRotation = defaultPosition.rotation;
     }
 
+    public void MoveToBuildTable()
+    {
+        if (buildTablePosition == null)
+            return;
+
+        isFocusing = false;
+        targetPosition = buildTablePosition.position;
+        targetRotation = buildTablePosition.rotation;
+    }
+
+    public void SetFocusClickEnabled(bool value)
+    {
+        allowFocusClick = value;
+    }
+
     void FreeMove()
     {
         isFocusing = false;
@@ -112,5 +129,6 @@ public class CameraMovment : MonoBehaviour
     void SmoothMoveCamera()
     {
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
     }
 }

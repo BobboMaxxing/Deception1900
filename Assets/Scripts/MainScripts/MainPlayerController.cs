@@ -59,6 +59,8 @@ public class MainPlayerController : NetworkBehaviour
     private bool buildPhaseActiveLocal = false;
     private int remainingBuildsLocal = 0;
     private bool waitingBuildResponse = false;
+    [SerializeField] private KeyCode reopenBuildSelectionKey = KeyCode.F;
+    private bool buildTableSelectionOpen = false;
 
     private Dictionary<MainUnit, int> localSupportCounts = new Dictionary<MainUnit, int>();
     private List<PulsingHighlighter> activeBuildHighlighters = new List<PulsingHighlighter>();
@@ -109,8 +111,17 @@ public class MainPlayerController : NetworkBehaviour
         if (MainGameManager.Instance != null && MainGameManager.Instance.IsPlayerBuilding(playerID))
         {
             canIssueOrders = false;
-            HandleCountryHover();
-            if (!hasChosenCountry) HandleCountrySelection();
+
+            if (!hasChosenCountry)
+            {
+                HandleCountryHover();
+                HandleCountrySelection();
+            }
+            else
+            {
+                HandleBuildPhaseInput();
+            }
+
             UpdateOrderButtonsUI();
             return;
         }
@@ -469,6 +480,81 @@ public class MainPlayerController : NetworkBehaviour
             if (valid)
                 AddBuildHighlight(country);
         }
+    }
+
+    private BuildPileSelectable GetBuildPileFromHit(RaycastHit hit)
+    {
+        return hit.collider.GetComponentInParent<BuildPileSelectable>()
+            ?? hit.collider.GetComponentInChildren<BuildPileSelectable>();
+    }
+
+    private void OpenBuildTableSelection()
+    {
+        if (!buildPhaseActiveLocal) return;
+        if (remainingBuildsLocal <= 0) return;
+
+        buildTableSelectionOpen = true;
+        buildTypeSelected = false;
+        ClearBuildHighlights();
+
+        if (cameraMovment != null)
+        {
+            cameraMovment.SetFocusClickEnabled(false);
+            cameraMovment.MoveToBuildTable();
+        }
+
+        moveStatusText?.SetText($"Build points: {remainingBuildsLocal}. Choose a unit from the pile.");
+    }
+
+    private void CloseBuildTableSelectionToMap()
+    {
+        buildTableSelectionOpen = false;
+
+        if (cameraMovment != null)
+        {
+            cameraMovment.SetFocusClickEnabled(false);
+            cameraMovment.ResetCamera();
+        }
+    }
+
+    private void HandleBuildPileSelection()
+    {
+        if (!buildTableSelectionOpen) return;
+        if (!Input.GetMouseButtonDown(0)) return;
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, ~0, QueryTriggerInteraction.Collide);
+        if (hits == null || hits.Length == 0) return;
+
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            BuildPileSelectable pile = GetBuildPileFromHit(hits[i]);
+            if (pile == null) continue;
+
+            if (pile.unitType == UnitType.Land)
+                SelectBuildLand();
+            else if (pile.unitType == UnitType.Boat)
+                SelectBuildBoat();
+            else if (pile.unitType == UnitType.Plane)
+                SelectBuildPlane();
+
+            CloseBuildTableSelectionToMap();
+            return;
+        }
+    }
+
+    private void HandleBuildPhaseInput()
+    {
+        if (remainingBuildsLocal > 0 && Input.GetKeyDown(reopenBuildSelectionKey))
+            OpenBuildTableSelection();
+
+        if (buildTableSelectionOpen)
+            HandleBuildPileSelection();
+        else
+            HandleCountryHover();
     }
 
     void HandleUnitSelection()
@@ -1155,11 +1241,18 @@ public class MainPlayerController : NetworkBehaviour
         if (buildLandButton != null) buildLandButton.gameObject.SetActive(false);
         if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
         if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(false);
-        if (buildPassButton != null) buildPassButton.gameObject.SetActive(false);
+        if (buildPassButton != null) buildPassButton.gameObject.SetActive(true);
 
         StopAllCoroutines();
         ClearBuildHighlights();
         moveStatusText?.SetText("Build phase passed.");
+        buildTableSelectionOpen = false;
+
+        if (cameraMovment != null)
+        {
+            cameraMovment.SetFocusClickEnabled(true);
+            cameraMovment.ResetCamera();
+        }
 
         CmdPassBuildPhase(); 
     }
@@ -1186,10 +1279,15 @@ public class MainPlayerController : NetworkBehaviour
 
         if (remainingBuildsLocal <= 0)
         {
+            buildTableSelectionOpen = false;
             moveStatusText?.SetText("No build points. Press Pass to continue.");
             StopAllCoroutines();
             return;
         }
+
+        StopAllCoroutines();
+        StartCoroutine(HandleBuildSelection());
+        OpenBuildTableSelection();
 
         moveStatusText?.SetText($"Build points: {remainingBuildsLocal}. Pick Land/Boat/Plane, then click an owned tile.");
 
@@ -1201,6 +1299,11 @@ public class MainPlayerController : NetworkBehaviour
     {
         while (buildPhaseActiveLocal && remainingBuildsLocal > 0)
         {
+            if (buildTableSelectionOpen)
+            {
+                yield return null;
+                continue;
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
@@ -1328,8 +1431,7 @@ public class MainPlayerController : NetworkBehaviour
         }
         else
         {
-            if (moveStatusText != null)
-                moveStatusText.SetText($"Build points left: {remainingBuildsLocal}. Pick unit type again.");
+            OpenBuildTableSelection();
         }
     }
 
@@ -1342,6 +1444,14 @@ public class MainPlayerController : NetworkBehaviour
         if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
         if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(false);
         if (buildPassButton != null) buildPassButton.gameObject.SetActive(false);
+
+        buildTableSelectionOpen = false;
+
+        if (cameraMovment != null)
+        {
+            cameraMovment.SetFocusClickEnabled(true);
+            cameraMovment.ResetCamera();
+        }
 
         moveStatusText?.SetText("Build phase complete.");
         ClearBuildHighlights();
