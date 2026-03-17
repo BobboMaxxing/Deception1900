@@ -54,23 +54,23 @@ public class LocalPlayerSetup : MonoBehaviour
 
         if (buildLandButton != null)
         {
-            buildLandButton.gameObject.SetActive(false);
             buildLandButton.onClick.RemoveAllListeners();
-            buildLandButton.onClick.AddListener(localPlayer.SelectBuildLand);
+            buildLandButton.gameObject.SetActive(false);
+            buildLandButton.interactable = false;
         }
 
         if (buildBoatButton != null)
         {
-            buildBoatButton.gameObject.SetActive(false);
             buildBoatButton.onClick.RemoveAllListeners();
-            buildBoatButton.onClick.AddListener(localPlayer.SelectBuildBoat);
+            buildBoatButton.gameObject.SetActive(false);
+            buildBoatButton.interactable = false;
         }
 
         if (buildPlaneButton != null)
         {
-            buildPlaneButton.gameObject.SetActive(false);
             buildPlaneButton.onClick.RemoveAllListeners();
-            buildPlaneButton.onClick.AddListener(localPlayer.SelectBuildPlane);
+            buildPlaneButton.gameObject.SetActive(false);
+            buildPlaneButton.interactable = false;
         }
 
         if (buildPassButton != null)
@@ -78,19 +78,25 @@ public class LocalPlayerSetup : MonoBehaviour
             buildPassButton.gameObject.SetActive(false);
             buildPassButton.onClick.RemoveAllListeners();
             buildPassButton.onClick.AddListener(localPlayer.PassBuildPhase);
-        }
+        }   
 
         localPlayer.SetupBuildUI(buildLandButton, buildBoatButton, buildPlaneButton, buildPassButton);
 
         localPlayer.SetupUIReferences(
-            selectedCountryText,
-            moveStatusText,
-            confirmButton,
-            cancelButton,
-            confirmMoveButton,
-            cancelMoveButton
-        );
+    selectedCountryText,
+    moveStatusText,
+    confirmButton,
+    cancelButton,
+    confirmMoveButton,
+    cancelMoveButton
+);
 
         localPlayer.playerCamera = playerCamera;
+
+        if (localPlayer.cameraMovment == null)
+            localPlayer.cameraMovment = Object.FindFirstObjectByType<CameraMovment>();
+
+        if (localPlayer.cameraMovment != null && playerCamera != null)
+            localPlayer.cameraMovment.SetTargetCamera(playerCamera);
     }
 }

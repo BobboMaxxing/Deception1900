@@ -8,6 +8,7 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] LayerMask countryLayer;
     [SerializeField] Vector3 focusOffset = new Vector3(20f, 20f, 0f);
+    [SerializeField] private Camera targetCamera;
 
     [Header("Free Move Settings")]
     [SerializeField] float dragSpeed = 20f;
@@ -15,6 +16,7 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] Vector2 zLimits = new Vector2(-50f, 50f);
 
     Camera cam;
+    bool lockManualInput = false;
     Vector3 targetPosition;
     Quaternion targetRotation;
     bool isFocusing = false;
@@ -22,9 +24,19 @@ public class CameraMovment : MonoBehaviour
 
     void Start()
     {
-        cam = Camera.main;
-        targetPosition = defaultPosition.position;
-        targetRotation = defaultPosition.rotation;
+        if (targetCamera == null)
+            targetCamera = Camera.main;
+
+        if (defaultPosition != null)
+        {
+            targetPosition = defaultPosition.position;
+            targetRotation = defaultPosition.rotation;
+        }
+        else if (targetCamera != null)
+        {
+            targetPosition = targetCamera.transform.position;
+            targetRotation = targetCamera.transform.rotation;
+        }
     }
 
     void Update()
@@ -35,6 +47,9 @@ public class CameraMovment : MonoBehaviour
 
     void HandleInput()
     {
+        if (lockManualInput)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResetCamera();
@@ -52,7 +67,8 @@ public class CameraMovment : MonoBehaviour
 
     void CheckCountryClick()
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        if (targetCamera == null) return;
+        Ray ray = targetCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer, QueryTriggerInteraction.Collide))
         {
             if (!isFocusing)
@@ -78,14 +94,19 @@ public class CameraMovment : MonoBehaviour
         isFocusing = true;
     }
 
-
-
-
     public void ResetCamera()
     {
         isFocusing = false;
+
+        if (defaultPosition == null)
+            return;
+
         targetPosition = defaultPosition.position;
         targetRotation = defaultPosition.rotation;
+    }
+    public void SetTargetCamera(Camera camToUse)
+    {
+        targetCamera = camToUse;
     }
 
     public void MoveToBuildTable()
@@ -102,23 +123,29 @@ public class CameraMovment : MonoBehaviour
     {
         allowFocusClick = value;
     }
+    public void SetManualInputLocked(bool value)
+    {
+        lockManualInput = value;
+    }
 
     void FreeMove()
     {
+        if (targetCamera == null) return;
+
         isFocusing = false;
 
         float moveX = Input.GetAxis("Mouse X") * dragSpeed * Time.deltaTime * 1000;
         float moveZ = Input.GetAxis("Mouse Y") * dragSpeed * Time.deltaTime * 1000;
 
-        Vector3 right = transform.right;
-        Vector3 forward = transform.forward;
+        Vector3 right = targetCamera.transform.right;
+        Vector3 forward = targetCamera.transform.forward;
         right.y = 0;
         forward.y = 0;
         right.Normalize();
         forward.Normalize();
 
         Vector3 moveDir = right * -moveX + forward * -moveZ;
-        Vector3 newPos = transform.position + moveDir;
+        Vector3 newPos = targetCamera.transform.position + moveDir;
 
         newPos.x = Mathf.Clamp(newPos.x, xLimits.x, xLimits.y);
         newPos.z = Mathf.Clamp(newPos.z, zLimits.x, zLimits.y);
@@ -128,7 +155,9 @@ public class CameraMovment : MonoBehaviour
 
     void SmoothMoveCamera()
     {
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
+        if (targetCamera == null) return;
+
+        targetCamera.transform.position = Vector3.Lerp(targetCamera.transform.position, targetPosition, Time.deltaTime * moveSpeed);
+        targetCamera.transform.rotation = Quaternion.Slerp(targetCamera.transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
     }
 }

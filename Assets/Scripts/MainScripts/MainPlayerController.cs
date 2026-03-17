@@ -224,6 +224,7 @@ public class MainPlayerController : NetworkBehaviour
 
         if (!isServer)
         {
+            CmdSetPlayerColor(playerColor);
             CmdStartInitialBuildPhase();
         }
         else
@@ -233,6 +234,12 @@ public class MainPlayerController : NetworkBehaviour
 
         pendingCountryComp = null;
         pendingCountry = "";
+    }
+
+    [Command]
+    private void CmdSetPlayerColor(Color color)
+    {
+        playerColor = color;
     }
 
     [Command]
@@ -500,6 +507,7 @@ public class MainPlayerController : NetworkBehaviour
         if (cameraMovment != null)
         {
             cameraMovment.SetFocusClickEnabled(false);
+            cameraMovment.SetManualInputLocked(true);
             cameraMovment.MoveToBuildTable();
         }
 
@@ -513,6 +521,7 @@ public class MainPlayerController : NetworkBehaviour
         if (cameraMovment != null)
         {
             cameraMovment.SetFocusClickEnabled(false);
+            cameraMovment.SetManualInputLocked(false);
             cameraMovment.ResetCamera();
         }
     }
@@ -1171,9 +1180,23 @@ public class MainPlayerController : NetworkBehaviour
         buildPlaneButton = planeButtonRef;
         buildPassButton = passButtonRef;
 
-        if (buildLandButton != null) buildLandButton.gameObject.SetActive(false);
-        if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
-        if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(false);
+        if (buildLandButton != null)
+        {
+            buildLandButton.gameObject.SetActive(false);
+            buildLandButton.interactable = false;
+        }
+
+        if (buildBoatButton != null)
+        {
+            buildBoatButton.gameObject.SetActive(false);
+            buildBoatButton.interactable = false;
+        }
+
+        if (buildPlaneButton != null)
+        {
+            buildPlaneButton.gameObject.SetActive(false);
+            buildPlaneButton.interactable = false;
+        }
 
         if (buildPassButton != null)
         {
@@ -1251,6 +1274,7 @@ public class MainPlayerController : NetworkBehaviour
         if (cameraMovment != null)
         {
             cameraMovment.SetFocusClickEnabled(true);
+            cameraMovment.SetManualInputLocked(false);
             cameraMovment.ResetCamera();
         }
 
@@ -1450,6 +1474,7 @@ public class MainPlayerController : NetworkBehaviour
         if (cameraMovment != null)
         {
             cameraMovment.SetFocusClickEnabled(true);
+            cameraMovment.SetManualInputLocked(false);
             cameraMovment.ResetCamera();
         }
 
