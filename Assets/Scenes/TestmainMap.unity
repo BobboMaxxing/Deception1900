@@ -10323,7 +10323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultPosition: {fileID: 1151664565}
   buildTablePosition: {fileID: 527530424}
-  moveSpeed: 2.5
+  moveSpeed: 1.5
   countryLayer:
     serializedVersion: 2
     m_Bits: 64
