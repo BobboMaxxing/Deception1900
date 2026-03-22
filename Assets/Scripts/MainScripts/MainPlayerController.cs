@@ -108,7 +108,7 @@ public class MainPlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
-        if (MainGameManager.Instance != null && MainGameManager.Instance.IsPlayerBuilding(playerID))
+        if (buildPhaseActiveLocal)
         {
             canIssueOrders = false;
 
@@ -530,16 +530,19 @@ public class MainPlayerController : NetworkBehaviour
     {
         if (!buildTableSelectionOpen) return;
         if (!Input.GetMouseButtonDown(0)) return;
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, ~0, QueryTriggerInteraction.Collide);
         if (hits == null || hits.Length == 0) return;
 
+        Debug.Log($"Pile click hits: {hits.Length}");
+
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
         for (int i = 0; i < hits.Length; i++)
         {
+            Debug.Log($"Hit object: {hits[i].collider.name}");
+
             BuildPileSelectable pile = GetBuildPileFromHit(hits[i]);
             if (pile == null) continue;
 
@@ -1264,7 +1267,7 @@ public class MainPlayerController : NetworkBehaviour
         if (buildLandButton != null) buildLandButton.gameObject.SetActive(false);
         if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
         if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(false);
-        if (buildPassButton != null) buildPassButton.gameObject.SetActive(true);
+        if (buildPassButton != null) buildPassButton.gameObject.SetActive(false);
 
         StopAllCoroutines();
         ClearBuildHighlights();
@@ -1294,29 +1297,24 @@ public class MainPlayerController : NetworkBehaviour
         buildTypeSelected = false;
         waitingBuildResponse = false;
         remainingBuildsLocal = buildCount;
+        buildTableSelectionOpen = false;
         ClearBuildHighlights();
 
-        if (buildLandButton != null) buildLandButton.gameObject.SetActive(true);
-        if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(true);
-        if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(true);
+        if (buildLandButton != null) buildLandButton.gameObject.SetActive(false);
+        if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
+        if (buildPlaneButton != null) buildPlaneButton.gameObject.SetActive(false);
         if (buildPassButton != null) buildPassButton.gameObject.SetActive(true);
+
+        StopAllCoroutines();
 
         if (remainingBuildsLocal <= 0)
         {
-            buildTableSelectionOpen = false;
             moveStatusText?.SetText("No build points. Press Pass to continue.");
-            StopAllCoroutines();
             return;
         }
 
-        StopAllCoroutines();
         StartCoroutine(HandleBuildSelection());
         OpenBuildTableSelection();
-
-        moveStatusText?.SetText($"Build points: {remainingBuildsLocal}. Pick Land/Boat/Plane, then click an owned tile.");
-
-        StopAllCoroutines();
-        StartCoroutine(HandleBuildSelection());
     }
 
     private IEnumerator HandleBuildSelection()
