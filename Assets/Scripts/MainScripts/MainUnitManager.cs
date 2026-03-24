@@ -139,7 +139,7 @@ public partial class MainUnitManager : NetworkBehaviour
             lastSpawned = unitObj;
         }
 
-        RpcUpdateCountryOwnership(ownerCountryTag, playerColor);
+        RpcUpdateCountryOwnership(ownerCountryTag, playerID, playerColor);
 
         return lastSpawned;
     }
@@ -150,7 +150,6 @@ public partial class MainUnitManager : NetworkBehaviour
         return SpawnUnitsForCountryServer(ownerCountryTag, playerID, playerColor, count, unitType, null);
     }
 
-    [Server]
     public bool HasSpawnPoint(string ownerCountryTag, UnitType unitType, string requiredSpawnTileTag)
     {
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -603,7 +602,7 @@ public partial class MainUnitManager : NetworkBehaviour
             if (c != null && !c.isOcean)
             {
                 c.SetOwner(w.unit.ownerID);
-                RpcUpdateCountryOwnership(w.toTag, w.unit.playerColor);
+                RpcUpdateCountryOwnership(w.toTag, w.unit.ownerID, w.unit.playerColor);
             }
         }
 
@@ -739,15 +738,33 @@ public partial class MainUnitManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcUpdateCountryOwnership(string countryTag, Color playerColor)
+    public void RpcUpdateCountryOwnership(string countryTag, int ownerId, Color playerColor)
     {
         GameObject countryObj = GameObject.FindWithTag(countryTag);
         if (countryObj == null) return;
 
-        Renderer[] renderers = countryObj.GetComponentsInChildren<Renderer>();
-        if (renderers.Length == 0) return;
+        Country country = countryObj.GetComponent<Country>()
+            ?? countryObj.GetComponentInChildren<Country>()
+            ?? countryObj.GetComponentInParent<Country>();
 
-        foreach (var rend in renderers)
+        if (country != null)
+            country.ownerID = ownerId;
+
+        Renderer[] renderers = countryObj.GetComponentsInChildren<Renderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Renderer rend = renderers[i];
+            if (rend == null) continue;
+
             rend.material.color = playerColor;
+
+            PulsingHighlighter highlighter =
+                rend.GetComponent<PulsingHighlighter>() ??
+                rend.GetComponentInParent<PulsingHighlighter>() ??
+                rend.GetComponentInChildren<PulsingHighlighter>();
+
+            if (highlighter != null)
+                highlighter.ForceSetBaseColor(playerColor);
+        }
     }
 }

@@ -626,7 +626,9 @@ public class MainPlayerController : NetworkBehaviour
             }
 
             CancelReadyIfNeeded();
+            SetSupportOrderLocal(selectedUnit, targetUnit, supportTarget);
             CmdSupportUnit(selectedUnit.netId, targetUnit.netId, supportTarget);
+            StartCoroutine(RebuildLocalSupportVisualsNextFrame());
 
             moveStatusText?.SetText("Support queued.");
             ClearSelectedUnit();
@@ -725,6 +727,7 @@ public class MainPlayerController : NetworkBehaviour
         selectedUnit.ShowLocalMoveLine(targetPos);
 
         CancelReadyIfNeeded();
+        SetMoveOrderLocal(selectedUnit, targetCountryComp.tag, targetPos);
         CmdMoveUnit(selectedUnit.netId, targetCountryComp.tag, targetPos);
         StartCoroutine(RebuildLocalSupportVisualsNextFrame());
 
@@ -999,8 +1002,32 @@ public class MainPlayerController : NetworkBehaviour
         if (unit.currentOrder != null)
             CmdClearUnitOrder(unit.netId);
 
+        unit.currentOrder = null;
         unit.ClearLocalMoveLine();
         StartCoroutine(RebuildLocalSupportVisualsNextFrame());
+    }
+    private void SetMoveOrderLocal(MainUnit unit, string targetCountryTag, Vector3 targetPos)
+    {
+        if (unit == null) return;
+
+        unit.currentOrder = new PlayerUnitOrder
+        {
+            orderType = UnitOrderType.Move,
+            targetCountry = targetCountryTag,
+            targetPosition = targetPos
+        };
+    }
+
+    private void SetSupportOrderLocal(MainUnit supporter, MainUnit supported, string supportTargetCountry)
+    {
+        if (supporter == null) return;
+
+        supporter.currentOrder = new PlayerUnitOrder
+        {
+            orderType = UnitOrderType.Support,
+            supportedUnit = supported,
+            targetCountry = supportTargetCountry
+        };
     }
 
     [Command]
@@ -1152,9 +1179,24 @@ public class MainPlayerController : NetworkBehaviour
     public void RpcResetReady()
     {
         isReady = false;
+
+        MainUnit[] allUnits = Object.FindObjectsOfType<MainUnit>();
+        for (int i = 0; i < allUnits.Length; i++)
+        {
+            MainUnit unit = allUnits[i];
+            if (unit == null) continue;
+            if (unit.ownerID != playerID) continue;
+
+            unit.currentOrder = null;
+            unit.ClearLocalMoveLine();
+            unit.ClearLocalIncomingSupportCount();
+        }
+
         ClearAllLocalSupportVisuals();
+
         if (playersReady.ContainsKey(playerID))
             playersReady[playerID] = false;
+
         UpdateReadyUI();
         UpdateOrderButtonsUI();
     }
