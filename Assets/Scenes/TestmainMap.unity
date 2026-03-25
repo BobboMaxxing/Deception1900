@@ -10554,6 +10554,11 @@ MonoBehaviour:
   dragSpeed: 80
   xLimits: {x: -50, y: 140}
   zLimits: {x: -80, y: 80}
+  keyboardMoveSpeed: 250
+  zoomSpeed: 60
+  minZoomY: 12
+  maxZoomY: 80
+  zoomTiltStrength: 0.15
 --- !u!1 &1066087298
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,11 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] float dragSpeed = 20f;
     [SerializeField] Vector2 xLimits = new Vector2(-50f, 50f);
     [SerializeField] Vector2 zLimits = new Vector2(-50f, 50f);
+    [SerializeField] float keyboardMoveSpeed = 25f;
+    [SerializeField] float zoomSpeed = 60f;
+    [SerializeField] float minZoomY = 12f;
+    [SerializeField] float maxZoomY = 60f;
+    [SerializeField] float zoomTiltStrength = 0.15f;
 
     Camera cam;
     bool lockManualInput = false;
@@ -63,6 +68,9 @@ public class CameraMovment : MonoBehaviour
         {
             FreeMove();
         }
+
+        HandleKeyboardMove();
+        HandleScrollZoom();
     }
 
     void CheckCountryClick()
@@ -91,7 +99,71 @@ public class CameraMovment : MonoBehaviour
         }
 
         targetPosition = country.centerWorldPos + focusOffset;
+
+        if (defaultPosition != null)
+            targetRotation = defaultPosition.rotation;
+
         isFocusing = true;
+    }
+
+    void HandleKeyboardMove()
+    {
+        float horizontal = 0f;
+        float vertical = 0f;
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            horizontal -= 1f;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            horizontal += 1f;
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            vertical += 1f;
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            vertical -= 1f;
+
+        Vector3 input = new Vector3(horizontal, 0f, vertical);
+        if (input.sqrMagnitude <= 0.001f)
+            return;
+
+        isFocusing = false;
+
+        Vector3 right = targetCamera.transform.right;
+        Vector3 forward = targetCamera.transform.forward;
+        right.y = 0f;
+        forward.y = 0f;
+        right.Normalize();
+        forward.Normalize();
+
+        Vector3 moveDir = (right * input.x + forward * input.z).normalized;
+        Vector3 newPos = targetPosition + moveDir * keyboardMoveSpeed * Time.deltaTime;
+
+        newPos.x = Mathf.Clamp(newPos.x, xLimits.x, xLimits.y);
+        newPos.z = Mathf.Clamp(newPos.z, zLimits.x, zLimits.y);
+
+        targetPosition = new Vector3(newPos.x, targetPosition.y, newPos.z);
+    }
+    void HandleScrollZoom()
+    {
+        if (targetCamera == null) return;
+
+        float scroll = Input.mouseScrollDelta.y;
+        if (Mathf.Abs(scroll) <= 0.001f)
+            return;
+
+        isFocusing = false;
+
+        Vector3 newPos = targetPosition;
+        newPos.y -= scroll * zoomSpeed * Time.deltaTime * 10f;
+        newPos.y = Mathf.Clamp(newPos.y, minZoomY, maxZoomY);
+
+        float zoom01 = Mathf.InverseLerp(maxZoomY, minZoomY, newPos.y);
+        float zOffset = Mathf.Lerp(0f, -8f, zoom01 * zoomTiltStrength);
+
+        newPos.z += zOffset;
+
+        newPos.x = Mathf.Clamp(newPos.x, xLimits.x, xLimits.y);
+        newPos.z = Mathf.Clamp(newPos.z, zLimits.x, zLimits.y);
+
+        targetPosition = newPos;
     }
 
     public void ResetCamera()
