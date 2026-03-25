@@ -72,7 +72,7 @@ public class MainUnit : NetworkBehaviour
 
     #region Server → Client Movement
     [ClientRpc]
-    public void RpcMoveTo(Vector3 target)
+public void RpcMoveTo(Vector3 target, string targetCountryTag)
     {
         if (!enabled || !gameObject.activeSelf)
         {
@@ -93,7 +93,7 @@ public class MainUnit : NetworkBehaviour
             StopMoveParticles();
 
         if (unitType == UnitType.Boat)
-            moveCoroutine = StartCoroutine(MoveBoatCurvedXZ(target));
+            moveCoroutine = StartCoroutine(MoveBoatCurvedXZ(target, targetCountryTag));
         else
             moveCoroutine = StartCoroutine(MoveToPositionXZ(target));
 
@@ -142,21 +142,64 @@ public class MainUnit : NetworkBehaviour
         float u = 1f - t;
         return (u * u * a) + (2f * u * t * b) + (t * t * c);
     }
-    private IEnumerator MoveBoatCurvedXZ(Vector3 target)
+
+    private Country FindCountryByTagRuntime(string tag)
+    {
+        if (string.IsNullOrEmpty(tag)) return null;
+
+        GameObject obj = GameObject.FindWithTag(tag);
+        if (obj == null) return null;
+
+        return obj.GetComponent<Country>()
+            ?? obj.GetComponentInChildren<Country>()
+            ?? obj.GetComponentInParent<Country>();
+    }
+    private IEnumerator MoveBoatCurvedXZ(Vector3 target, string targetCountryTag)
     {
         Vector3 start = transform.position;
-        target.y = start.y;
+        float yLevel = start.y;
 
-        Vector3 flatDir = target - start;
+        Country fromCountry = FindCountryByTagRuntime(currentCountry);
+        Country targetCountry = FindCountryByTagRuntime(targetCountryTag);
+
+        if (targetCountry == null)
+        {
+            moveCoroutine = StartCoroutine(MoveToPositionXZ(target));
+            yield break;
+        }
+
+        Vector3 endPoint = targetCountry.GetRandomConstrainedPointNearCenter(8f, yLevel);
+
+        Vector3 gatewayPoint;
+        if (fromCountry != null)
+            gatewayPoint = fromCountry.GetBridgePointTowards(targetCountry, yLevel);
+        else
+            gatewayPoint = Vector3.Lerp(start, endPoint, 0.5f);
+
+        Vector3 secondGateway = targetCountry.GetBridgePointTowards(fromCountry, yLevel);
+
+        float totalDuration = boatMoveDuration;
+        float firstDuration = totalDuration * 0.5f;
+        float secondDuration = totalDuration * 0.5f;
+
+        yield return StartCoroutine(MoveBoatSegment(start, gatewayPoint, firstDuration, fromCountry, yLevel));
+        yield return StartCoroutine(MoveBoatSegment(gatewayPoint, endPoint, secondDuration, targetCountry, yLevel, secondGateway));
+
+        transform.position = endPoint;
+        StopMoveParticles();
+        moveCoroutine = null;
+    }
+
+    private IEnumerator MoveBoatSegment(Vector3 segmentStart, Vector3 segmentEnd, float duration, Country constraintCountry, float yLevel, Vector3? forcedControl = null)
+    {
+        Vector3 flatDir = segmentEnd - segmentStart;
         flatDir.y = 0f;
 
         float distance = flatDir.magnitude;
 
         if (distance <= 0.01f)
         {
-            transform.position = target;
-            StopMoveParticles();
-            moveCoroutine = null;
+            transform.position = segmentEnd;
             yield break;
         }
 
@@ -164,12 +207,14 @@ public class MainUnit : NetworkBehaviour
         Vector3 side = Vector3.Cross(Vector3.up, dir).normalized;
 
         float sign = Random.value < 0.5f ? -1f : 1f;
-        Vector3 mid = (start + target) * 0.5f;
-        Vector3 control = mid + side * (distance * boatCurveStrength * sign);
-        control.y = start.y;
+        Vector3 mid = (segmentStart + segmentEnd) * 0.5f;
+        Vector3 control = forcedControl ?? (mid + side * (distance * boatCurveStrength * sign));
+        control.y = yLevel;
+
+        if (constraintCountry != null && !forcedControl.HasValue)
+            control = constraintCountry.GetSurfaceConstrainedPoint(control, yLevel);
 
         float time = 0f;
-        float duration = boatMoveDuration;
 
         while (time < duration)
         {
@@ -177,8 +222,11 @@ public class MainUnit : NetworkBehaviour
             float t = Mathf.Clamp01(time / duration);
 
             Vector3 currentPos = transform.position;
-            Vector3 nextPos = GetQuadraticBezierPoint(start, control, target, t);
-            nextPos.y = start.y;
+            Vector3 nextPos = GetQuadraticBezierPoint(segmentStart, control, segmentEnd, t);
+            nextPos.y = yLevel;
+
+            if (constraintCountry != null)
+                nextPos = constraintCountry.GetSurfaceConstrainedPoint(nextPos, yLevel);
 
             Vector3 moveDir = nextPos - currentPos;
             moveDir.y = 0f;
@@ -193,9 +241,7 @@ public class MainUnit : NetworkBehaviour
             yield return null;
         }
 
-        transform.position = new Vector3(target.x, start.y, target.z);
-        StopMoveParticles();
-        moveCoroutine = null;
+        transform.position = segmentEnd;
     }
     #endregion
 

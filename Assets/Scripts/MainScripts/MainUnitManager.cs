@@ -222,7 +222,7 @@ public partial class MainUnitManager : NetworkBehaviour
         {
             MainUnit u = kv.Key;
             if (u == null) continue;
-            u.RpcMoveTo(kv.Value);
+            u.RpcMoveTo(kv.Value, u.currentCountry);
         }
     }
 
@@ -597,7 +597,7 @@ public partial class MainUnitManager : NetworkBehaviour
             if (w.unit == null) continue;
 
             w.unit.currentCountry = w.toTag;
-            StartCoroutine(SendRpcWithDelay(w.unit, w.toPos, 0.05f));
+            StartCoroutine(SendRpcWithDelay(w.unit, w.toPos, 0.05f, w.toTag));
 
             Country c = FindCountryByTag(w.toTag);
             if (c != null && !c.isOcean)
@@ -613,7 +613,7 @@ public partial class MainUnitManager : NetworkBehaviour
             if (r.unit == null) continue;
 
             r.unit.currentCountry = r.toTag;
-            StartCoroutine(SendRpcWithDelay(r.unit, r.toPos, 0.05f));
+            StartCoroutine(SendRpcWithDelay(r.unit, r.toPos, 0.05f, r.toTag));
         }
 
         for (int i = 0; i < planeMovers.Count; i++)
@@ -640,7 +640,7 @@ public partial class MainUnitManager : NetworkBehaviour
 
             plane.currentCountry = targetTag;
             finalTile[plane] = targetTag;
-            StartCoroutine(SendRpcWithDelay(plane, toCountry.centerWorldPos, 0.05f));
+            StartCoroutine(SendRpcWithDelay(plane, toCountry.centerWorldPos, 0.05f, targetTag));
             plane.currentOrder = null;
         }
 
@@ -750,16 +750,16 @@ public partial class MainUnitManager : NetworkBehaviour
     private IEnumerator BounceUnit(MainUnit unit, Vector3 intoPos, Vector3 backPos, float delayBetween)
     {
         if (unit == null) yield break;
-        unit.RpcMoveTo(intoPos);
+        unit.RpcMoveTo(intoPos, unit.currentCountry);
         yield return new WaitForSeconds(delayBetween);
-        unit.RpcMoveTo(backPos);
+        unit.RpcMoveTo(backPos, unit.currentCountry);
     }
 
 
-    private IEnumerator SendRpcWithDelay(MainUnit unit, Vector3 targetPos, float delay)
+    private IEnumerator SendRpcWithDelay(MainUnit unit, Vector3 targetPos, float delay, string targetCountryTag)
     {
         yield return new WaitForSeconds(delay);
-        unit.RpcMoveTo(targetPos);
+        unit.RpcMoveTo(targetPos, targetCountryTag);
     }
 
     [ClientRpc]

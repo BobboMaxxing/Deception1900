@@ -534,6 +534,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1520205655}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 628074946}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -1403,6 +1404,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 841606457}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1634309260}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -1572,6 +1574,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 799568796}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1300866660}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -3117,6 +3120,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1235417611}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1716615256}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -3316,6 +3320,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 789661118}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1730688578}
   spawnPoints:
   - {fileID: 1859291964}
   isSupplyCenter: 1
@@ -3473,6 +3478,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1199387452}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1759739692}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -3548,6 +3554,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1711319073}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 769523384}
   isSupplyCenter: 0
@@ -4199,6 +4206,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1597947873}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 140762714}
   spawnPoints:
   - {fileID: 1708702372}
   isSupplyCenter: 1
@@ -4515,6 +4523,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1121582990}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 307893988}
   spawnPoints:
   - {fileID: 1561824622}
   isSupplyCenter: 1
@@ -4663,6 +4672,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 2021159328}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1592890979}
   spawnPoints:
   - {fileID: 1214045840}
   isSupplyCenter: 1
@@ -4699,6 +4709,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 664085927}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1979568274}
   spawnPoints: []
   isSupplyCenter: 1
   isOcean: 0
@@ -4734,6 +4745,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 608796394}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 181118061}
   spawnPoints:
   - {fileID: 1949836923}
   isSupplyCenter: 1
@@ -5329,6 +5341,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 64892983}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 980580654}
   spawnPoints: []
   isSupplyCenter: 1
   isOcean: 0
@@ -5997,6 +6010,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 2141006700}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 348600177}
   - {fileID: 1878354093}
@@ -6032,6 +6046,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1604649724}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 647151937}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -7202,6 +7217,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1279640348}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1328467728}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -7296,6 +7312,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 2044017563}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 886615073}
   spawnPoints:
   - {fileID: 1191379260}
   isSupplyCenter: 1
@@ -7891,6 +7908,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 454074760}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1942402416}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -8489,6 +8507,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 819622177}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 661452367}
   spawnPoints:
   - {fileID: 2004137888}
   isSupplyCenter: 1
@@ -8857,6 +8876,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1035194019}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 1607224320}
   - {fileID: 1066087299}
@@ -9244,6 +9264,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1935546783}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 131792661}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -9403,6 +9424,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 942621427}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 386051267}
   spawnPoints:
   - {fileID: 1349801652}
   isSupplyCenter: 1
@@ -9684,6 +9706,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 731145289}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 856477956}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -9713,6 +9736,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1448411573}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1002998677}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -10192,6 +10216,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 284046757}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1204074294}
   spawnPoints:
   - {fileID: 1766249940}
   isSupplyCenter: 1
@@ -12151,6 +12176,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 562814227}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 2032453995}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -13602,6 +13628,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1211352707}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 705857742}
   - {fileID: 501423910}
@@ -13640,6 +13667,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 993930881}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1206973280}
   spawnPoints:
   - {fileID: 1092900400}
   isSupplyCenter: 1
@@ -13980,6 +14008,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1097806691}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 766938156}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -14899,6 +14928,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1482672266}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1687318991}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -14966,6 +14996,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1941948999}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1248959312}
   spawnPoints:
   - {fileID: 842307356}
   isSupplyCenter: 1
@@ -15043,6 +15074,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 555666398}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1458269946}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -16182,6 +16214,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1476317395}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1077786716}
   spawnPoints:
   - {fileID: 678115669}
   isSupplyCenter: 1
@@ -16413,6 +16446,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1693571346}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1525881776}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -16923,6 +16957,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1217525964}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 183611902}
   spawnPoints:
   - {fileID: 2035859111}
   isSupplyCenter: 1
@@ -17715,6 +17750,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 190882338}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1864577984}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -17746,6 +17782,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1256226217}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 311157232}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -18249,6 +18286,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 655121908}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 1129977490}
   - {fileID: 551436900}
@@ -18314,6 +18352,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1380257460}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1627364693}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -18659,6 +18698,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 356979970}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1203740029}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -18790,6 +18830,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 678226764}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 1891703187}
   - {fileID: 895295175}
@@ -18971,6 +19012,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1381326029}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1617537852}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -19242,6 +19284,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 968736281}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 1264941141}
   - {fileID: 1236557170}
@@ -19597,6 +19640,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1656551970}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 1655129662}
   - {fileID: 81158663}
@@ -19764,6 +19808,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 2009912102}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1188488213}
   spawnPoints:
   - {fileID: 1405292938}
   isSupplyCenter: 1
@@ -19801,6 +19846,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 628280899}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1894987118}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -20583,6 +20629,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1193549189}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1546094803}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -20758,6 +20805,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 960473552}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 182188883}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -20791,6 +20839,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1563942526}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1805465906}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -20954,6 +21003,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 664453185}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 1602845222}
   isSupplyCenter: 0
@@ -21491,6 +21541,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 103787773}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 0}
   spawnPoints:
   - {fileID: 1413456802}
   - {fileID: 856173949}
@@ -21530,6 +21581,7 @@ MonoBehaviour:
   isStarterCountry: 1
   centerPoint: {fileID: 1532244986}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1175002923}
   spawnPoints:
   - {fileID: 1543276036}
   isSupplyCenter: 1
@@ -21866,6 +21918,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 2076531864}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 138228286}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
@@ -22189,6 +22242,7 @@ MonoBehaviour:
   isStarterCountry: 0
   centerPoint: {fileID: 1627383490}
   centerWorldPos: {x: 0, y: 0, z: 0}
+  regionMeshCollider: {fileID: 1538694742}
   spawnPoints: []
   isSupplyCenter: 0
   isOcean: 0
