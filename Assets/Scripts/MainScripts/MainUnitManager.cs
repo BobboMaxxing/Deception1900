@@ -353,12 +353,13 @@ public partial class MainUnitManager : NetworkBehaviour
             if (supported == null) continue;
 
             string supportedDest =
-                (supported.currentOrder != null && supported.currentOrder.orderType == UnitOrderType.Move)
-                    ? supported.currentOrder.targetCountry
-                    : supported.currentCountry;
+      (supported.currentOrder != null && supported.currentOrder.orderType == UnitOrderType.Move)
+          ? supported.currentOrder.targetCountry
+          : supported.currentCountry;
 
             if (string.IsNullOrEmpty(supportedDest)) continue;
-            if (s.currentOrder.targetCountry != supportedDest) continue;
+
+            if (!CanSupportOrderServer(s, supportedDest)) continue;
 
             if (!supportPowerOnUnit.ContainsKey(supported))
                 supportPowerOnUnit[supported] = 0;
@@ -663,6 +664,30 @@ public partial class MainUnitManager : NetworkBehaviour
 
         for (int i = 0; i < MainPlayerController.allPlayers.Count; i++)
             MainPlayerController.allPlayers[i]?.RpcResetReady();
+    }
+
+    private bool CanSupportOrderServer(MainUnit supporter, string targetTileTag)
+    {
+        if (supporter == null) return false;
+        if (string.IsNullOrEmpty(targetTileTag)) return false;
+
+        Country from = FindCountryByTag(supporter.currentCountry);
+        Country to = FindCountryByTag(targetTileTag);
+
+        if (from == null || to == null) return false;
+
+        if (supporter.unitType == UnitType.Plane)
+        {
+            if (!from.isAirfield) return false;
+            return from.adjacentCountries.Contains(to) || from.planeAdjacentCountries.Contains(to);
+        }
+
+        if (!from.adjacentCountries.Contains(to)) return false;
+
+        if (supporter.unitType == UnitType.Boat)
+            return true;
+
+        return !to.isOcean;
     }
 
     private bool CanPlaneReach(Country from, Country to)

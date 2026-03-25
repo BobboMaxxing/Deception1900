@@ -604,10 +604,7 @@ public class MainPlayerController : NetworkBehaviour
                 return;
             }
 
-            string supportTarget =
-                (targetUnit.currentOrder != null && targetUnit.currentOrder.orderType == UnitOrderType.Move)
-                    ? targetUnit.currentOrder.targetCountry
-                    : targetUnit.currentCountry;
+            string supportTarget = targetUnit.currentCountry;
 
             if (string.IsNullOrEmpty(supportTarget))
             {
@@ -626,8 +623,8 @@ public class MainPlayerController : NetworkBehaviour
             }
 
             CancelReadyIfNeeded();
-            SetSupportOrderLocal(selectedUnit, targetUnit, supportTarget);
-            CmdSupportUnit(selectedUnit.netId, targetUnit.netId, supportTarget);
+            SetSupportOrderLocal(selectedUnit, targetUnit, targetUnit.currentCountry);
+            CmdSupportUnit(selectedUnit.netId, targetUnit.netId);
             StartCoroutine(RebuildLocalSupportVisualsNextFrame());
 
             moveStatusText?.SetText("Support queued.");
@@ -880,7 +877,7 @@ public class MainPlayerController : NetworkBehaviour
             return from.adjacentCountries.Contains(to) || from.planeAdjacentCountries.Contains(to);
         }
 
-        if (!from.adjacentCountries.Contains(to)) return false;
+        if (!from.adjacentCountries.Contains(to)) return false; 
 
         if (supporter.unitType == UnitType.Boat)
             return true;
@@ -889,13 +886,10 @@ public class MainPlayerController : NetworkBehaviour
     }
 
     [Command]
-    private void CmdSupportUnit(uint supporterNetId, uint supportedNetId, string supportTargetCountry)
+    private void CmdSupportUnit(uint supporterNetId, uint supportedNetId)
     {
-
-        StartCoroutine(RebuildLocalSupportVisualsNextFrame());
         if (!NetworkServer.spawned.TryGetValue(supporterNetId, out NetworkIdentity supId)) return;
         if (!NetworkServer.spawned.TryGetValue(supportedNetId, out NetworkIdentity targetId)) return;
-
 
         MainUnit supporter = supId.GetComponent<MainUnit>();
         MainUnit supported = targetId.GetComponent<MainUnit>();
@@ -903,14 +897,11 @@ public class MainPlayerController : NetworkBehaviour
 
         if (supporter.ownerID != playerID) return;
 
-        if (string.IsNullOrEmpty(supportTargetCountry)) return;
-        if (!CanSupportToServer(supporter, supportTargetCountry)) return;
-
         supporter.currentOrder = new PlayerUnitOrder
         {
             orderType = UnitOrderType.Support,
             supportedUnit = supported,
-            targetCountry = supportTargetCountry
+            targetCountry = supported.currentCountry
         };
     }
     private IEnumerator RebuildLocalSupportVisualsNextFrame()
