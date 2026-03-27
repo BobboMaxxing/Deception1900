@@ -207,7 +207,7 @@ MonoBehaviour:
   unitType: 1
   colorRenderers:
   - {fileID: 7369569081591787660}
-  moveSpeed: 5
+  moveSpeed: 1
   boatMoveDuration: 0.6
   defaultMoveDuration: 0.5
   boatCurveStrength: 0.22
