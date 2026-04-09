@@ -39,6 +39,7 @@ public class MainPlayerController : NetworkBehaviour
     private Button buildBoatButton;
     private Button buildPlaneButton;
     private Button buildPassButton;
+    private BuildCreditsHUD buildCreditsHUD;
 
     [Header("Game References")]
     public MainUnitManager unitManager;
@@ -66,10 +67,14 @@ public class MainPlayerController : NetworkBehaviour
     private List<PulsingHighlighter> activeBuildHighlighters = new List<PulsingHighlighter>();
     private List<Country> activeBuildHighlightCountries = new List<Country>();
 
+    private List<PulsingHighlighter> activeAdjacencyHighlighters = new List<PulsingHighlighter>();
+    private bool wasShiftHeldLastFrame = false;
+
     void OnDestroy()
     {
         ClearBuildHighlights();
         ClearHoverHighlight();
+        ClearAdjacencyHighlights();
 
         if (allPlayers.Contains(this)) allPlayers.Remove(this);
     }
@@ -137,8 +142,22 @@ public class MainPlayerController : NetworkBehaviour
             return;
         }
 
+        UpdateAdjacencyHighlightColor();
         HandleUnitSelection();
         UpdateOrderButtonsUI();
+    }
+
+    private void UpdateAdjacencyHighlightColor()
+    {
+        if (selectedUnit == null) return;
+
+        bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+        if (isShiftHeld != wasShiftHeldLastFrame)
+        {
+            wasShiftHeldLastFrame = isShiftHeld;
+            HighlightAdjacentCountries(selectedUnit, isShiftHeld ? Color.green : Color.white);
+        }
     }
 
 
@@ -617,6 +636,8 @@ public class MainPlayerController : NetworkBehaviour
             if (!CanSupportTo(selectedUnit, supportTarget))
             {
                 moveStatusText?.SetText("Illegal support (must be adjacent).");
+                Country supportTargetCountry = FindCountryByTagRecursive(supportTarget);
+                FlashCountryRed(supportTargetCountry);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
@@ -682,6 +703,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!targetCountryComp.isOcean)
             {
                 moveStatusText?.SetText("Boats can only move on oceans.");
+                FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
@@ -691,6 +713,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!boatDirect)
             {
                 moveStatusText?.SetText("Illegal move.");
+                FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
@@ -701,6 +724,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!CanPlaneReach(fromCountryComp, targetCountryComp))
             {
                 moveStatusText?.SetText("Planes can only move between reachable airfields.");
+                FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
@@ -714,6 +738,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!direct && !bridge)
             {
                 moveStatusText?.SetText("Illegal move.");
+                FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
@@ -792,7 +817,14 @@ public class MainPlayerController : NetworkBehaviour
         selectedUnit = unit;
 
         if (selectedUnit != null)
+        {
             selectedUnit.SetSelectedVisual(true);
+            HighlightAdjacentCountries(selectedUnit, Color.white);
+        }
+        else
+        {
+            ClearAdjacencyHighlights();
+        }
     }
 
     private void ClearSelectedUnit()
@@ -801,6 +833,78 @@ public class MainPlayerController : NetworkBehaviour
             selectedUnit.SetSelectedVisual(false);
 
         selectedUnit = null;
+        wasShiftHeldLastFrame = false;
+        ClearAdjacencyHighlights();
+    }
+
+    private void HighlightAdjacentCountries(MainUnit unit, Color highlightColor)
+    {
+        ClearAdjacencyHighlights();
+        if (unit == null) return;
+
+        Country from = FindCountryByTagRecursive(unit.currentCountry);
+        if (from == null) return;
+
+        List<Country> adjacency = from.adjacentCountries;
+
+        if (unit.unitType == UnitType.Plane)
+        {
+            adjacency = new List<Country>();
+            for (int i = 0; i < from.adjacentCountries.Count; i++)
+            {
+                if (!adjacency.Contains(from.adjacentCountries[i]))
+                    adjacency.Add(from.adjacentCountries[i]);
+            }
+            for (int i = 0; i < from.planeAdjacentCountries.Count; i++)
+            {
+                if (!adjacency.Contains(from.planeAdjacentCountries[i]))
+                    adjacency.Add(from.planeAdjacentCountries[i]);
+            }
+        }
+
+        for (int i = 0; i < adjacency.Count; i++)
+        {
+            Country adj = adjacency[i];
+            if (adj == null) continue;
+
+            if (unit.unitType == UnitType.Boat && !adj.isOcean) continue;
+            if (unit.unitType == UnitType.Land && adj.isOcean) continue;
+            if (unit.unitType == UnitType.Plane && !adj.isAirfield) continue;
+
+            Renderer rend = GetCountryHighlightRenderer(adj);
+            if (rend == null) continue;
+
+            PulsingHighlighter highlighter =
+                rend.GetComponent<PulsingHighlighter>() ??
+                rend.gameObject.AddComponent<PulsingHighlighter>();
+
+            highlighter.StartPulseWithColor(highlightColor);
+            activeAdjacencyHighlighters.Add(highlighter);
+        }
+    }
+
+    private void ClearAdjacencyHighlights()
+    {
+        for (int i = 0; i < activeAdjacencyHighlighters.Count; i++)
+        {
+            if (activeAdjacencyHighlighters[i] != null)
+                activeAdjacencyHighlighters[i].StopPulse();
+        }
+        activeAdjacencyHighlighters.Clear();
+    }
+
+    private void FlashCountryRed(Country country)
+    {
+        if (country == null) return;
+
+        Renderer rend = GetCountryHighlightRenderer(country);
+        if (rend == null) return;
+
+        PulsingHighlighter highlighter =
+            rend.GetComponent<PulsingHighlighter>() ??
+            rend.gameObject.AddComponent<PulsingHighlighter>();
+
+        highlighter.StartTimedPulse(Color.red, 2.5f);
     }
 
     public void ConfirmMoves()
@@ -1209,12 +1313,13 @@ public class MainPlayerController : NetworkBehaviour
         cancelMoveButton = cancelMoveButtonRef;
     }
 
-    public void SetupBuildUI(Button landButtonRef, Button boatButtonRef, Button planeButtonRef, Button passButtonRef)
+    public void SetupBuildUI(Button landButtonRef, Button boatButtonRef, Button planeButtonRef, Button passButtonRef, BuildCreditsHUD creditsHUDRef = null)
     {
         buildLandButton = landButtonRef;
         buildBoatButton = boatButtonRef;
         buildPlaneButton = planeButtonRef;
         buildPassButton = passButtonRef;
+        buildCreditsHUD = creditsHUDRef;
 
         if (buildLandButton != null)
         {
@@ -1307,6 +1412,9 @@ public class MainPlayerController : NetworkBehaviour
         moveStatusText?.SetText("Build phase passed.");
         buildTableSelectionOpen = false;
 
+        if (buildCreditsHUD != null)
+            buildCreditsHUD.Hide();
+
         if (cameraMovment != null)
         {
             cameraMovment.SetFocusClickEnabled(true);
@@ -1314,7 +1422,7 @@ public class MainPlayerController : NetworkBehaviour
             cameraMovment.ResetCamera();
         }
 
-        CmdPassBuildPhase(); 
+        CmdPassBuildPhase();
     }
 
     [TargetRpc]
@@ -1332,6 +1440,9 @@ public class MainPlayerController : NetworkBehaviour
         remainingBuildsLocal = buildCount;
         buildTableSelectionOpen = false;
         ClearBuildHighlights();
+
+        if (buildCreditsHUD != null)
+            buildCreditsHUD.Show(remainingBuildsLocal);
 
         if (buildLandButton != null) buildLandButton.gameObject.SetActive(false);
         if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
@@ -1479,6 +1590,9 @@ public class MainPlayerController : NetworkBehaviour
         buildTypeSelected = false;
         ClearBuildHighlights();
 
+        if (buildCreditsHUD != null)
+            buildCreditsHUD.SetCredits(remainingBuildsLocal);
+
         if (remainingBuildsLocal <= 0)
         {
             BuildPhaseFinishedLocal();
@@ -1501,6 +1615,9 @@ public class MainPlayerController : NetworkBehaviour
         if (buildPassButton != null) buildPassButton.gameObject.SetActive(false);
 
         buildTableSelectionOpen = false;
+
+        if (buildCreditsHUD != null)
+            buildCreditsHUD.Hide();
 
         if (cameraMovment != null)
         {

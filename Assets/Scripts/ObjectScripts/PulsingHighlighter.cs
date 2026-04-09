@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class PulsingHighlighter : MonoBehaviour
 {
@@ -13,6 +13,9 @@ public class PulsingHighlighter : MonoBehaviour
     private bool isActive;
     private int pulseRequests;
 
+    private Color currentPulseTarget;
+    private float timedPulseRemaining = -1f;
+
     void Awake()
     {
         rend = GetComponentInChildren<Renderer>();
@@ -25,6 +28,7 @@ public class PulsingHighlighter : MonoBehaviour
 
         runtimeMat = rend.material;
         baseColor = runtimeMat.color;
+        currentPulseTarget = pulseColor;
     }
 
     void Update()
@@ -32,12 +36,27 @@ public class PulsingHighlighter : MonoBehaviour
         if (!isActive) return;
         if (runtimeMat == null) return;
 
+        if (timedPulseRemaining > 0f)
+        {
+            timedPulseRemaining -= Time.deltaTime;
+            if (timedPulseRemaining <= 0f)
+            {
+                StopTimedPulse();
+                return;
+            }
+        }
+
         float pulse = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
         float t = Mathf.SmoothStep(0f, 1f, pulse);
-        runtimeMat.color = Color.Lerp(baseColor, Color.white, t * pulseStrength);
+        runtimeMat.color = Color.Lerp(baseColor, currentPulseTarget, t * pulseStrength);
     }
 
     public void StartPulse()
+    {
+        StartPulseWithColor(pulseColor);
+    }
+
+    public void StartPulseWithColor(Color target)
     {
         if (runtimeMat == null) return;
 
@@ -45,7 +64,37 @@ public class PulsingHighlighter : MonoBehaviour
             baseColor = runtimeMat.color;
 
         pulseRequests++;
+        currentPulseTarget = target;
         isActive = true;
+    }
+
+    public void StartTimedPulse(Color target, float duration)
+    {
+        if (runtimeMat == null) return;
+
+        if (pulseRequests == 0)
+            baseColor = runtimeMat.color;
+
+        pulseRequests++;
+        currentPulseTarget = target;
+        timedPulseRemaining = duration;
+        isActive = true;
+    }
+
+    private void StopTimedPulse()
+    {
+        timedPulseRemaining = -1f;
+        pulseRequests = Mathf.Max(0, pulseRequests - 1);
+
+        if (pulseRequests > 0)
+        {
+            currentPulseTarget = pulseColor;
+            return;
+        }
+
+        isActive = false;
+        if (runtimeMat != null)
+            runtimeMat.color = baseColor;
     }
 
     public void StopPulse()
@@ -58,6 +107,7 @@ public class PulsingHighlighter : MonoBehaviour
             return;
 
         isActive = false;
+        timedPulseRemaining = -1f;
         runtimeMat.color = baseColor;
     }
 
