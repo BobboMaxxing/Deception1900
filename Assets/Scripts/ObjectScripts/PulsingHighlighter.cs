@@ -7,8 +7,7 @@ public class PulsingHighlighter : MonoBehaviour
     public float pulseStrength = 0.5f;
     public Color pulseColor = Color.white;
 
-    [Header("Cel Shading")]
-    public int celSteps = 4;
+
 
     private Renderer rend;
     private Material runtimeMat;
@@ -50,8 +49,7 @@ public class PulsingHighlighter : MonoBehaviour
         }
 
         float pulse = (Mathf.Sin(Time.time * pulseSpeed) + 1f) * 0.5f;
-        float t = Mathf.Floor(pulse * celSteps) / (celSteps - 1);
-        t = Mathf.Clamp01(t);
+        float t = Mathf.SmoothStep(0f, 1f, pulse);
         runtimeMat.color = Color.Lerp(baseColor, currentPulseTarget, t * pulseStrength);
     }
 

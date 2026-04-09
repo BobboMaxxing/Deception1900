@@ -154,7 +154,7 @@ public class MainGameManager : NetworkBehaviour
         if (!buildCredits.ContainsKey(playerId))
             buildCredits[playerId] = 0;
 
-        buildCredits[playerId] += 3;
+        buildCredits[playerId] += 2;
 
         StartBuildPhaseForPlayer(playerId);
     }
