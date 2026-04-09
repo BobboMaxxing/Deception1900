@@ -530,7 +530,7 @@ public class MainPlayerController : NetworkBehaviour
             cameraMovment.MoveToBuildTable();
         }
 
-        moveStatusText?.SetText($"Build points: {remainingBuildsLocal}. Choose a unit from the pile.");
+        DialogManager.Show("Choose a unit from the pile.");
     }
 
     private void CloseBuildTableSelectionToMap()
@@ -593,6 +593,9 @@ public class MainPlayerController : NetworkBehaviour
         if (!Input.GetMouseButtonDown(0)) return;
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
+        if (DialogManager.Instance != null)
+            DialogManager.Instance.OnExternalClick();
+
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
         RaycastHit[] hits = Physics.RaycastAll(ray, 9999f, ~0, QueryTriggerInteraction.Collide);
@@ -617,7 +620,7 @@ public class MainPlayerController : NetworkBehaviour
 
             if (targetUnit == null)
             {
-                moveStatusText?.SetText("Support: Click another unit to support.");
+                DialogManager.Show("Support: Click another unit to support.");
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
@@ -627,7 +630,7 @@ public class MainPlayerController : NetworkBehaviour
 
             if (string.IsNullOrEmpty(supportTarget))
             {
-                moveStatusText?.SetText("Support failed: target has no tile.");
+                DialogManager.Show("Support failed: target has no tile.");
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
                 return;
@@ -635,7 +638,7 @@ public class MainPlayerController : NetworkBehaviour
 
             if (!CanSupportTo(selectedUnit, supportTarget))
             {
-                moveStatusText?.SetText("Illegal support (must be adjacent).");
+                DialogManager.Show("Illegal support (must be adjacent).");
                 Country supportTargetCountry = FindCountryByTagRecursive(supportTarget);
                 FlashCountryRed(supportTargetCountry);
                 ClearSelectedUnit();
@@ -648,7 +651,7 @@ public class MainPlayerController : NetworkBehaviour
             CmdSupportUnit(selectedUnit.netId, targetUnit.netId);
             StartCoroutine(RebuildLocalSupportVisualsNextFrame());
 
-            moveStatusText?.SetText("Support queued.");
+            DialogManager.Show("Support queued.");
             ClearSelectedUnit();
             ShowMoveButtons(false);
             return;
@@ -702,7 +705,7 @@ public class MainPlayerController : NetworkBehaviour
         {
             if (!targetCountryComp.isOcean)
             {
-                moveStatusText?.SetText("Boats can only move on oceans.");
+                DialogManager.Show("Boats can only move on oceans.");
                 FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
@@ -712,7 +715,7 @@ public class MainPlayerController : NetworkBehaviour
             bool boatDirect = fromCountryComp.adjacentCountries.Contains(targetCountryComp);
             if (!boatDirect)
             {
-                moveStatusText?.SetText("Illegal move.");
+                DialogManager.Show("Illegal move.");
                 FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
@@ -723,7 +726,7 @@ public class MainPlayerController : NetworkBehaviour
         {
             if (!CanPlaneReach(fromCountryComp, targetCountryComp))
             {
-                moveStatusText?.SetText("Planes can only move between reachable airfields.");
+                DialogManager.Show("Planes can only move between reachable airfields.");
                 FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
@@ -737,7 +740,7 @@ public class MainPlayerController : NetworkBehaviour
 
             if (!direct && !bridge)
             {
-                moveStatusText?.SetText("Illegal move.");
+                DialogManager.Show("Illegal move.");
                 FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
@@ -1368,7 +1371,7 @@ public class MainPlayerController : NetworkBehaviour
         pendingBuildType = UnitType.Land;
         buildTypeSelected = true;
         RefreshBuildHighlights();
-        if (buildPhaseActiveLocal) moveStatusText?.SetText("Land selected. Click a pulsing owned tile to build.");
+        if (buildPhaseActiveLocal) DialogManager.Show("Land selected. Click a pulsing owned tile to build.");
     }
 
     public void SelectBuildBoat()
@@ -1376,7 +1379,7 @@ public class MainPlayerController : NetworkBehaviour
         pendingBuildType = UnitType.Boat;
         buildTypeSelected = true;
         RefreshBuildHighlights();
-        if (buildPhaseActiveLocal) moveStatusText?.SetText("Boat selected. Click a pulsing ocean tile to build.");
+        if (buildPhaseActiveLocal) DialogManager.Show("Boat selected. Click a pulsing ocean tile to build.");
     }
 
     public void SelectBuildPlane()
@@ -1388,9 +1391,9 @@ public class MainPlayerController : NetworkBehaviour
         if (buildPhaseActiveLocal)
         {
             if (PlayerMeetsPlaneBuildRequirement())
-                moveStatusText?.SetText("Plane selected. Click a pulsing airfield tile to build.");
+                DialogManager.Show("Plane selected. Click a pulsing airfield tile to build.");
             else
-                moveStatusText?.SetText("Plane selected, but you do not control enough supply centers.");
+                DialogManager.Show("Plane selected, but you do not control enough supply centers.");
         }
     }
 
@@ -1409,7 +1412,7 @@ public class MainPlayerController : NetworkBehaviour
 
         StopAllCoroutines();
         ClearBuildHighlights();
-        moveStatusText?.SetText("Build phase passed.");
+        DialogManager.Show("Build phase passed.");
         buildTableSelectionOpen = false;
 
         if (buildCreditsHUD != null)
@@ -1453,7 +1456,7 @@ public class MainPlayerController : NetworkBehaviour
 
         if (remainingBuildsLocal <= 0)
         {
-            moveStatusText?.SetText("No build points. Press Pass to continue.");
+            DialogManager.Show("No build points. Press Pass to continue.");
             return;
         }
 
@@ -1486,7 +1489,7 @@ public class MainPlayerController : NetworkBehaviour
 
                 if (!buildTypeSelected)
                 {
-                    moveStatusText?.SetText("Pick Land/Boat/Plane first.");
+                    DialogManager.Show("Pick Land/Boat/Plane first.");
                     yield return null;
                     continue;
                 }
@@ -1538,7 +1541,7 @@ public class MainPlayerController : NetworkBehaviour
 
                     if (clicked == null)
                     {
-                        moveStatusText?.SetText("Boat: Click an ocean tile.");
+                        DialogManager.Show("Boat: Click an ocean tile.");
                         yield return null;
                         continue;
                     }
@@ -1564,7 +1567,7 @@ public class MainPlayerController : NetworkBehaviour
 
                 waitingBuildResponse = true;
                 CmdRequestBuildAt(clicked.gameObject.tag, playerColor, pendingBuildType);
-                moveStatusText?.SetText("Requesting build...");
+                DialogManager.Show("Requesting build...");
             }
 
             yield return null;
@@ -1577,8 +1580,8 @@ public class MainPlayerController : NetworkBehaviour
 
         waitingBuildResponse = false;
 
-        if (moveStatusText != null && !string.IsNullOrEmpty(message))
-            moveStatusText.SetText(message);
+        if (!string.IsNullOrEmpty(message))
+            DialogManager.Show(message);
 
         if (!success)
         {
@@ -1626,7 +1629,7 @@ public class MainPlayerController : NetworkBehaviour
             cameraMovment.ResetCamera();
         }
 
-        moveStatusText?.SetText("Build phase complete.");
+        DialogManager.Show("Build phase complete.");
         ClearBuildHighlights();
     }
 

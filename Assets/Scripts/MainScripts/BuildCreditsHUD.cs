@@ -13,17 +13,26 @@ public class BuildCreditsHUD : MonoBehaviour
     private int displayedCredits = 0;
     private bool isAnimating;
     private float animTime;
-    private Vector3 originalScale;
+    private Vector3 originalScale = Vector3.one;
+    private bool initialized;
 
     void Awake()
     {
+        Initialize();
+        gameObject.SetActive(false);
+    }
+
+    private void Initialize()
+    {
+        if (initialized) return;
+
         if (creditsText == null)
-            creditsText = GetComponentInChildren<TMP_Text>();
+            creditsText = GetComponentInChildren<TMP_Text>(true);
 
         if (creditsText != null)
             originalScale = creditsText.transform.localScale;
 
-        gameObject.SetActive(false);
+        initialized = true;
     }
 
     void Update()
@@ -45,9 +54,10 @@ public class BuildCreditsHUD : MonoBehaviour
 
     public void Show(int credits)
     {
+        Initialize();
+        gameObject.SetActive(true);
         displayedCredits = credits;
         UpdateText();
-        gameObject.SetActive(true);
     }
 
     public void Hide()
