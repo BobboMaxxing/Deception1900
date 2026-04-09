@@ -16,6 +16,7 @@ public class LocalPlayerSetup : MonoBehaviour
 
     public TMP_Text selectedCountryText;
     public TMP_Text moveStatusText;
+    public BuildCreditsHUD buildCreditsHUD;
 
     public Camera playerCamera;
 
@@ -80,7 +81,7 @@ public class LocalPlayerSetup : MonoBehaviour
             buildPassButton.onClick.AddListener(localPlayer.PassBuildPhase);
         }   
 
-        localPlayer.SetupBuildUI(buildLandButton, buildBoatButton, buildPlaneButton, buildPassButton);
+        localPlayer.SetupBuildUI(buildLandButton, buildBoatButton, buildPlaneButton, buildPassButton, buildCreditsHUD);
 
         localPlayer.SetupUIReferences(
     selectedCountryText,
