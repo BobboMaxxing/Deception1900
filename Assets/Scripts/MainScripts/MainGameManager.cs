@@ -172,10 +172,18 @@ public class MainGameManager : NetworkBehaviour
     private void TargetPromptForBuild(int playerId, int buildCount)
     {
         MainPlayerController player = FindPlayerById(playerId);
-        if (player != null && player.connectionToClient != null)
+        if (player == null)
         {
-            player.TargetStartBuildPhase(player.connectionToClient, buildCount);
+            Debug.LogWarning($"[BuildPhase] FindPlayerById({playerId}) returned NULL! allPlayers count: {MainPlayerController.allPlayers.Count}");
+            return;
         }
+        if (player.connectionToClient == null)
+        {
+            Debug.LogWarning($"[BuildPhase] Player {playerId} connectionToClient is NULL!");
+            return;
+        }
+        Debug.Log($"[BuildPhase] Sending TargetStartBuildPhase to player {playerId} with {buildCount} credits");
+        player.TargetStartBuildPhase(player.connectionToClient, buildCount);
     }
 
     [TargetRpc]

@@ -1445,7 +1445,14 @@ public class MainPlayerController : NetworkBehaviour
         ClearBuildHighlights();
 
         if (buildCreditsHUD != null)
+        {
+            Debug.Log($"[BuildCreditsHUD] Show called with {remainingBuildsLocal} credits");
             buildCreditsHUD.Show(remainingBuildsLocal);
+        }
+        else
+        {
+            Debug.LogWarning("[BuildCreditsHUD] buildCreditsHUD is NULL in StartBuildPhase!");
+        }
 
         if (buildLandButton != null) buildLandButton.gameObject.SetActive(false);
         if (buildBoatButton != null) buildBoatButton.gameObject.SetActive(false);
