@@ -75,6 +75,7 @@ public class MainPlayerController : NetworkBehaviour
         ClearBuildHighlights();
         ClearHoverHighlight();
         ClearAdjacencyHighlights();
+        ClearPendingCountryHighlight();
 
         if (allPlayers.Contains(this)) allPlayers.Remove(this);
     }
@@ -187,6 +188,37 @@ public class MainPlayerController : NetworkBehaviour
     }
 
     private Country pendingCountryComp;
+    private List<PulsingHighlighter> pendingCountryHighlighters = new List<PulsingHighlighter>();
+
+    private void HighlightPendingCountry(Country country)
+    {
+        ClearPendingCountryHighlight();
+        if (country == null) return;
+
+        List<Country> allSelectable = country.GetAllSelectableCountries();
+        for (int i = 0; i < allSelectable.Count; i++)
+        {
+            Renderer rend = GetCountryHighlightRenderer(allSelectable[i]);
+            if (rend == null) continue;
+
+            PulsingHighlighter highlighter =
+                rend.GetComponent<PulsingHighlighter>() ??
+                rend.gameObject.AddComponent<PulsingHighlighter>();
+
+            highlighter.StartPulse();
+            pendingCountryHighlighters.Add(highlighter);
+        }
+    }
+
+    private void ClearPendingCountryHighlight()
+    {
+        for (int i = 0; i < pendingCountryHighlighters.Count; i++)
+        {
+            if (pendingCountryHighlighters[i] != null)
+                pendingCountryHighlighters[i].StopPulse();
+        }
+        pendingCountryHighlighters.Clear();
+    }
 
     void HandleCountrySelection()
     {
@@ -208,6 +240,7 @@ public class MainPlayerController : NetworkBehaviour
             pendingCountryComp = countryComp;
             pendingCountry = countryComp.tag;
 
+            HighlightPendingCountry(countryComp);
             selectedCountryText?.SetText("Selected: " + countryComp.name);
             confirmButton?.gameObject.SetActive(true);
             cancelButton?.gameObject.SetActive(true);
@@ -216,6 +249,8 @@ public class MainPlayerController : NetworkBehaviour
 
     public void ConfirmCountryChoice()
     {
+        ClearPendingCountryHighlight();
+
         if (pendingCountryComp == null)
             return;
 
@@ -315,6 +350,7 @@ public class MainPlayerController : NetworkBehaviour
 
     public void CancelCountryChoice()
     {
+        ClearPendingCountryHighlight();
         pendingCountry = "";
         selectedCountryText?.SetText("Selection cleared");
         confirmButton?.gameObject.SetActive(false);
