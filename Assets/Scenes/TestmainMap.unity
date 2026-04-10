@@ -21826,7 +21826,7 @@ MonoBehaviour:
   customLandUnitPrefab: {fileID: 855178879507169519, guid: 510ddcd55ab3a9e4fb105780c2d7b95f, type: 3}
   adjacentCountries:
   - {fileID: 1978168287}
-  - {fileID: 1349704945}
+  - {fileID: 2121766367}
   - {fileID: 990337893}
   - {fileID: 1316044725}
   - {fileID: 1903568260}
@@ -22169,6 +22169,7 @@ MonoBehaviour:
   - {fileID: 1670754594}
   - {fileID: 1309782465}
   - {fileID: 2106912905}
+  - {fileID: 531523577}
   planeAdjacentCountries: []
   starterSubCountries: []
 --- !u!1 &2111534950
