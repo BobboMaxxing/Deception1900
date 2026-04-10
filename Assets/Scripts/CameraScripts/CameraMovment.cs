@@ -16,11 +16,14 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] Vector2 zLimits = new Vector2(-50f, 50f);
     [SerializeField] float keyboardMoveSpeed = 25f;
     [SerializeField] float zoomSpeed = 60f;
-    [SerializeField] float minZoomY = 40f;
-    [SerializeField] float maxZoomY = 150f;
+    [SerializeField] float minZoomY = 60f;
+    [SerializeField] float maxZoomY = 200f;
 
     [Header("Zoom Tilt")]
     [SerializeField] float maxTiltAngle = 30f;
+
+    [Header("Focus")]
+    [SerializeField] bool focusOnCountryClick = true;
 
     Camera cam;
     bool lockManualInput = false;
@@ -78,6 +81,8 @@ public class CameraMovment : MonoBehaviour
     void CheckCountryClick()
     {
         if (targetCamera == null) return;
+        if (!focusOnCountryClick) return;
+
         Ray ray = targetCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, countryLayer, QueryTriggerInteraction.Collide))
         {
@@ -172,7 +177,7 @@ public class CameraMovment : MonoBehaviour
         float tiltAngle = Mathf.Lerp(90f, 90f - maxTiltAngle, zoom01);
 
         // Only rotate on X axis, Y and Z locked to 0
-        targetRotation = Quaternion.Euler(tiltAngle, 0f, 0f);
+        targetRotation = Quaternion.Euler(tiltAngle, -90f, 0f);
     }
 
     public void ResetCamera()
@@ -197,7 +202,7 @@ public class CameraMovment : MonoBehaviour
 
         isFocusing = false;
         targetPosition = buildTablePosition.position;
-        targetRotation = Quaternion.Euler(buildTablePosition.rotation.eulerAngles.x, 0f, 0f);
+        targetRotation = Quaternion.Euler(buildTablePosition.rotation.eulerAngles.x, -90f, 0f);
     }
 
     public void SetFocusClickEnabled(bool value)
