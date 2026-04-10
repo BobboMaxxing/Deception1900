@@ -18,7 +18,10 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] float zoomSpeed = 60f;
     [SerializeField] float minZoomY = 12f;
     [SerializeField] float maxZoomY = 60f;
-    [SerializeField] float zoomTiltStrength = 0.15f;
+
+    [Header("Zoom Tilt")]
+    [SerializeField] float maxTiltAngle = 45f;
+    [SerializeField] float zoomPullBack = 15f;
 
     Camera cam;
     bool lockManualInput = false;
@@ -35,13 +38,14 @@ public class CameraMovment : MonoBehaviour
         if (defaultPosition != null)
         {
             targetPosition = defaultPosition.position;
-            targetRotation = defaultPosition.rotation;
         }
         else if (targetCamera != null)
         {
             targetPosition = targetCamera.transform.position;
-            targetRotation = targetCamera.transform.rotation;
         }
+
+        targetRotation = Quaternion.Euler(90f, 0f, 0f);
+        UpdateZoomTilt();
     }
 
     void Update()
@@ -99,11 +103,9 @@ public class CameraMovment : MonoBehaviour
         }
 
         targetPosition = country.centerWorldPos + focusOffset;
-
-        if (defaultPosition != null)
-            targetRotation = defaultPosition.rotation;
-
         isFocusing = true;
+
+        UpdateZoomTilt();
     }
 
     void HandleKeyboardMove()
@@ -155,15 +157,23 @@ public class CameraMovment : MonoBehaviour
         newPos.y -= scroll * zoomSpeed * Time.deltaTime * 10f;
         newPos.y = Mathf.Clamp(newPos.y, minZoomY, maxZoomY);
 
-        float zoom01 = Mathf.InverseLerp(maxZoomY, minZoomY, newPos.y);
-        float zOffset = Mathf.Lerp(0f, -8f, zoom01 * zoomTiltStrength);
-
-        newPos.z += zOffset;
-
         newPos.x = Mathf.Clamp(newPos.x, xLimits.x, xLimits.y);
         newPos.z = Mathf.Clamp(newPos.z, zLimits.x, zLimits.y);
 
         targetPosition = newPos;
+
+        UpdateZoomTilt();
+    }
+
+    void UpdateZoomTilt()
+    {
+        // zoom01: 0 = fully zoomed out, 1 = fully zoomed in
+        float zoom01 = Mathf.InverseLerp(maxZoomY, minZoomY, targetPosition.y);
+
+        // Tilt: zoomed out = 90 (straight down), zoomed in = 90 - maxTiltAngle
+        float tiltAngle = Mathf.Lerp(90f, 90f - maxTiltAngle, zoom01);
+
+        targetRotation = Quaternion.Euler(tiltAngle, targetRotation.eulerAngles.y, 0f);
     }
 
     public void ResetCamera()
@@ -174,7 +184,7 @@ public class CameraMovment : MonoBehaviour
             return;
 
         targetPosition = defaultPosition.position;
-        targetRotation = defaultPosition.rotation;
+        UpdateZoomTilt();
     }
     public void SetTargetCamera(Camera camToUse)
     {

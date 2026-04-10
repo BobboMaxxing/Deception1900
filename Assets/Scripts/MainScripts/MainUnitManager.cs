@@ -94,6 +94,17 @@ public partial class MainUnitManager : NetworkBehaviour
             unitType == UnitType.Plane ? planeUnitPrefab :
             landUnitPrefab;
 
+        if (unitType == UnitType.Land)
+        {
+            GameObject countryObj = GameObject.FindWithTag(ownerCountryTag);
+            if (countryObj != null)
+            {
+                Country country = countryObj.GetComponent<Country>();
+                if (country != null && country.customLandUnitPrefab != null)
+                    prefab = country.customLandUnitPrefab;
+            }
+        }
+
         if (prefab == null)
         {
             Debug.LogError("[MainUnitManager] Prefab for unitType is null");
