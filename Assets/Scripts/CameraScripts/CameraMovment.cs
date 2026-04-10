@@ -46,6 +46,8 @@ public class CameraMovment : MonoBehaviour
             targetPosition = targetCamera.transform.position;
         }
 
+        // Start at max zoom out
+        targetPosition.y = maxZoomY;
         UpdateZoomTilt();
     }
 
@@ -131,14 +133,7 @@ public class CameraMovment : MonoBehaviour
 
         isFocusing = false;
 
-        Vector3 right = targetCamera.transform.right;
-        Vector3 forward = targetCamera.transform.forward;
-        right.y = 0f;
-        forward.y = 0f;
-        right.Normalize();
-        forward.Normalize();
-
-        Vector3 moveDir = (right * input.x + forward * input.z).normalized;
+        Vector3 moveDir = new Vector3(input.x, 0f, input.z).normalized;
         Vector3 newPos = targetPosition + moveDir * keyboardMoveSpeed * Time.deltaTime;
 
         newPos.x = Mathf.Clamp(newPos.x, xLimits.x, xLimits.y);
@@ -223,18 +218,12 @@ public class CameraMovment : MonoBehaviour
         float moveX = Input.GetAxis("Mouse X") * dragSpeed * Time.deltaTime * 1000;
         float moveZ = Input.GetAxis("Mouse Y") * dragSpeed * Time.deltaTime * 1000;
 
-        Vector3 right = targetCamera.transform.right;
-        Vector3 forward = targetCamera.transform.forward;
-        right.y = 0;
-        forward.y = 0;
-        right.Normalize();
-        forward.Normalize();
-
-        Vector3 moveDir = right * -moveX + forward * -moveZ;
+        Vector3 moveDir = new Vector3(-moveX, 0f, -moveZ);
         Vector3 newPos = targetCamera.transform.position + moveDir;
 
         newPos.x = Mathf.Clamp(newPos.x, xLimits.x, xLimits.y);
         newPos.z = Mathf.Clamp(newPos.z, zLimits.x, zLimits.y);
+        newPos.y = targetPosition.y;
 
         targetPosition = newPos;
     }
