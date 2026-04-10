@@ -16,12 +16,11 @@ public class CameraMovment : MonoBehaviour
     [SerializeField] Vector2 zLimits = new Vector2(-50f, 50f);
     [SerializeField] float keyboardMoveSpeed = 25f;
     [SerializeField] float zoomSpeed = 60f;
-    [SerializeField] float minZoomY = 12f;
-    [SerializeField] float maxZoomY = 60f;
+    [SerializeField] float minZoomY = 40f;
+    [SerializeField] float maxZoomY = 150f;
 
     [Header("Zoom Tilt")]
-    [SerializeField] float maxTiltAngle = 45f;
-    [SerializeField] float zoomPullBack = 15f;
+    [SerializeField] float maxTiltAngle = 30f;
 
     Camera cam;
     bool lockManualInput = false;
@@ -44,7 +43,6 @@ public class CameraMovment : MonoBehaviour
             targetPosition = targetCamera.transform.position;
         }
 
-        targetRotation = Quaternion.Euler(90f, 0f, 0f);
         UpdateZoomTilt();
     }
 
@@ -173,7 +171,8 @@ public class CameraMovment : MonoBehaviour
         // Tilt: zoomed out = 90 (straight down), zoomed in = 90 - maxTiltAngle
         float tiltAngle = Mathf.Lerp(90f, 90f - maxTiltAngle, zoom01);
 
-        targetRotation = Quaternion.Euler(tiltAngle, targetRotation.eulerAngles.y, 0f);
+        // Only rotate on X axis, Y and Z locked to 0
+        targetRotation = Quaternion.Euler(tiltAngle, 0f, 0f);
     }
 
     public void ResetCamera()
@@ -198,7 +197,7 @@ public class CameraMovment : MonoBehaviour
 
         isFocusing = false;
         targetPosition = buildTablePosition.position;
-        targetRotation = buildTablePosition.rotation;
+        targetRotation = Quaternion.Euler(buildTablePosition.rotation.eulerAngles.x, 0f, 0f);
     }
 
     public void SetFocusClickEnabled(bool value)
