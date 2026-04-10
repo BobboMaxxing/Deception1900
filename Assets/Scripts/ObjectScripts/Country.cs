@@ -27,6 +27,9 @@ public class Country : MonoBehaviour
     [Header("Airfields")]
     public bool isAirfield = false;
 
+    [Header("Custom Unit Prefab (optional, overrides default land unit)")]
+    public GameObject customLandUnitPrefab;
+
     [Header("Adjacency List (drag neighboring countries here)")]
     public List<Country> adjacentCountries = new List<Country>();
     

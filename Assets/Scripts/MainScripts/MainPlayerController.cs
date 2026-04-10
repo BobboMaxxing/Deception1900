@@ -514,6 +514,18 @@ public class MainPlayerController : NetworkBehaviour
             ?? hit.collider.GetComponentInChildren<BuildPileSelectable>();
     }
 
+    private float buildTablePromptDelay = 3f;
+
+    private IEnumerator WaitThenPromptBuildTable()
+    {
+        yield return new WaitForSeconds(buildTablePromptDelay);
+
+        if (!buildPhaseActiveLocal) yield break;
+        if (buildTableSelectionOpen) yield break;
+
+        DialogManager.Show($"Press {reopenBuildSelectionKey} to choose your units.");
+    }
+
     private void OpenBuildTableSelection()
     {
         if (!buildPhaseActiveLocal) return;
@@ -1468,7 +1480,7 @@ public class MainPlayerController : NetworkBehaviour
         }
 
         StartCoroutine(HandleBuildSelection());
-        OpenBuildTableSelection();
+        StartCoroutine(WaitThenPromptBuildTable());
     }
 
     private IEnumerator HandleBuildSelection()
