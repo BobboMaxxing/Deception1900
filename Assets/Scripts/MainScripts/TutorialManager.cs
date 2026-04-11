@@ -7,6 +7,7 @@ using Mirror;
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance;
+    public static bool IsActive => Instance != null;
 
     [Header("References")]
     public CameraMovment cameraMovment;
@@ -159,7 +160,7 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator ShowAndWait(string message)
     {
-        DialogManager.Show(message);
+        DialogManager.TutorialShow(message);
         yield return WaitForDialog();
     }
 

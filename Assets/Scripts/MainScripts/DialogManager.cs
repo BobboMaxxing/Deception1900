@@ -33,6 +33,17 @@ public class DialogManager : MonoBehaviour, IPointerClickHandler
 
     public static void Show(string message)
     {
+        // Block gameplay dialogs during tutorial so they don't overlap
+        if (TutorialManager.IsActive)
+            return;
+
+        if (instance != null)
+            instance.ShowDialog(message);
+    }
+
+    /// <summary>Called only by TutorialManager — always shows, even during tutorial.</summary>
+    public static void TutorialShow(string message)
+    {
         if (instance != null)
             instance.ShowDialog(message);
     }
