@@ -12,40 +12,51 @@ public class TutorialManager : MonoBehaviour
     public CameraMovment cameraMovment;
     public Transform supplyCenterCameraPoint;
 
-    [Header("Enemy Setup")]
-    [Tooltip("Tag of the country where enemy units spawn (e.g. France)")]
-    public string enemyCountryTag;
+    [Header("Country Setup")]
+    [Tooltip("Tag of the player country (only this one flashes)")]
+    public string playerCountryTag = "Germany";
+    [Tooltip("Tag of the enemy country")]
+    public string enemyCountryTag = "France";
     [Tooltip("How many enemy units to spawn")]
     public int enemyUnitCount = 2;
 
     [Header("Timing")]
+    [Tooltip("Seconds to wait for the map flip animation before starting")]
+    public float mapFlipDelay = 3f;
+    [Tooltip("Seconds to wait after player completes an input check")]
+    public float inputConfirmDelay = 2f;
     public float dialogPause = 1.5f;
     public float longPause = 2.5f;
 
     private MainPlayerController localPlayer;
-    private bool triedLandUnit;
-    private bool triedBoatUnit;
     private bool firstBuildDone;
     private bool enemySpawned;
-    private int buildPhaseCount;
+
+    // Camera input tracking
+    private bool hasMovedCamera;
+    private bool hasZoomed;
+    private bool hasDragged;
 
     enum TutorialStep
     {
+        WaitForMapFlip,
         Welcome,
-        ExplainCamera,
+        ExplainCameraMove,
+        ExplainCameraZoom,
+        ExplainCameraDrag,
         PickCountry,
         ExplainBuildKey,
         ExplainUnitTypes,
         WaitForBuild,
-        ClickUnit,
-        ExplainUnit,
         SpawnEnemy,
         AttackOrder,
         WaitForAttack,
         AttackResult,
         ExplainSupplyCenters,
-        SecondBuildPhase,
+        RemindBuild,
+        WaitForSecondBuild,
         ExplainSupport,
+        SecondAttack,
         WaitForSecondAttack,
         TutorialComplete
     }
@@ -60,6 +71,37 @@ public class TutorialManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(RunTutorial());
+    }
+
+    void Update()
+    {
+        // Track camera inputs for tutorial progression
+        if (currentStep == TutorialStep.ExplainCameraMove)
+        {
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) ||
+                Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) ||
+                Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) ||
+                Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+            {
+                hasMovedCamera = true;
+            }
+        }
+
+        if (currentStep == TutorialStep.ExplainCameraZoom)
+        {
+            if (Input.GetAxis("Mouse ScrollWheel") != 0f)
+            {
+                hasZoomed = true;
+            }
+        }
+
+        if (currentStep == TutorialStep.ExplainCameraDrag)
+        {
+            if (Input.GetMouseButton(2)) // middle mouse
+            {
+                hasDragged = true;
+            }
+        }
     }
 
     private MainPlayerController FindLocalPlayer()
@@ -102,27 +144,53 @@ public class TutorialManager : MonoBehaviour
     {
         // Wait for networking and player to be ready
         yield return WaitForLocalPlayer();
-        yield return new WaitForSeconds(dialogPause);
+
+        // === WAIT FOR MAP FLIP ANIMATION ===
+        currentStep = TutorialStep.WaitForMapFlip;
+        yield return new WaitForSeconds(mapFlipDelay);
 
         // === WELCOME ===
         currentStep = TutorialStep.Welcome;
         yield return ShowAndWait("Hello Commander. I will be your second in command.");
         yield return ShowAndWait("I'll walk you through the basics of warfare. Pay attention.");
 
-        // === EXPLAIN CAMERA ===
-        currentStep = TutorialStep.ExplainCamera;
-        yield return ShowAndWait("First, let's get you oriented. You can move the camera with WASD or the Arrow Keys.");
-        yield return ShowAndWait("You can also press and hold the Scroll Wheel to drag the map around.");
-        yield return ShowAndWait("Use the Scroll Wheel to zoom in and out. Try it now, have a look around.");
-        yield return new WaitForSeconds(longPause);
+        // === CAMERA MOVE ===
+        currentStep = TutorialStep.ExplainCameraMove;
+        yield return ShowAndWait("First, let's get you oriented. Move the camera with WASD or the Arrow Keys. Try it now.");
+        hasMovedCamera = false;
 
-        // === PICK COUNTRY ===
+        while (!hasMovedCamera)
+            yield return null;
+
+        yield return new WaitForSeconds(inputConfirmDelay);
+
+        // === CAMERA ZOOM ===
+        currentStep = TutorialStep.ExplainCameraZoom;
+        yield return ShowAndWait("Good! Now try zooming in and out with the Scroll Wheel.");
+        hasZoomed = false;
+
+        while (!hasZoomed)
+            yield return null;
+
+        yield return new WaitForSeconds(inputConfirmDelay);
+
+        // === CAMERA DRAG ===
+        currentStep = TutorialStep.ExplainCameraDrag;
+        yield return ShowAndWait("You can also hold down the Scroll Wheel and drag to pan around the map. Try it.");
+        hasDragged = false;
+
+        while (!hasDragged)
+            yield return null;
+
+        yield return new WaitForSeconds(inputConfirmDelay);
+        yield return ShowAndWait("Excellent! You've got the hang of it.");
+
+        // === PICK COUNTRY (only Germany flashes) ===
         currentStep = TutorialStep.PickCountry;
-        PulseAllStarterCountries();
-        yield return ShowAndWait("First, pick a country. Click on one of the flashing territories to claim it as yours.");
+        PulseCountry(playerCountryTag);
+        yield return ShowAndWait("Now, pick your country. Click on the flashing territory to claim it.");
         yield return ShowAndWait("Then press Confirm to lock in your choice.");
 
-        // Wait for player to choose a country
         while (localPlayer != null && !localPlayer.hasChosenCountry)
             yield return null;
 
@@ -134,7 +202,6 @@ public class TutorialManager : MonoBehaviour
         yield return ShowAndWait("Good choice, Commander.");
         yield return ShowAndWait("Now it's time to build your forces. Press F to open the unit piles.");
 
-        // Wait for player to open build table
         while (localPlayer != null && !IsBuildTableOpen())
             yield return null;
 
@@ -144,15 +211,12 @@ public class TutorialManager : MonoBehaviour
         yield return ShowAndWait("Tanks move on land and claim new territory for your empire.");
         yield return ShowAndWait("Boats patrol the oceans. They can support land units and help them cross water.");
         yield return ShowAndWait("Planes provide support from the air, but can only be built when you control 30% of supply centers.");
-        yield return ShowAndWait("For now, I recommend building tanks. Click on the tank pile to select it, then click your territory to place it.");
+        yield return ShowAndWait("For now, build some tanks. Click on the tank pile, then click your territory to place it.");
 
         // === WAIT FOR BUILD ===
         currentStep = TutorialStep.WaitForBuild;
-        firstBuildDone = false;
-
-        while (localPlayer != null && localPlayer.hasChosenCountry)
+        while (localPlayer != null)
         {
-            // Check if build phase ended
             if (!IsBuildPhaseActive())
             {
                 firstBuildDone = true;
@@ -163,88 +227,47 @@ public class TutorialManager : MonoBehaviour
 
         yield return new WaitForSeconds(dialogPause);
 
-        // === CLICK UNIT ===
-        currentStep = TutorialStep.ClickUnit;
-        yield return ShowAndWait("Your forces are ready, Commander.");
-        yield return ShowAndWait("Click on one of your units to select it. You'll see which territories it can move to.");
-
-        // Wait for player to select a unit
-        MainUnit selectedUnit = null;
-        while (selectedUnit == null)
-        {
-            if (localPlayer != null)
-            {
-                var field = typeof(MainPlayerController).GetField("selectedUnit",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (field != null)
-                    selectedUnit = field.GetValue(localPlayer) as MainUnit;
-            }
-            yield return null;
-        }
-
-        // === EXPLAIN UNIT ===
-        currentStep = TutorialStep.ExplainUnit;
-        if (selectedUnit.unitType == UnitType.Land)
-        {
-            triedLandUnit = true;
-            yield return ShowAndWait("A tank. Strong on land. Click an adjacent flashing territory to issue a move order.");
-        }
-        else if (selectedUnit.unitType == UnitType.Boat)
-        {
-            triedBoatUnit = true;
-            yield return ShowAndWait("A boat. It moves on ocean tiles. Click an adjacent ocean to issue a move order.");
-        }
-
-        yield return ShowAndWait("After giving orders to your units, press the Confirm button to end your turn.");
-        yield return ShowAndWait("But first... the enemy approaches.");
-
-        // === SPAWN ENEMY ===
+        // === SPAWN ENEMY IN FRANCE ===
         currentStep = TutorialStep.SpawnEnemy;
-        yield return new WaitForSeconds(dialogPause);
-
         SpawnEnemyUnits();
         enemySpawned = true;
 
-        yield return ShowAndWait("Enemy forces have appeared! They threaten your borders.");
+        yield return ShowAndWait("Enemy forces have appeared in France! They threaten your borders.");
 
         // === ATTACK ORDER ===
         currentStep = TutorialStep.AttackOrder;
-        yield return ShowAndWait("Select your tank and click the enemy territory to attack it.");
+        PulseCountry(enemyCountryTag);
+        yield return ShowAndWait("Select your tank and click France to attack it.");
         yield return ShowAndWait("Then press Confirm to execute your orders.");
 
         // === WAIT FOR ATTACK ===
         currentStep = TutorialStep.WaitForAttack;
-
-        // Wait for player to confirm moves
         while (localPlayer != null)
         {
             var readyField = typeof(MainPlayerController).GetField("isReady",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (readyField != null)
             {
-                // isReady is a SyncVar, check it
                 bool ready = (bool)readyField.GetValue(localPlayer);
                 if (ready) break;
             }
             yield return null;
         }
 
-        // Wait for turn to resolve
         yield return new WaitForSeconds(longPause);
+        StopAllCountryPulses();
 
-        // === ATTACK RESULT ===
+        // === ATTACK RESULT (player loses — equal forces) ===
         currentStep = TutorialStep.AttackResult;
-        yield return ShowAndWait("The attack was repelled! When forces are equal, neither side moves.");
-        yield return ShowAndWait("You need more strength. Let me show you how.");
+        yield return ShowAndWait("The attack was repelled! When forces are equal, the defender holds.");
+        yield return ShowAndWait("You need more strength. Let me explain how to get it.");
 
-        // === EXPLAIN SUPPLY CENTERS ===
+        // === PAN TO SUPPLY CENTERS ===
         currentStep = TutorialStep.ExplainSupplyCenters;
-
         if (supplyCenterCameraPoint != null && cameraMovment != null)
         {
             cameraMovment.SetManualInputLocked(true);
             Vector3 panTarget = supplyCenterCameraPoint.position;
-            // Temporarily move camera to supply center
             var posField = typeof(CameraMovment).GetField("targetPosition",
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (posField != null)
@@ -260,27 +283,36 @@ public class TutorialManager : MonoBehaviour
 
         yield return new WaitForSeconds(dialogPause);
 
-        // === SECOND BUILD PHASE ===
-        currentStep = TutorialStep.SecondBuildPhase;
-        yield return ShowAndWait("Capture nearby supply centers to get more units. Move your units to unclaimed territories.");
+        // === REMIND BUILD ===
+        currentStep = TutorialStep.RemindBuild;
+        yield return ShowAndWait("Remember, press F to open the build menu and create more units.");
+        yield return ShowAndWait("Build more tanks to strengthen your army for the next attack.");
 
-        if (!triedLandUnit || !triedBoatUnit)
-        {
-            string missing = !triedLandUnit ? "tank" : "boat";
-            yield return ShowAndWait($"Remember to press F to build. Try building a {missing} this time.");
-        }
+        // === WAIT FOR SECOND BUILD ===
+        currentStep = TutorialStep.WaitForSecondBuild;
+        // Wait for build phase to start
+        while (localPlayer != null && !IsBuildPhaseActive())
+            yield return null;
+        // Wait for build phase to end
+        while (localPlayer != null && IsBuildPhaseActive())
+            yield return null;
+
+        yield return new WaitForSeconds(dialogPause);
 
         // === EXPLAIN SUPPORT ===
         currentStep = TutorialStep.ExplainSupport;
         yield return ShowAndWait("Now for the key to victory: Support Orders.");
-        yield return ShowAndWait("Hold SHIFT and click another friendly unit to support it.");
-        yield return ShowAndWait("A supported attack has more strength. Two units attacking one will break through.");
-        yield return ShowAndWait("Try it now. Select a unit, then hold SHIFT and click another unit to support its attack on the enemy.");
+        yield return ShowAndWait("Hold SHIFT and click another friendly unit to support its attack.");
+        yield return ShowAndWait("A supported attack has more strength. Two units attacking one will break through!");
+        yield return ShowAndWait("Try it now. Select a unit, hold SHIFT, and click another unit to support its attack on France.");
+
+        // === SECOND ATTACK ===
+        currentStep = TutorialStep.SecondAttack;
+        PulseCountry(enemyCountryTag);
+        yield return ShowAndWait("Give your orders and press Confirm when ready.");
 
         // === WAIT FOR SECOND ATTACK ===
         currentStep = TutorialStep.WaitForSecondAttack;
-        yield return ShowAndWait("Give your orders and press Confirm when ready.");
-
         while (localPlayer != null)
         {
             var readyField = typeof(MainPlayerController).GetField("isReady",
@@ -294,6 +326,7 @@ public class TutorialManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(longPause);
+        StopAllCountryPulses();
 
         // === TUTORIAL COMPLETE ===
         currentStep = TutorialStep.TutorialComplete;
@@ -302,28 +335,24 @@ public class TutorialManager : MonoBehaviour
         yield return ShowAndWait("Remember: capture 75% of supply centers to win. Good luck out there.");
 
         yield return new WaitForSeconds(longPause);
-
-        // Return to main menu
         SceneManager.LoadScene("MainMenu");
     }
 
-    private void PulseAllStarterCountries()
+    private void PulseCountry(string countryTag)
     {
-        Country[] allCountries = Object.FindObjectsByType<Country>(FindObjectsSortMode.None);
-        for (int i = 0; i < allCountries.Length; i++)
-        {
-            if (allCountries[i] == null) continue;
-            if (!allCountries[i].isStarterCountry) continue;
+        if (string.IsNullOrEmpty(countryTag)) return;
 
-            Renderer rend = allCountries[i].GetComponentInChildren<Renderer>();
-            if (rend == null) continue;
+        GameObject countryObj = GameObject.FindWithTag(countryTag);
+        if (countryObj == null) return;
 
-            PulsingHighlighter highlighter =
-                rend.GetComponent<PulsingHighlighter>() ??
-                rend.gameObject.AddComponent<PulsingHighlighter>();
+        Renderer rend = countryObj.GetComponentInChildren<Renderer>();
+        if (rend == null) return;
 
-            highlighter.StartPulse();
-        }
+        PulsingHighlighter highlighter =
+            rend.GetComponent<PulsingHighlighter>() ??
+            rend.gameObject.AddComponent<PulsingHighlighter>();
+
+        highlighter.StartPulse();
     }
 
     private void StopAllCountryPulses()
@@ -359,11 +388,9 @@ public class TutorialManager : MonoBehaviour
         if (string.IsNullOrEmpty(enemyCountryTag)) return;
         if (MainUnitManager.Instance == null) return;
 
-        // Use a fake enemy player ID
         int enemyPlayerID = 99;
         Color enemyColor = Color.red;
 
-        // Set the enemy country owner
         GameObject countryObj = GameObject.FindWithTag(enemyCountryTag);
         if (countryObj != null)
         {
