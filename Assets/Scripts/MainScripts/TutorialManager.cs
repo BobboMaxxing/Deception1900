@@ -32,6 +32,7 @@ public class TutorialManager : MonoBehaviour
     enum TutorialStep
     {
         Welcome,
+        ExplainCamera,
         PickCountry,
         ExplainBuildKey,
         ExplainUnitTypes,
@@ -107,6 +108,13 @@ public class TutorialManager : MonoBehaviour
         currentStep = TutorialStep.Welcome;
         yield return ShowAndWait("Hello Commander. I will be your second in command.");
         yield return ShowAndWait("I'll walk you through the basics of warfare. Pay attention.");
+
+        // === EXPLAIN CAMERA ===
+        currentStep = TutorialStep.ExplainCamera;
+        yield return ShowAndWait("First, let's get you oriented. You can move the camera with WASD or the Arrow Keys.");
+        yield return ShowAndWait("You can also press and hold the Scroll Wheel to drag the map around.");
+        yield return ShowAndWait("Use the Scroll Wheel to zoom in and out. Try it now, have a look around.");
+        yield return new WaitForSeconds(longPause);
 
         // === PICK COUNTRY ===
         currentStep = TutorialStep.PickCountry;
