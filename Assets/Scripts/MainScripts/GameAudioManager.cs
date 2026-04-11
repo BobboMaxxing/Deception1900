@@ -76,15 +76,27 @@ public class GameAudioManager : MonoBehaviour
     public static void PlayTurnResolved() => Play(Instance?.turnResolved);
     public static void PlayBuildPhaseStart() => Play(Instance?.buildPhaseStart);
 
+    [Header("Volume")]
+    [Range(0f, 1f)] public float unitMoveVolume = 0.5f;
+
+    public static void Play(AudioClip clip, float volumeScale)
+    {
+        if (Instance == null) return;
+        if (clip == null) return;
+
+        Instance.audioSource.PlayOneShot(clip, volumeScale);
+    }
+
     public static void PlayUnitMove(UnitType unitType)
     {
         if (Instance == null) return;
 
+        float vol = Instance.unitMoveVolume;
         switch (unitType)
         {
-            case UnitType.Land: Play(Instance.unitMoveLand); break;
-            case UnitType.Boat: Play(Instance.unitMoveBoat); break;
-            case UnitType.Plane: Play(Instance.unitMovePlane); break;
+            case UnitType.Land: Play(Instance.unitMoveLand, vol); break;
+            case UnitType.Boat: Play(Instance.unitMoveBoat, vol); break;
+            case UnitType.Plane: Play(Instance.unitMovePlane, vol); break;
         }
     }
 }
