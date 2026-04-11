@@ -152,9 +152,13 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator WaitForDialog()
     {
         yield return new WaitForSeconds(0.3f);
+        float timeout = 15f;
+        float elapsed = 0f;
         while (DialogManager.Instance != null && DialogManager.Instance.gameObject.activeSelf
             && DialogManager.Instance.dialogPanel != null && DialogManager.Instance.dialogPanel.activeSelf)
         {
+            elapsed += Time.deltaTime;
+            if (elapsed >= timeout) break;
             yield return null;
         }
         yield return new WaitForSeconds(0.3f);
