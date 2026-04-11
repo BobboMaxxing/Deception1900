@@ -358,6 +358,18 @@ public class TutorialManager : MonoBehaviour
         yield return ShowAndWait("Remember: capture 75% of supply centers to win. Good luck out there.");
 
         yield return new WaitForSeconds(longPause);
+
+        // Stop the network before returning to menu
+        if (NetworkManager.singleton != null)
+        {
+            if (NetworkServer.active && NetworkClient.isConnected)
+                NetworkManager.singleton.StopHost();
+            else if (NetworkClient.isConnected)
+                NetworkManager.singleton.StopClient();
+            else if (NetworkServer.active)
+                NetworkManager.singleton.StopServer();
+        }
+
         SceneManager.LoadScene("MainMenu");
     }
 
