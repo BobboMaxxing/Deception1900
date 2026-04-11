@@ -37,6 +37,9 @@ public class TutorialManager : MonoBehaviour
     private bool hasZoomed;
     private bool hasDragged;
 
+    // Confirm press tracking
+    private bool hasConfirmed;
+
     enum TutorialStep
     {
         WaitForMapFlip,
@@ -45,8 +48,8 @@ public class TutorialManager : MonoBehaviour
         ExplainCameraZoom,
         ExplainCameraDrag,
         PickCountry,
-        ExplainBuildKey,
         ExplainUnitTypes,
+        ExplainBuildKey,
         WaitForBuild,
         SpawnEnemy,
         AttackOrder,
@@ -101,6 +104,26 @@ public class TutorialManager : MonoBehaviour
             {
                 hasDragged = true;
             }
+        }
+    }
+
+    private IEnumerator WaitForConfirmPress()
+    {
+        hasConfirmed = false;
+        while (localPlayer != null)
+        {
+            var readyField = typeof(MainPlayerController).GetField("isReady",
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (readyField != null)
+            {
+                bool ready = (bool)readyField.GetValue(localPlayer);
+                if (ready)
+                {
+                    hasConfirmed = true;
+                    break;
+                }
+            }
+            yield return null;
         }
     }
 
@@ -191,27 +214,30 @@ public class TutorialManager : MonoBehaviour
         yield return ShowAndWait("Now, pick your country. Click on the flashing territory to claim it.");
         yield return ShowAndWait("Then press Confirm to lock in your choice.");
 
+        // Wait for player to actually confirm their country pick
         while (localPlayer != null && !localPlayer.hasChosenCountry)
             yield return null;
 
         StopAllCountryPulses();
         yield return new WaitForSeconds(dialogPause);
 
+        // === EXPLAIN UNIT TYPES (before opening build table) ===
+        currentStep = TutorialStep.ExplainUnitTypes;
+        yield return ShowAndWait("Well done.");
+        yield return ShowAndWait("Before you build, let me explain the unit types.");
+        yield return ShowAndWait("Tanks move on land and claim new territory for your empire. They are the backbone of your army.");
+        yield return ShowAndWait("Boats patrol the oceans. They can support land units and block sea routes.");
+        yield return ShowAndWait("Planes provide support from the air, but can only be built when you control 30% of supply centers.");
+        yield return ShowAndWait("Tanks are the best choice right now, but boats are fine too if you want to try them.");
+
         // === EXPLAIN BUILD KEY ===
         currentStep = TutorialStep.ExplainBuildKey;
-        yield return ShowAndWait("Good choice, Commander.");
-        yield return ShowAndWait("Now it's time to build your forces. Press F to open the unit piles.");
+        yield return ShowAndWait("Now press F to open the build menu and place your units.");
 
         while (localPlayer != null && !IsBuildTableOpen())
             yield return null;
 
-        // === EXPLAIN UNIT TYPES ===
-        currentStep = TutorialStep.ExplainUnitTypes;
-        yield return ShowAndWait("You have three types of units to choose from.");
-        yield return ShowAndWait("Tanks move on land and claim new territory for your empire.");
-        yield return ShowAndWait("Boats patrol the oceans. They can support land units and help them cross water.");
-        yield return ShowAndWait("Planes provide support from the air, but can only be built when you control 30% of supply centers.");
-        yield return ShowAndWait("For now, build some tanks. Click on the tank pile, then click your territory to place it.");
+        yield return ShowAndWait("Click a unit pile to select it, then click your territory to place it.");
 
         // === WAIT FOR BUILD ===
         currentStep = TutorialStep.WaitForBuild;
@@ -240,21 +266,11 @@ public class TutorialManager : MonoBehaviour
         yield return ShowAndWait("Select your tank and click France to attack it.");
         yield return ShowAndWait("Then press Confirm to execute your orders.");
 
-        // === WAIT FOR ATTACK ===
+        // === WAIT FOR ATTACK (wait for confirm press) ===
         currentStep = TutorialStep.WaitForAttack;
-        while (localPlayer != null)
-        {
-            var readyField = typeof(MainPlayerController).GetField("isReady",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            if (readyField != null)
-            {
-                bool ready = (bool)readyField.GetValue(localPlayer);
-                if (ready) break;
-            }
-            yield return null;
-        }
+        yield return WaitForConfirmPress();
 
-        yield return new WaitForSeconds(longPause);
+        yield return new WaitForSeconds(dialogPause);
         StopAllCountryPulses();
 
         // === ATTACK RESULT (player loses — equal forces) ===
@@ -311,21 +327,11 @@ public class TutorialManager : MonoBehaviour
         PulseCountry(enemyCountryTag);
         yield return ShowAndWait("Give your orders and press Confirm when ready.");
 
-        // === WAIT FOR SECOND ATTACK ===
+        // === WAIT FOR SECOND ATTACK (wait for confirm press) ===
         currentStep = TutorialStep.WaitForSecondAttack;
-        while (localPlayer != null)
-        {
-            var readyField = typeof(MainPlayerController).GetField("isReady",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            if (readyField != null)
-            {
-                bool ready = (bool)readyField.GetValue(localPlayer);
-                if (ready) break;
-            }
-            yield return null;
-        }
+        yield return WaitForConfirmPress();
 
-        yield return new WaitForSeconds(longPause);
+        yield return new WaitForSeconds(dialogPause);
         StopAllCountryPulses();
 
         // === TUTORIAL COMPLETE ===
