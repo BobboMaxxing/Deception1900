@@ -968,6 +968,8 @@ public class MainPlayerController : NetworkBehaviour
         highlighter.StartTimedPulse(Color.red, 2.5f);
     }
 
+    public static event System.Action OnMovesConfirmed;
+
     public void ConfirmMoves()
     {
         if (!isLocalPlayer) return;
@@ -975,6 +977,7 @@ public class MainPlayerController : NetworkBehaviour
         GameAudioManager.PlayConfirm();
         moveStatusText?.SetText("Waiting for other players...");
         CmdConfirmMoves();
+        OnMovesConfirmed?.Invoke();
     }
 
     public void CancelMoves()

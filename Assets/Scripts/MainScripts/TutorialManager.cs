@@ -108,24 +108,26 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        MainPlayerController.OnMovesConfirmed += HandleMovesConfirmed;
+    }
+
+    void OnDisable()
+    {
+        MainPlayerController.OnMovesConfirmed -= HandleMovesConfirmed;
+    }
+
+    private void HandleMovesConfirmed()
+    {
+        hasConfirmed = true;
+    }
+
     private IEnumerator WaitForConfirmPress()
     {
         hasConfirmed = false;
-        while (localPlayer != null)
-        {
-            var readyField = typeof(MainPlayerController).GetField("isReady",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            if (readyField != null)
-            {
-                bool ready = (bool)readyField.GetValue(localPlayer);
-                if (ready)
-                {
-                    hasConfirmed = true;
-                    break;
-                }
-            }
+        while (!hasConfirmed)
             yield return null;
-        }
     }
 
     private MainPlayerController FindLocalPlayer()
