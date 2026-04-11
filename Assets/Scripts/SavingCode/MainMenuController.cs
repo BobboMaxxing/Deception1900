@@ -66,6 +66,12 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    public void LoadTutorial()
+    {
+        FadeOutAnimatior.SetTrigger("FadeOut");
+        SceneManager.LoadScene("TutorialScene");
+    }
+
     public void QuitGameYes()
     {
         FadeOutAnimatior.SetTrigger("FadeOut");

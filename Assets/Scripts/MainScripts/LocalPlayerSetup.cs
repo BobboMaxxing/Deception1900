@@ -29,6 +29,7 @@ public class LocalPlayerSetup : MonoBehaviour
         {
             confirmButton.gameObject.SetActive(false);
             confirmButton.onClick.RemoveAllListeners();
+            confirmButton.onClick.AddListener(() => GameAudioManager.PlayButtonClick());
             confirmButton.onClick.AddListener(localPlayer.ConfirmCountryChoice);
         }
 
@@ -36,6 +37,7 @@ public class LocalPlayerSetup : MonoBehaviour
         {
             cancelButton.gameObject.SetActive(false);
             cancelButton.onClick.RemoveAllListeners();
+            cancelButton.onClick.AddListener(() => GameAudioManager.PlayButtonClick());
             cancelButton.onClick.AddListener(localPlayer.CancelCountryChoice);
         }
 
@@ -43,6 +45,7 @@ public class LocalPlayerSetup : MonoBehaviour
         {
             confirmMoveButton.gameObject.SetActive(false);
             confirmMoveButton.onClick.RemoveAllListeners();
+            confirmMoveButton.onClick.AddListener(() => GameAudioManager.PlayButtonClick());
             confirmMoveButton.onClick.AddListener(localPlayer.ConfirmMoves);
         }
 
@@ -78,6 +81,7 @@ public class LocalPlayerSetup : MonoBehaviour
         {
             buildPassButton.gameObject.SetActive(false);
             buildPassButton.onClick.RemoveAllListeners();
+            buildPassButton.onClick.AddListener(() => GameAudioManager.PlayButtonClick());
             buildPassButton.onClick.AddListener(localPlayer.PassBuildPhase);
         }   
 

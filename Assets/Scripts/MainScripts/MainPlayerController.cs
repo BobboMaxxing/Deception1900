@@ -241,6 +241,7 @@ public class MainPlayerController : NetworkBehaviour
             pendingCountry = countryComp.tag;
 
             HighlightPendingCountry(countryComp);
+            GameAudioManager.PlayCountrySelected();
             selectedCountryText?.SetText("Selected: " + countryComp.name);
             confirmButton?.gameObject.SetActive(true);
             cancelButton?.gameObject.SetActive(true);
@@ -250,6 +251,7 @@ public class MainPlayerController : NetworkBehaviour
     public void ConfirmCountryChoice()
     {
         ClearPendingCountryHighlight();
+        GameAudioManager.PlayConfirm();
 
         if (pendingCountryComp == null)
             return;
@@ -351,6 +353,7 @@ public class MainPlayerController : NetworkBehaviour
     public void CancelCountryChoice()
     {
         ClearPendingCountryHighlight();
+        GameAudioManager.PlayCancel();
         pendingCountry = "";
         selectedCountryText?.SetText("Selection cleared");
         confirmButton?.gameObject.SetActive(false);
@@ -687,6 +690,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!CanSupportTo(selectedUnit, supportTarget))
             {
                 DialogManager.Show("Illegal support (must be adjacent).");
+                GameAudioManager.PlayMoveIllegal();
                 Country supportTargetCountry = FindCountryByTagRecursive(supportTarget);
                 FlashCountryRed(supportTargetCountry);
                 ClearSelectedUnit();
@@ -700,6 +704,7 @@ public class MainPlayerController : NetworkBehaviour
             StartCoroutine(RebuildLocalSupportVisualsNextFrame());
 
             DialogManager.Show("Support queued.");
+            GameAudioManager.PlaySupportQueued();
             ClearSelectedUnit();
             ShowMoveButtons(false);
             return;
@@ -754,6 +759,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!targetCountryComp.isOcean)
             {
                 DialogManager.Show("Boats can only move on oceans.");
+                GameAudioManager.PlayMoveIllegal();
                 FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
@@ -764,6 +770,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!boatDirect)
             {
                 DialogManager.Show("Illegal move.");
+                GameAudioManager.PlayMoveIllegal();
                 FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
@@ -775,6 +782,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!CanPlaneReach(fromCountryComp, targetCountryComp))
             {
                 DialogManager.Show("Planes can only move between reachable airfields.");
+                GameAudioManager.PlayMoveIllegal();
                 FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
@@ -789,6 +797,7 @@ public class MainPlayerController : NetworkBehaviour
             if (!direct && !bridge)
             {
                 DialogManager.Show("Illegal move.");
+                GameAudioManager.PlayMoveIllegal();
                 FlashCountryRed(targetCountryComp);
                 ClearSelectedUnit();
                 ShowMoveButtons(false);
@@ -798,6 +807,7 @@ public class MainPlayerController : NetworkBehaviour
 
         Vector3 targetPos = targetCountryComp.centerWorldPos;
         selectedUnit.ShowLocalMoveLine(targetPos);
+        GameAudioManager.PlayMoveValid();
 
         CancelReadyIfNeeded();
         SetMoveOrderLocal(selectedUnit, targetCountryComp.tag, targetPos);
@@ -962,6 +972,7 @@ public class MainPlayerController : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
+        GameAudioManager.PlayConfirm();
         moveStatusText?.SetText("Waiting for other players...");
         CmdConfirmMoves();
     }
@@ -969,6 +980,7 @@ public class MainPlayerController : NetworkBehaviour
     public void CancelMoves()
     {
         if (!isLocalPlayer) return;
+        GameAudioManager.PlayCancel();
 
         moveStatusText?.SetText("Ready canceled.");
         CmdCancelReady();
@@ -1492,6 +1504,8 @@ public class MainPlayerController : NetworkBehaviour
         buildTableSelectionOpen = false;
         ClearBuildHighlights();
 
+        GameAudioManager.PlayBuildPhaseStart();
+
         if (buildCreditsHUD != null)
         {
             Debug.Log($"[BuildCreditsHUD] Show called with {remainingBuildsLocal} credits");
@@ -1640,9 +1654,12 @@ public class MainPlayerController : NetworkBehaviour
 
         if (!success)
         {
+            GameAudioManager.PlayBuildFailed();
             RefreshBuildHighlights();
             return;
         }
+
+        GameAudioManager.PlayUnitBuilt();
 
         remainingBuildsLocal = remainingCredits;
         buildTypeSelected = false;
