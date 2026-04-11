@@ -293,7 +293,7 @@ public class TutorialManager : MonoBehaviour
                 posField.SetValue(cameraMovment, panTarget);
         }
 
-        yield return ShowAndWait("See these territories with stars? Those are Supply Centers.");
+        yield return ShowAndWait("See these territories with factories? Those are Supply Centers.");
         yield return ShowAndWait("Capture them to earn Build Points. More build points means more units.");
         yield return ShowAndWait("Control 75% of all supply centers and you win the war.");
 
@@ -302,10 +302,16 @@ public class TutorialManager : MonoBehaviour
 
         yield return new WaitForSeconds(dialogPause);
 
-        // === REMIND BUILD ===
+        // === CLAIM SUPPLY CENTER ===
         currentStep = TutorialStep.RemindBuild;
-        yield return ShowAndWait("Remember, press F to open the build menu and create more units.");
-        yield return ShowAndWait("Build more tanks to strengthen your army for the next attack.");
+        yield return ShowAndWait("Move one of your units to a nearby territory with a factory to claim it.");
+        yield return ShowAndWait("Then press Confirm to end your turn.");
+
+        // Wait for player to confirm the move
+        yield return WaitForConfirmPress();
+        yield return new WaitForSeconds(dialogPause);
+
+        yield return ShowAndWait("Now press F to build more tanks with your new build points.");
 
         // === WAIT FOR SECOND BUILD ===
         currentStep = TutorialStep.WaitForSecondBuild;
