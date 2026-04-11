@@ -88,9 +88,14 @@ public void RpcMoveTo(Vector3 target, string targetCountryTag)
             StopCoroutine(moveCoroutine);
 
         if (moveDistance >= particleMoveThreshold)
+        {
             PlayMoveParticles();
+            GameAudioManager.PlayUnitMove(unitType);
+        }
         else
+        {
             StopMoveParticles();
+        }
 
         if (unitType == UnitType.Boat)
             moveCoroutine = StartCoroutine(MoveBoatCurvedXZ(target, targetCountryTag));
