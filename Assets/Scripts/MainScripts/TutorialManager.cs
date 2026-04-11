@@ -300,9 +300,13 @@ public class TutorialManager : MonoBehaviour
         yield return ShowAndWait("See these territories with factories? Those are Supply Centers.");
         yield return ShowAndWait("Capture them to earn Build Points. More build points means more units.");
         yield return ShowAndWait("Control 75% of all supply centers and you win the war.");
+        yield return ShowAndWait("Press Space to reset the camera back to your territory. You can use this anytime.");
 
         if (cameraMovment != null)
+        {
             cameraMovment.SetManualInputLocked(false);
+            cameraMovment.ResetCamera();
+        }
 
         yield return new WaitForSeconds(dialogPause);
 
