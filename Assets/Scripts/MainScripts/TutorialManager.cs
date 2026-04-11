@@ -359,7 +359,7 @@ public class TutorialManager : MonoBehaviour
 
         yield return new WaitForSeconds(longPause);
 
-        // Stop the network before returning to menu
+        // Fully destroy the network session so a fresh one starts next game
         if (NetworkManager.singleton != null)
         {
             if (NetworkServer.active && NetworkClient.isConnected)
@@ -368,6 +368,8 @@ public class TutorialManager : MonoBehaviour
                 NetworkManager.singleton.StopClient();
             else if (NetworkServer.active)
                 NetworkManager.singleton.StopServer();
+
+            Destroy(NetworkManager.singleton.gameObject);
         }
 
         SceneManager.LoadScene("MainMenu");
