@@ -91,7 +91,6 @@ public class Unit : MonoBehaviour
         currentOrder = null;
         moveCoroutine = null;
 
-        // Allow this unit to receive orders for next turn
         canReceiveOrders = true;
     }
 
