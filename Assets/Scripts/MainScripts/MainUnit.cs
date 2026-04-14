@@ -59,7 +59,6 @@ public class MainUnit : NetworkBehaviour
         Debug.Log($"[Client] OnStartClient called for {name}, netId: {netId}");
         Debug.Log($"Enabled: {enabled}, GameObject active: {gameObject.activeSelf}");
     }
-    #region Server → Client Initialization
     [ClientRpc]
     public void RpcInitialize(int playerID, Color color, UnitType type)
     {
@@ -68,9 +67,7 @@ public class MainUnit : NetworkBehaviour
         unitType = type;
         SetColor(color);
     }
-    #endregion
 
-    #region Server → Client Movement
     [ClientRpc]
     public void RpcMoveTo(Vector3 target)
     {
@@ -197,9 +194,6 @@ public class MainUnit : NetworkBehaviour
         StopMoveParticles();
         moveCoroutine = null;
     }
-    #endregion
-
-    #region Client-Side Move Line
 
     public void ShowLocalMoveLine(Vector3 targetPos)
     {
@@ -228,9 +222,7 @@ public class MainUnit : NetworkBehaviour
         if (lineRenderer != null) lineRenderer.enabled = false;
         SetColor(playerColor);
     }
-    #endregion
 
-    #region Utility
     public void ClearOrder()
     {
         currentOrder = null;
@@ -287,8 +279,6 @@ public class MainUnit : NetworkBehaviour
         SetLocalIncomingSupportCount(0);
     }
 
-    #endregion
-    #region Particle Effects
     private void PlayParticleList(List<ParticleSystem> particles)
     {
         if (particles == null) return;
@@ -329,6 +319,4 @@ public class MainUnit : NetworkBehaviour
         StopParticleList(boatMoveParticles);
         StopParticleList(planeMoveParticles);
     }
-
-    #endregion
 }

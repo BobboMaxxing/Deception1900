@@ -17,9 +17,8 @@ public class PlayerInputController : MonoBehaviour
     private Unit selectedUnit;
     private bool hasConfirmed = false;
 
-    // ✅ Player color that other scripts can access
     private Color playerColor = Color.white;
-    public Color PlayerColor => playerColor; // read-only property
+    public Color PlayerColor => playerColor;
 
     void Start()
     {
@@ -149,7 +148,6 @@ public class PlayerInputController : MonoBehaviour
         if (cancelMoveButton != null) cancelMoveButton.gameObject.SetActive(state);
     }
 
-    // ✅ Call this whenever a country is chosen to set the player color
     public void SetPlayerColor(Color color)
     {
         playerColor = color;
