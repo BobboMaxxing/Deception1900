@@ -56,8 +56,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.2860785, y: 0.6890243, z: 1.9402777}
-  m_Center: {x: -0.005747795, y: 0.15548763, z: 0.0017793797}
+  m_Size: {x: 2.054349, y: 1.0246416, z: 2.6626015}
+  m_Center: {x: 0.052740574, y: 0.32329625, z: -0.11274028}
 --- !u!120 &4837620839977119374
 LineRenderer:
   serializedVersion: 2
@@ -200,7 +200,19 @@ MonoBehaviour:
   ownerID: 0
   currentCountry: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
+  unitType: 0
+  colorRenderers: []
   moveSpeed: 5
+  boatMoveDuration: 0.6
+  defaultMoveDuration: 0.5
+  boatCurveStrength: 0.22
+  supportCountText: {fileID: 0}
+  particleMoveThreshold: 0.75
+  landMoveParticles: []
+  boatMoveParticles: []
+  planeMoveParticles: []
+  turnSpeed: 12
+  selectionHighlight: {fileID: 0}
 --- !u!114 &8379995203774994242
 MonoBehaviour:
   m_ObjectHideFlags: 0
