@@ -101,7 +101,6 @@ public class UnitManager : MonoBehaviour
     {
         Dictionary<string, List<Unit>> unitsByTarget = new Dictionary<string, List<Unit>>();
 
-        // Group units by target country
         foreach (Unit unit in controlledUnits)
         {
             UnitOrder order = unit.GetOrder();
@@ -113,7 +112,6 @@ public class UnitManager : MonoBehaviour
             unitsByTarget[order.targetCountry].Add(unit);
         }
 
-        // Resolve orders
         foreach (var kvp in unitsByTarget)
         {
             string countryName = kvp.Key;
@@ -133,7 +131,6 @@ public class UnitManager : MonoBehaviour
                     playerStrength[u.ownerID] += 1;
             }
 
-            // Determine winner
             int maxStrength = 0;
             int winningPlayer = -1;
             bool tie = false;
@@ -152,13 +149,11 @@ public class UnitManager : MonoBehaviour
                 }
             }
 
-            // Apply capture
             if (!tie)
             {
                 CaptureCountry(targetObj, winningPlayer);
             }
 
-            // Move units with actual Move orders
             for (int i = 0; i < units.Count; i++)
             {
                 if (units[i].GetOrder().orderType == OrderType.Move)
@@ -169,9 +164,6 @@ public class UnitManager : MonoBehaviour
                     targetPos.y = units[i].transform.position.y;
                     units[i].ExecuteMove(targetPos);
                 }
-
-                // Clear the order after execution
-                //units[i].ClearOrder();
             }
         }
 

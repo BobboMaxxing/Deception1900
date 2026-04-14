@@ -44,20 +44,14 @@ public class GameManager : MonoBehaviour
     {
         isExecutingTurn = true;
 
-        // Execute all unit moves
         unitManager.ExecuteTurn();
 
-        // Wait for all units to finish moving
-        yield return new WaitForSeconds(2f); // adjust to longest move time
+        yield return new WaitForSeconds(2f);
 
-        // Advance season/year
         NextSeason();
 
-        // Reset all units so they can receive new orders
-        // Reset units
         unitManager.ResetUnitsForNextTurn();
 
-        // Enable player input again
         if (playerController != null)
             playerController.EnableInput();
 
